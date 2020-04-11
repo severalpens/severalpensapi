@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
-var AccountsModel = require("../../models/mongodb/accounts");
+var AccountsModel = require("../models/mongodb/accounts");
 var cors = require('cors');
 router.use(cors());
 router.post("/", bodyParser.json(), function(req, res, next) {

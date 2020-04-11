@@ -16,7 +16,7 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var ContractsModel = require('../../models/mongodb/contracts');
+var ContractsModel = require('../models/mongodb/contracts');
 
 
 router.get("/", bodyParser.json(), function(req, res, next) {

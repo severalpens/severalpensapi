@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
-var AccountsModel = require("../../models/mongodb/accounts");
+var AccountsModel = require("../models/mongodb/accounts");
 var cors = require('cors');
 router.use(cors());
 

@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
 var ethers = require("ethers");
-var TransfersModel = require("../../models/mongodb/transfers");
+var TransfersModel = require("../models/mongodb/transfers");
 
 
 class BlockchainQuery {
