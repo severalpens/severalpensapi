@@ -6,8 +6,8 @@ var contractsRouter = require('./contracts/contracts');
 var transactionsRouter = require('./transactions/transactions');
 
 
-app.use('/accounts', accountsRouter);
-app.use('/contracts', contractsRouter);
-app.use('/transactions', transactionsRouter);
+router.use('/accounts', accountsRouter);
+router.use('/contracts', contractsRouter);
+router.use('/transactions', transactionsRouter);
 
 module.exports = router;
