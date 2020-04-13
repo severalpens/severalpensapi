@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
+
 var contractsSchema = new Schema({
     fungible: Boolean,
     symbol: String,
@@ -11,8 +12,8 @@ var contractsSchema = new Schema({
     accounts: Array,
     addresses: Object,
     soliditycode: String,
-    abi: Array,
-    bytecode: Object,
+    abi: String,
+    bytecode: String,
     isActive: Boolean
   });
   

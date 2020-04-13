@@ -7,8 +7,6 @@ var cors = require('cors');
 router.use(cors());
 
 
-
-
 router.post("/", bodyParser.json(), function(req, res, next) {
   ContractsModel.create({
         fungible: true,
@@ -18,9 +16,9 @@ router.post("/", bodyParser.json(), function(req, res, next) {
         locked: false,
         addresses: req.body.addresses,
         owner: req.body.owner,
-        // soliditycode: req.body.soliditycode,
-        // abi: JSON.parse(req.body.abi),
-        // bytecode: req.body.bytecode,
+        soliditycode: req.body.soliditycode,
+        abi: req.body.abi,
+        bytecode: req.body.bytecode,
         isActive: true
   }).then(result => {
     res.send(result);
