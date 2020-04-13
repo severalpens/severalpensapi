@@ -1,13 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var bodyParser = require("body-parser");
-var ethers = require("ethers");
-var ContractsModel = require('../models/mongodb/contracts');
-var BlockchainQuery = require('./blockchainQuery');
-
 var cors = require('cors');
 router.use(cors());
-
+var bodyParser = require("body-parser");
+var ContractsModel = require('../models/mongodb/contracts');
+var BlockchainQuery = require('./blockchainQuery');
 
 
 router.post("/balanceof", bodyParser.json(), function(req, res, next) {

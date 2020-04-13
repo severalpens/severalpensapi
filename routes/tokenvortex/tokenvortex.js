@@ -5,6 +5,8 @@ var accountsRouter = require('./accounts/accounts');//NB: this is the file path 
 var contractsRouter = require('./contracts/contracts');
 var transactionsRouter = require('./transactions/transactions');
 
+var cors = require('cors');
+router.use(cors());
 
 router.use('/accounts', accountsRouter);
 router.use('/contracts', contractsRouter);

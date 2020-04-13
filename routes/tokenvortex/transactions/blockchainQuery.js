@@ -14,9 +14,12 @@ class BlockchainQuery {
     this.body = body;
     this.res = res;
     this.mongoContract = mongoContract;
-
     let provider = ethers.getDefaultProvider(body.network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
+
+    console.log(mongoContract.addresses);
+    console.log(body.network);
+
     this.ethersContract = new ethers.Contract(
       mongoContract.addresses[body.network],
       JSON.parse(mongoContract.abi),
