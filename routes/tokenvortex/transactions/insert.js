@@ -16,13 +16,13 @@ router.post("/", bodyParser.json(), function(req, res, next) {
     passwordHash: req.body.passwordHash,
     privateKey: req.body.privateKey,
     publicKey: req.body.publicKey,
-    transactionAuthor: req.body.transactionAuthor,
+    msgSender: req.body.msgSender,
     network: req.body.network,
     transfer_id: req.body.transfer_id,
     stage: req.body.stage,
-    contract: req.body.contract,
-    sender: req.body.sender,
-    recipient: req.body.recipient,
+    contractAddress: req.body.contract,
+    senderAddress: req.body.sender,
+    recipientAddress: req.body.recipient,
     amount: req.body.amount,
     isValid: req.body.isValid
   }).then(result => {

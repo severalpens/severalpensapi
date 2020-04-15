@@ -14,7 +14,6 @@ router.use('/update',updateRouter);
 
 var TransactionsModel = require('../models/mongodb/transactions');
 
-
 router.get("/", bodyParser.json(), function(req, res, next) {
   TransactionsModel.find({isActive: true})
     .collection(TransactionsModel.collection)

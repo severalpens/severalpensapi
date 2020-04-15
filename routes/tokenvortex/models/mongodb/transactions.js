@@ -9,13 +9,13 @@ var transactionsSchema = new Schema({
     passwordHash: String,
     privateKey: String,
     publicKey: String,
-    transactionAuthor: String,
+    msgSender: String,
     network: String,
     transfer_id: String,
     stage: String,
-    contract: String,
-    sender: String,
-    recipient: String,
+    contractAddress: String,
+    senderAddress: String,
+    recipientAddress: String,
     amount: String,
     isValid: String
   });
