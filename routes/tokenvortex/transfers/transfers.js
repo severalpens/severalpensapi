@@ -12,12 +12,12 @@ router.use(cors());
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var TransactionsModel = require('../models/mongodb/transactions');
+var TransfersModel = require('../models/mongodb/transfers');
 
 
 router.get("/", bodyParser.json(), function(req, res, next) {
-  TransactionsModel.find({isActive: true})
-    .collection(TransactionsModel.collection)
+  TransfersModel.find({isActive: true})
+    .collection(TransfersModel.collection)
     .exec((err, contracts) => {
       if (err != null) {
         return res.send(err);
@@ -27,5 +27,8 @@ router.get("/", bodyParser.json(), function(req, res, next) {
       }
     });
 });
+
+
+
 
 module.exports = router;

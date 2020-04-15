@@ -11,12 +11,13 @@ var contractsSchema = new Schema({
     locked: Boolean,
     accounts: Array,
     addresses: {
+      ropsten: String,
+      kovan: String,
       rinkeby: String,
-      ropsten: String
+      goerli: String,
     },
     soliditycode: String,
     abi: String,
-    bytecode: String,
     isActive: Boolean
   });
   

@@ -9,11 +9,9 @@ router.use(cors());
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  // console.log(req.params);
-  // console.log(req.body);
   if (_id) {
     ContractsModel.updateOne(
-      { _id },
+      { _id, locked: false },
       {
         fungible: true,
         symbol: req.body.symbol,
@@ -23,7 +21,6 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         owner: req.body.owner,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,
-        bytecode: req.body.bytecode,
       },
       function(err, result) {
         res.send([req.body, result]);

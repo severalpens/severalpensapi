@@ -7,7 +7,6 @@ router.use(cors());
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
     let _id = req.params._id;
-    console.log(_id);
       AccountsModel.updateOne(
         { _id, locked: false },
         {

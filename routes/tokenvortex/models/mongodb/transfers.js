@@ -2,7 +2,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var transfersSchema = new Schema({
-    timestamp: Number,
+    id: Number,
+    uuid: String,
+    transactionHash: String,
+    password: String,
+    passwordHash: String,
+    privateKey: String,
+    publicKey: String,
     sender: String,
     recipient: String,
     amount: Number,

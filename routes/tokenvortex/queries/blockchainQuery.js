@@ -7,18 +7,13 @@ var TransfersModel = require("../models/mongodb/transfers");
 
 class BlockchainQuery {
   body;
-  res;
   mongoContract;
   ethersContract;
-  constructor(body, mongoContract, res) {
+  constructor(body, mongoContract) {
     this.body = body;
-    this.res = res;
     this.mongoContract = mongoContract;
     let provider = ethers.getDefaultProvider(body.network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
-
-    console.log(mongoContract.addresses);
-    console.log(body.network);
 
     this.ethersContract = new ethers.Contract(
       mongoContract.addresses[body.network],
@@ -27,50 +22,50 @@ class BlockchainQuery {
     );
   }
 
-  balanceOf(accountAddress) {
-    this.ethersContract.balanceOf(accountAddress).then((balance) => {
-      let finalResult = parseInt(balance._hex, 16);
-      this.res.send(finalResult.toString());
+  getBalances(accountAddress,res) {
+    let balances = {
+      current: 0,
+      available: 0
+    }
+    this.ethersContract.balanceOf(accountAddress).then((cb) => {
+      balances.current = parseInt(cb._hex, 16);
+      this.ethersContract.balanceOfAvailable(accountAddress).then((ab) => {
+        balances.available = parseInt(ab._hex, 16);  
+        res.send(balances);
+      });
     });
   }
 
-  balanceOfAvailable(accountAddress) {
-    this.ethersContract.balanceOfAvailable(accountAddress).then((balance) => {
-      let finalResult = parseInt(balance._hex, 16);
-      this.res.send(finalResult.toString());
-    });
-  }
-
-  vortexTransferSyn(sender, recipient,amount,isValid) {
+  vortexTransferSyn(sender, recipient,amount,isValid,res) {
     const timestamp = date.getTime();
     this.ethersContract
     .vortexTransferSyn(timestamp, sender, recipient,amount,isValid)
     .then(result => {
         this.logTransfer(timestamp, sender, recipient,amount,isValid,result)
-        this.res.send(result);
+        res.send(result);
     });
   }
 
-  vortexTransferAck(timestamp, sender, recipient,amount,isValid) {
+  vortexTransferAck(timestamp, sender, recipient,amount,isValid,res) {
     this.ethersContract
     .vortexTransferAck(timestamp, sender, recipient,amount,isValid)
     .then(result => {
         this.logTransfer(timestamp, sender, recipient,amount,isValid,result)
-        this.res.send(result);
+        res.send(result);
     });
   }
 
 
-  vortexTransferSynAck(timestamp, sender, recipient,amount,isValid) {
+  vortexTransferSynAck(timestamp, sender, recipient,amount,isValid,res) {
     this.ethersContract
     .vortexTransferAck(timestamp, sender, recipient,amount,isValid)
     .then(result => {
         this.logTransfer(timestamp, sender, recipient,amount,isValid,result)       
-        this.res.send(result);
+        res.send(result);
     });
   }
 
-  logTransfer(timestamp, sender, recipient,amount,isValid,result){
+  logTransfer(timestamp, sender, recipient,amount,isValid,result,res){
     let transfer = {};
     transfer.timestamp = timestamp;
     transfer.sender = sender;

@@ -18,7 +18,6 @@ router.post("/", bodyParser.json(), function(req, res, next) {
         owner: req.body.owner,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,
-        bytecode: req.body.bytecode,
         isActive: true
   }).then(result => {
     res.send(result);
