@@ -5,21 +5,19 @@ var transactionsSchema = new Schema({
     id: Number,
     uuid: String,
     transactionHash: String,
-    password: String,
-    passwordHash: String,
-    privateKey: String,
-    publicKey: String,
+    stage: String,
+    key: String,
     msgSender: String,
     network: String,
     transfer_id: String,
-    stage: String,
     contractAddress: String,
     senderAddress: String,
     recipientAddress: String,
     amount: String,
-    isValid: String
-  });
+    isValid: String,
+    status: String
+    });
   
-  var ContractsModel = mongoose.model("contracts", transactionsSchema, "contracts");
+  var TransactionsModel = mongoose.model("transactions", transactionsSchema, "transactions");
   
-  module.exports = ContractsModel;
+  module.exports = TransactionsModel;

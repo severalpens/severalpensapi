@@ -15,16 +15,14 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
       {
         id: req.body.id,
         uuid: req.body.uuid,
-        transactionHash: req.body.transactionHash,
-        password: req.body.password,
-        passwordHash: req.body.passwordHash,
-        privateKey: req.body.privateKey,
-        publicKey: req.body.publicKey,
-        sender: req.body.sender,
-        recipient: req.body.recipient,
-        amount: req.body.amount,
-        isValid: req.body.isValid,
-        result: req.body.result
+        key: req.body.key,
+        stage: req.body.stage,
+        contract_id: req.body.contract_id,
+        senderNetwork: req.body.senderNetwork,
+        senderAddress: req.body.senderAddress,
+        recipientNetwork: req.body.recipientNetwork,
+        recipientAddress: req.body.recipientAddress,
+        amount: req.body.amount
       },
       function(err, result) {
         res.send([req.body, result]);

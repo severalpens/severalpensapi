@@ -4,19 +4,14 @@ var Schema = mongoose.Schema;
 var transfersSchema = new Schema({
   id: Number,
   uuid: String,
-  password: String,
-  passwordHash: String,
-  privateKey: String,
-  publicKey: String,
+  key: String,
+  stage: String,
   contract_id: String,
   senderNetwork: String,
-  recipientNetwork: String,
   senderAddress: String,
+  recipientNetwork: String,
   recipientAddress: String,
-  amount: Number,
-  isValid: Boolean,
-  result: Boolean,
-
+  amount: Number
   });
   
   var TransfersModel = mongoose.model("transfers", transfersSchema, "transfers");
