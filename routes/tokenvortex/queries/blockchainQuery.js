@@ -36,36 +36,46 @@ class BlockchainQuery {
     });
   }
 
-  vortexTransferSyn(sender, recipient,amount,isValid,res) {
+  vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid,res) {
     const timestamp = date.getTime();
     this.ethersContract
-    .vortexTransferSyn(timestamp, sender, recipient,amount,isValid)
+    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
     .then(result => {
-        this.logTransfer(timestamp, sender, recipient,amount,isValid,result)
+        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
         res.send(result);
     });
   }
 
-  vortexTransferAck(timestamp, sender, recipient,amount,isValid,res) {
+  externalTransferInit(id, uuid, key, sender, recipient,amount,isValid, res) {
+    const timestamp = date.getTime();
     this.ethersContract
-    .vortexTransferAck(timestamp, sender, recipient,amount,isValid)
+    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
     .then(result => {
-        this.logTransfer(timestamp, sender, recipient,amount,isValid,result)
+        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
         res.send(result);
     });
   }
 
-
-  vortexTransferSynAck(timestamp, sender, recipient,amount,isValid,res) {
+  vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid, res) {
     this.ethersContract
-    .vortexTransferAck(timestamp, sender, recipient,amount,isValid)
+    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
     .then(result => {
-        this.logTransfer(timestamp, sender, recipient,amount,isValid,result)       
+        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
         res.send(result);
     });
   }
 
-  logTransfer(timestamp, sender, recipient,amount,isValid,result,res){
+
+  vortexTransferSynAck(id, uuid, key, sender, recipient,amount,isValid,res) {
+    this.ethersContract
+    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
+    .then(result => {
+        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)       
+        res.send(result);
+    });
+  }
+
+  logTransfer(id, uuid, key, sender, recipient,amount,isValid,res){
     let transfer = {};
     transfer.timestamp = timestamp;
     transfer.sender = sender;

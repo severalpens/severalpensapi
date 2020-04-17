@@ -66,11 +66,31 @@ router.post("/transfer", bodyParser.json(), function (req, res, next) {
   });
 });
 
-router.post("/vortextransfersyn", bodyParser.json(), function (req, res, next) {
+router.post("/externaltransferinit", bodyParser.json(), function (req, res, next) {
+  let _id = req.body.contract._id; //See note: 1
+  ContractsModel.findOne({ _id }, (err, mongoContract) => {
+    let blockchainQuery = new BlockchainQuery(req.body, mongoContract, res);
+    blockchainQuery.externalTransferInit(
+      req.body.id,
+      req.body.uuid,
+      req.body.key,
+      req.body.sender,
+      req.body.recipient,
+      req.body.amount,
+      req.body.isValid,
+      res
+    );
+  });
+});
+
+router.post("/externaltransfersyn", bodyParser.json(), function (req, res, next) {
   let _id = req.body.contract._id; //See note: 1
   ContractsModel.findOne({ _id }, (err, mongoContract) => {
     let blockchainQuery = new BlockchainQuery(req.body, mongoContract, res);
     blockchainQuery.vortexTransferSyn(
+      req.body.id,
+      req.body.uuid,
+      req.body.key,
       req.body.sender,
       req.body.recipient,
       req.body.amount,
@@ -80,12 +100,14 @@ router.post("/vortextransfersyn", bodyParser.json(), function (req, res, next) {
   });
 });
 
-router.post("/vortexTransferAck", bodyParser.json(), function (req, res, next) {
+router.post("/externaltransferack", bodyParser.json(), function (req, res, next) {
   let _id = req.body.contract._id; //See note: 1
   ContractsModel.findOne({ _id }, (err, mongoContract) => {
     let blockchainQuery = new BlockchainQuery(req.body, mongoContract, res);
     blockchainQuery.vortexTransferAck(
-      req.body.timestamp,
+      req.body.id,
+      req.body.uuid,
+      req.body.key,
       req.body.sender,
       req.body.recipient,
       req.body.amount,
@@ -95,7 +117,7 @@ router.post("/vortexTransferAck", bodyParser.json(), function (req, res, next) {
   });
 });
 
-router.post("/vortexTransferSynAck", bodyParser.json(), function (
+router.post("/externaltransfersynack", bodyParser.json(), function (
   req,
   res,
   next
@@ -104,7 +126,10 @@ router.post("/vortexTransferSynAck", bodyParser.json(), function (
   ContractsModel.findOne({ _id }, (err, mongoContract) => {
     let blockchainQuery = new BlockchainQuery(req.body, mongoContract, res);
     blockchainQuery.vortexTransferSynAck(
-      req.body.timestamp,
+      req.body.id,
+      req.body.uuid,
+      req.body.key,
+      req.body.sender,
       req.body.recipient,
       req.body.amount,
       req.body.isValid,
