@@ -5,7 +5,7 @@ var transactionsSchema = new Schema({
     id: Number,
     uuid: String,
     transactionHash: String,
-    stage: String,
+    stage: Number,
     key: String,
     msgSender: String,
     network: String,

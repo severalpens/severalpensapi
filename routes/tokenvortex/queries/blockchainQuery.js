@@ -6,15 +6,12 @@ var TransfersModel = require("../models/mongodb/transfers");
 
 
 class BlockchainQuery {
-  body;
   mongoContract;
   ethersContract;
-  constructor(body, mongoContract) {
-    this.body = body;
+  constructor(network, mongoContract) {
     this.mongoContract = mongoContract;
-    let provider = ethers.getDefaultProvider(body.network);
+    let provider = ethers.getDefaultProvider(network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
-
     this.ethersContract = new ethers.Contract(
       mongoContract.addresses[body.network],
       JSON.parse(mongoContract.abi),
@@ -36,58 +33,39 @@ class BlockchainQuery {
     });
   }
 
-  vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid,res) {
-    const timestamp = date.getTime();
-    this.ethersContract
-    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
-        res.send(result);
-    });
-  }
-
-  externalTransferInit(id, uuid, key, sender, recipient,amount,isValid, res) {
-    const timestamp = date.getTime();
-    this.ethersContract
-    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
-        res.send(result);
-    });
-  }
-
-  vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid, res) {
-    this.ethersContract
-    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)
-        res.send(result);
-    });
-  }
-
-
-  vortexTransferSynAck(id, uuid, key, sender, recipient,amount,isValid,res) {
-    this.ethersContract
-    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        this.logTransfer(id, uuid, key, sender, recipient,amount,isValid)       
-        res.send(result);
-    });
-  }
-
-  logTransfer(id, uuid, key, sender, recipient,amount,isValid,res){
-    let transfer = {};
-    transfer.timestamp = timestamp;
-    transfer.sender = sender;
-    transfer.privateKey = recipient;
-    transfer.publicKey = amount;
-    transfer.mnemonic = isValid;
-    transfer.locked = result;
   
-    TransfersModel.create(transfer).then(result => {
-      return result;
+    externalTransferInit(id, uuid, key, sender, recipient,amount,isValid, res) {
+      this.ethersContract
+      .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
+      .then(result => {
+          res.send(result);
+      });
+    }
+
+  externalTransferSyn(id, uuid, key, sender, recipient,amount,isValid,res) {
+    this.ethersContract
+    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
+    .then(result => {
+        res.send(result);
     });
   }
+  
+    externalTransferSynAck(id, uuid, key, sender, recipient,amount,isValid,res) {
+      this.ethersContract
+      .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
+      .then(result => {
+          res.send(result);
+      });
+    }
+
+  externalTransferAck(id, uuid, key, sender, recipient,amount,isValid, res) {
+    this.ethersContract
+    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
+    .then(result => {
+        res.send(result);
+    });
+  }
+
 
 }
 

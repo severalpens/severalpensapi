@@ -5,7 +5,7 @@ var transfersSchema = new Schema({
   id: Number,
   uuid: String,
   key: String,
-  stage: String,
+  stage: Number,
   contract_id: String,
   senderNetwork: String,
   senderAddress: String,
