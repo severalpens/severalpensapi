@@ -6,60 +6,54 @@ var bodyParser = require("body-parser");
 var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
 
-router.post("/test",bodyParse.json(),function (req,res,next){
-  // let q1 = ContractsModel.
-}
+router.get("/test", bodyParser.json(), function (req, res, next) {
+
+  let addressNetwork = `addresses.${req.query.network}`;
+  let contractAddress = req.query.contractAddress;
+  let tmp = {...props} = req.query;
+
+  let q1 = ContractsModel.find({});
+  q1.select("_id addresses");
+  q1.where(addressNetwork).equals(contractAddress);
+  q1.exec((err, response) => {
+    res.send(response);
+  });
+});
+
+
 
 
 router.post("/transaction", bodyParser.json(), function (req, res, next) {
-  ContractsModel.find({  }, (err, mongoContracts) => {
-    if(err){
-      res.send(err);
-    }
-    let mongoContract = mongoContracts.find(x => x.addresses[req.body.network]);
-    let blockchainQuery = new BlockchainQuery(req.body.network, mongoContract);
+  let props = req.body;
+  let network = req.body.network;
+  let contractAddress = req.body.contractAddress;
+
+
+  let q1 = ContractsModel.find({});
+  q1.select("abi");
+  q1.where(`addresses.${network}`).equals(contractAddress);
+  q1.exec((err, abi) => {
+    let blockchainQuery = new BlockchainQuery(props, abi);
     switch (req.body.stage) {
-      case 0,1:
-        blockchainQuery.externalTransferInit(
-          req.body.id,
-          req.body.sender,
-          req.body.recipient,
-          req.body.amount,
-          req.body.isValid,
-          res
-        );
+      case "balanceOf":
+        blockchainQuery.balanceOf(res);
         break;
-          case 2:
-            blockchainQuery.externalTransferSyn(
-              req.body.id,
-              req.body.sender,
-              req.body.recipient,
-              req.body.amount,
-              req.body.isValid,
-              res
-            );
-            break;
-            case 3:
-              blockchainQuery.externalTransferSynAck(
-                req.body.id,
-                req.body.sender,
-                req.body.recipient,
-                req.body.amount,
-                req.body.isValid,
-                res
-              );
-              break;
-              case 4:
-                blockchainQuery.externalTransferAck(
-                  req.body.id,
-                  req.body.sender,
-                  req.body.recipient,
-                  req.body.amount,
-                  req.body.isValid,
-                  res
-                );
-                break;
-        
+      case "balanceOfAvailable":
+        blockchainQuery.balanceOfAvailable(res);
+        break;
+      case (0, 1):
+        blockchainQuery.externalTransferInit(res);
+        break;
+      case 2:
+        blockchainQuery.externalTransferSyn(res);
+        break;
+      case 3:
+        blockchainQuery.externalTransferSynAck(res);
+        break;
+      case 4:
+        blockchainQuery.externalTransferAck(res);
+        break;
+
       default:
         break;
     }
@@ -74,15 +68,17 @@ router.post("/balanceof", bodyParser.json(), function (req, res, next) {
   });
 });
 
-
-router.post("/balanceofavailable", bodyParser.json(), function (req, res, next) {
+router.post("/balanceofavailable", bodyParser.json(), function (
+  req,
+  res,
+  next
+) {
   let _id = req.body.contract._id; //See note: 1
   ContractsModel.findOne({ _id }, (err, mongoContract) => {
     let blockchainQuery = new BlockchainQuery(req.body, mongoContract);
     blockchainQuery.balanceOfAvailable(req.body.account.address, res);
   });
 });
-
 
 module.exports = router;
 
