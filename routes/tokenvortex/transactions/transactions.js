@@ -4,6 +4,8 @@ var bodyParser = require("body-parser");
 
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
+var deleteRouter = require("./delete");
+var runRouter = require("./run");
 
 var cors = require('cors');
 router.use(cors());
@@ -11,6 +13,8 @@ router.use(cors());
 
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
+router.use('/delete',deleteRouter);
+router.use('/run',runRouter);
 
 var TransactionsModel = require('../models/mongodb/transactions');
 

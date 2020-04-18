@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
 var ethers = require("ethers");
-var TransfersModel = require("../models/mongodb/transfers");
+var TransfersModel = require("./mongodb/transfers");
 
 
 class BlockchainQuery {
@@ -13,7 +13,7 @@ class BlockchainQuery {
     let provider = ethers.getDefaultProvider(network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     this.ethersContract = new ethers.Contract(
-      mongoContract.addresses[body.network],
+      mongoContract.addresses[network],
       JSON.parse(mongoContract.abi),
       wallet
     );
@@ -36,7 +36,7 @@ class BlockchainQuery {
   
     externalTransferInit(id, uuid, key, sender, recipient,amount,isValid, res) {
       this.ethersContract
-      .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
+      .externalTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
       .then(result => {
           res.send(result);
       });
@@ -44,7 +44,7 @@ class BlockchainQuery {
 
   externalTransferSyn(id, uuid, key, sender, recipient,amount,isValid,res) {
     this.ethersContract
-    .vortexTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
+    .externalTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
     .then(result => {
         res.send(result);
     });
@@ -52,7 +52,7 @@ class BlockchainQuery {
   
     externalTransferSynAck(id, uuid, key, sender, recipient,amount,isValid,res) {
       this.ethersContract
-      .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
+      .externalTransferAck(id, uuid, key, sender, recipient,amount,isValid)
       .then(result => {
           res.send(result);
       });
@@ -60,7 +60,7 @@ class BlockchainQuery {
 
   externalTransferAck(id, uuid, key, sender, recipient,amount,isValid, res) {
     this.ethersContract
-    .vortexTransferAck(id, uuid, key, sender, recipient,amount,isValid)
+    .externalTransferAck(id, uuid, key, sender, recipient,amount,isValid)
     .then(result => {
         res.send(result);
     });

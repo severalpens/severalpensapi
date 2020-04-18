@@ -8,7 +8,6 @@ router.use(cors());
 
 
 router.post("/", bodyParser.json(), function(req, res, next) {
- console.log('/tokenvortex/transfers/insert (post) reached');
   TransfersModel.create({
     id: req.body.id,
     uuid: req.body.uuid,
@@ -21,7 +20,6 @@ router.post("/", bodyParser.json(), function(req, res, next) {
     recipientAddress: req.body.recipientAddress,
     amount: req.body.amount
   }).then(result => {
-    console.log(result);
     res.send(result);
   });
 });
