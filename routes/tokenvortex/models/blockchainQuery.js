@@ -3,6 +3,7 @@ var ethers = require("ethers");
 
 class BlockchainQuery {
   constructor(props, abi) {
+    this.props = props;
     let provider = ethers.getDefaultProvider(props.network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     this.ethersContract = new ethers.Contract(
@@ -11,6 +12,52 @@ class BlockchainQuery {
       wallet
     );
   }
+
+  run(stage, res){
+   let intStage = parseInt(stage);
+    let {id,uuid,key,senderAddress,recipientAddress,amount,isValid} = this.props;
+    id= 1;
+    uuid=uuid|| "uuid";
+    key=key|| "key";
+    amount=amount|| 1;
+    isValid=isValid|| "isValid";
+    console.log("id:" + id.toString());
+    console.log("uuid:" + uuid.toString());
+    console.log("key:" + key.toString());
+    console.log("amount:" + amount.toString());
+    console.log("isValid:" + isValid.toString());
+    switch (intStage) {
+      case 0:
+        this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 2:
+        this.ethersContract.externalTransferSyn(id,uuid,key,sender,recipient,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 3:
+        this.ethersContract.externalTransferSynack(id,uuid,key,sender,recipient,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 4:
+        this.ethersContract.externalTransferAck(id,uuid,key,sender,recipient,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+    
+      default:
+        res.send(stage)
+        break;
+    }
+  }
+
 
   getBalances(accountAddress,res) {
     let balances = {
@@ -27,39 +74,6 @@ class BlockchainQuery {
   }
 
   
-    externalTransferInit(res) {
-      let {id,uuid,key,sender,recipient,amount,isValid} = this.props;
-      this.ethersContract.externalTransferInit(id,uuid,key,sender,recipient,amount,isValid)
-      .then(result => {
-          res.send(result);
-      });
-    }
-
-  externalTransferSyn(res) {
-    let {id,uuid,key,sender,recipient,amount,isValid} = this.props;
-    this.ethersContract.externalTransferSyn(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        res.send(result);
-    });
-  }
-  
-    externalTransferSynAck(res) {
-      this.ethersContract
-      .externalTransferAck(id, uuid, key, sender, recipient,amount,isValid)
-      .then(result => {
-          res.send(result);
-      });
-    }
-
-  externalTransferAck(res) {
-    this.ethersContract
-    .externalTransferAck(id, uuid, key, sender, recipient,amount,isValid)
-    .then(result => {
-        res.send(result);
-    });
-  }
-
-
 }
 
 module.exports = BlockchainQuery;

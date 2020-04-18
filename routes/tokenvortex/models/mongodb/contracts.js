@@ -16,7 +16,12 @@ var contractsSchema = new Schema({
     owner: String,
     locked: Boolean,
     accounts: Array,
-    addresses: addressesSchema,
+    addresses: {
+      rinkeby: String,
+      ropsten: String,
+      kovan: String,
+      goerli: String
+    },
     soliditycode: String,
     abi: String,
     isActive: Boolean
