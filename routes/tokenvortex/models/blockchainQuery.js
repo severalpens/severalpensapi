@@ -21,13 +21,14 @@ class BlockchainQuery {
     key=key|| "key";
     amount=amount|| 1;
     isValid=isValid|| "isValid";
-    console.log("id:" + id.toString());
-    console.log("uuid:" + uuid.toString());
-    console.log("key:" + key.toString());
-    console.log("amount:" + amount.toString());
-    console.log("isValid:" + isValid.toString());
-    switch (intStage) {
-      case 0,1:
+    switch (stage) {
+      case 0:
+        this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 1:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
@@ -47,6 +48,18 @@ class BlockchainQuery {
        break;
        case 4:
         this.ethersContract.externalTransferAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 100:
+        this.ethersContract.balanceOf(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+        .then(result => {
+            res.send(result);
+        });
+       break;
+       case 101:
+        this.ethersContract.balanceOfAvailable(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });

@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var usersRouter = require('./accounts/users');//NB: this is the file path not the route
-var accountsRouter = require('./accounts/accounts');//NB: this is the file path not the route
+var usersRouter = require('./users/users');
+var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
 var transfersRouter = require('./transfers/transfers');
 var transactionsRouter = require('./transactions/transactions');
