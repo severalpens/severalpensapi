@@ -27,33 +27,33 @@ class BlockchainQuery {
     console.log("amount:" + amount.toString());
     console.log("isValid:" + isValid.toString());
     switch (intStage) {
-      case 0:
+      case 0,1:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });
        break;
        case 2:
-        this.ethersContract.externalTransferSyn(id,uuid,key,sender,recipient,amount,isValid)
+        this.ethersContract.externalTransferSyn(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });
        break;
        case 3:
-        this.ethersContract.externalTransferSynack(id,uuid,key,sender,recipient,amount,isValid)
+        this.ethersContract.externalTransferSynack(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });
        break;
        case 4:
-        this.ethersContract.externalTransferAck(id,uuid,key,sender,recipient,amount,isValid)
+        this.ethersContract.externalTransferAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });
        break;
     
       default:
-        res.send(stage)
+        res.send('transaction failed')
         break;
     }
   }
