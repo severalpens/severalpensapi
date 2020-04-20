@@ -11,7 +11,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   if (_id) {
     TransfersModel.updateOne(
-      { _id, locked: false },
+      { _id },
       {
         id: req.body.id,
         uuid: req.body.uuid,
@@ -31,6 +31,20 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   }
 });
 
+
+router.post("/stage", bodyParser.json(), function(req, res, next) {
+  let _id = req.body._id;
+  let stage = req.body.stage;
+  if (_id) {
+    TransfersModel.updateOne(
+      { _id },
+      { stage },
+      function(err, result) {
+        res.status(200).send(`stage for ${_id} updated to ${stage}`);
+      }
+    );
+  }
+});
 
 
 

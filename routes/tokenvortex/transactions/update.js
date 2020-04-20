@@ -11,7 +11,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   if (_id) {
     TransactionsModel.updateOne(
-      { _id, locked: false },
+      { _id},
       {
         id: req.body.id,
         uuid: req.body.uuid,
@@ -29,9 +29,8 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         status: req.body.status
       },
       function(err, result) {
-        res.send([req.body, result]);
-      }
-    );
+        console.log(result);
+      });
   }
 });
 

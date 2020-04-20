@@ -6,29 +6,29 @@ var bodyParser = require("body-parser");
 var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
 
-
-router.post("/abi", bodyParser.json(), function (req, res, next) {
-  let props = req.body;
-  let field = `addresses.${props.network}`;
-  ContractsModel.findOne()
-  .select("abi")
-  .where(field).equals(props.contractAddress)
-  .exec((err, result) => {
-    res.send(result)
-  });
-});
-
-
-
 router.post("/", bodyParser.json(), function (req, res, next) {
   let props = req.body;
-  let {network,contractAddress,stage} = props;
+  let {network,contractAddress} = props;
   let q1 = ContractsModel.findOne({});
   q1.select("abi");
   q1.where(`addresses.${network}`).equals(contractAddress);
   q1.exec((err, result) => {  
-    let blockchainQuery = new BlockchainQuery(props, result.abi);
-    blockchainQuery.run(stage,res);
+    let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
+    blockchainQuery.run(props,res);
+  });
+});
+
+
+router.post("/balances", bodyParser.json(), function (req, res, next) {
+  let props = req.body;
+  props.stage = 100;
+  let {network,contractAddress} = props;
+  let q1 = ContractsModel.findOne({});
+  q1.select("abi");
+  q1.where(`addresses.${network}`).equals(contractAddress);
+  q1.exec((err, result) => {  
+    let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
+    blockchainQuery.run(props,res);
   });
 });
 

@@ -2,25 +2,29 @@ var ethers = require("ethers");
 
 
 class BlockchainQuery {
-  constructor(props, abi) {
-    this.props = props;
-    let provider = ethers.getDefaultProvider(props.network);
+  constructor(network,contractAddress, abi) {
+    this.network = network;
+    this.contractAddress = contractAddress;
+    let provider = ethers.getDefaultProvider(network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     this.ethersContract = new ethers.Contract(
-      props.contractAddress,
+      contractAddress,
       JSON.parse(abi),
       wallet
     );
   }
 
-  run(stage, res){
-   let intStage = parseInt(stage);
-    let {id,uuid,key,senderAddress,recipientAddress,amount,isValid} = this.props;
-    id= 1;
-    uuid=uuid|| "uuid";
-    key=key|| "key";
-    amount=amount|| 1;
-    isValid=isValid|| "isValid";
+  run(props, res){
+    let stage = parseInt(props.stage);
+    let id = parseInt(props.id) || 1;
+    let uuid=props.uuid|| "uuid";
+    let key=props.key|| "key";
+    let senderAddress=props.senderAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+    let recipientAddress=props.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+    let accountAddress=props.accountAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+    let amount = parseInt(props.amount) || 1;
+    let isValid=props.isValid|| true;
+
     switch (stage) {
       case 0:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
@@ -53,17 +57,21 @@ class BlockchainQuery {
         });
        break;
        case 100:
-        this.ethersContract.balanceOf(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
+        this.ethersContract.balanceOf(accountAddress)
+        .then(balanceOf => {
+          this.ethersContract.balanceOfAvailable(accountAddress).then((balanceOfAvailable) => {
+            let balances = {
+              network: this.network,
+              contractAddress: this.contractAddress,
+              accountAddress: this.accountAddress,
+              currentAmount: parseInt(balanceOf),
+              availableAmount: parseInt(balanceOfAvailable)
+            }
+            res.status(200).send(balances);
+          });            
         });
-       break;
-       case 101:
-        this.ethersContract.balanceOfAvailable(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
-        });
-       break;
+        break;
+
     
       default:
         res.send('transaction failed')
