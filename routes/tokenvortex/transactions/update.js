@@ -8,6 +8,7 @@ router.use(cors());
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
+  try {
   let _id = req.params._id;
   if (_id) {
     TransactionsModel.updateOne(
@@ -29,9 +30,12 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         status: req.body.status
       },
       function(err, result) {
-        console.log(result);
+        res.send(result);
       });
   }
+} catch (error) {
+  res.status(404).send(error);
+}
 });
 
 

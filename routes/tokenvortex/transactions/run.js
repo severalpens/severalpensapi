@@ -7,6 +7,7 @@ var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
 
 router.post("/", bodyParser.json(), function (req, res, next) {
+  try {
   let props = req.body;
   let {network,contractAddress} = props;
   let q1 = ContractsModel.findOne({});
@@ -16,10 +17,16 @@ router.post("/", bodyParser.json(), function (req, res, next) {
     let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
     blockchainQuery.run(props,res);
   });
+} catch (error) {
+  res.status(404).send(error);
+}
+
 });
 
 
 router.post("/balances", bodyParser.json(), function (req, res, next) {
+  try {
+
   let props = req.body;
   props.stage = 100;
   let {network,contractAddress} = props;
@@ -30,6 +37,10 @@ router.post("/balances", bodyParser.json(), function (req, res, next) {
     let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
     blockchainQuery.run(props,res);
   });
+} catch (error) {
+  res.status(404).send(error);
+}
+
 });
 
 

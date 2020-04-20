@@ -33,8 +33,10 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
 
 
 router.post("/stage", bodyParser.json(), function(req, res, next) {
-  let _id = req.body._id;
+  let _id = req.body.transfer_id;
+  console.log(_id);
   let stage = req.body.stage;
+  console.log(stage);
   if (_id) {
     TransfersModel.updateOne(
       { _id },

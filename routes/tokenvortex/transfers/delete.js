@@ -23,7 +23,6 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
 
   router.delete("/:_id", bodyParser.json(), function(req, res, next) {
     let _id = req.params._id;
-    console.log(`delete: /tokenvortex/transfers/${_id}`);
     TransfersModel.deleteOne({_id},(err) => {
       if(err){
         return res.send(err);

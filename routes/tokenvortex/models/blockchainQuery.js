@@ -45,7 +45,7 @@ class BlockchainQuery {
         });
        break;
        case 3:
-        this.ethersContract.externalTransferSynack(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+        this.ethersContract.externalTransferSynAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
         .then(result => {
             res.send(result);
         });
