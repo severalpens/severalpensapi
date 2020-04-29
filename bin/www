@@ -36,7 +36,7 @@ const mongoose = require("mongoose");
 const usr = process.env.usr;
 const password = process.env.password;
 const url = process.env.url;
-const connectionString = `mongodb+srv://${usr}:${password}@${url}/token_vortex?retryWrites=true&w=majority`;
+const connectionString = process.env.CONN;
 mongoose.connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
