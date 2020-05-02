@@ -3,8 +3,6 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var AccountsModel = require("../models/mongodb/accounts");
 
-
-
 var deleteRouter = require("./delete");
 var lockRouter = require("./lock");
 var insertRouter = require("./insert");

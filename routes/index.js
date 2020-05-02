@@ -8,7 +8,7 @@ var tokenvortexRouter = require("./tokenvortex/tokenvortex");
 router.use('/tokenvortex',tokenvortexRouter);
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Severalpens API' });
 });
 
 module.exports = router;
