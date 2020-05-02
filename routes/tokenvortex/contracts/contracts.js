@@ -18,49 +18,22 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
+
 var ContractsModel = require('../models/mongodb/contracts');
 
+
 router.get("/", bodyParser.json(), function(req, res, next) {
-  ContractsModel.find({})
+  ContractsModel.find({isActive: true})
     .collection(ContractsModel.collection)
     .exec((err, contracts) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        let refinedContracts = [] //avoid sending back bytecode and abi
-        contracts.forEach(contract => {
-          const regex = /\n/gi;
-          let sc1 = contract.soliditycode;
-           sc1 = contract.soliditycode.split(regex);
-
-         // let sc2 = sc1.replace('\n',' ');
-         // let sc3 = sc2.replace("\\n",' ');
-          refinedContracts.push(
-              {
-                name: contract.name,
-                addresses: contract.addresses,
-                soliditycode: sc1
-              })
-  
-        });
-        return res.jsonp(refinedContracts);
+        return res.send(contracts);
       }
     });
 });
-
-// router.get("/", bodyParser.json(), function(req, res, next) {
-//   ContractsModel.find({isActive: true})
-//     .collection(ContractsModel.collection)
-//     .exec((err, contracts) => {
-//       if (err != null) {
-//         return res.send(err);
-//       } 
-//       else {
-//         return res.send(contracts);
-//       }
-//     });
-// });
 
 
 router.get("/associative", bodyParser.json(), function(req, res, next) {
