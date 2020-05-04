@@ -7,7 +7,7 @@ var path = require('path')
 var app = require('../app');
 var http = require('http');
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '9002');
 app.set('port', port);
 
 var server = http.createServer(app);
@@ -19,7 +19,7 @@ mongoose.connect(process.env.cnString, {
 });
 
 const io = require("socket.io")(server);
-sockets.connect(io, 3000);
+sockets.connect(io, 9002);
 
 const mongoose_cn = mongoose.connection;
 mongoose_cn.on("error", console.error.bind(console, "connection error:"));

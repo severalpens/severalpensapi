@@ -7,14 +7,26 @@
   <body>
     <h1><%= title %></h1>
     <div>
-      <div> <strong>Enpoints:</strong></div>
+      <div> <strong>Endpoints:</strong></div>
       <br>
       <div><input type="text" placeholder="auth header ie: 'bearer [jwt]"></div>
       <br>
-      <a href="/tokenvortex/accounts/">/tokenvortex/accounts</a><br>
-      <a href="/tokenvortex/contracts/">/tokenvortex/contracts</a><br>
-      <a href="/tokenvortex/transactions/">/tokenvortex/transfers</a><br>
-      <a href="/tokenvortex/transactions/">/tokenvortex/transactions</a><br>
+      <br>
+      <button id="btnAccounts" name="btnAccounts">/tokenvortex/accounts/</button>
+      <br>
+      <br>
+      <button id="btnContracts" name="btnContracts">/tokenvortex/contracts/</button>
+      <br>
+      <br>
+      <button id="btnTransfers" name="btnTransfers">/tokenvortex/transfers/</button>
+      <br>
+      <br>
+      <button id="btnTransactions" name="btnTransactions">/tokenvortex/transactions/</button>
     </div>
+    <script
+  src="https://code.jquery.com/jquery-3.5.0.js"
+  integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
+  crossorigin="anonymous"></script>
+  <script src="/scripts/script.js"></script>
   </body>
 </html>
