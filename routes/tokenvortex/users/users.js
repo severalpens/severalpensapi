@@ -7,13 +7,20 @@ var cors = require('cors');
 router.use(cors());
 
 
-router.post("/reigster", bodyParser.json(), function(req, res, next) {
+router.post("/", bodyParser.json(), function(req, res, next) {
+
+UsersModel.find({},(err,result) => {
+  res.send(result)
+})
+});
+
+router.post("/register", bodyParser.json(), function(req, res) {
   let username = req.body.username;
   let password = req.body.password;
 
   UsersModel.count({username},(err,result) => {
     if(result != 0){
-      res.status(401).send(err)
+      return res.status(401).send(err)
      }
      let salt = bcrypt.genSaltSync();
      let hashedPassword = bcrypt.hashSync(password,salt);
@@ -21,12 +28,10 @@ router.post("/reigster", bodyParser.json(), function(req, res, next) {
      tmp.username = req.body.username;
      tmp.password = hashedPassword;
      tmp.save({},(err,saveResult) => {
-       res.status(200).send(username)
+       res.send('jwtToken')
      })
   })
 });
-
-
 
 
 
