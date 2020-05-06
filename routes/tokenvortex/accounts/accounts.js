@@ -3,6 +3,8 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var AccountsModel = require("../models/mongodb/accounts");
 
+
+
 var deleteRouter = require("./delete");
 var lockRouter = require("./lock");
 var insertRouter = require("./insert");
@@ -17,53 +19,46 @@ router.use('/insert',insertRouter);
 router.use('/new',newRouter);
 router.use('/update',updateRouter);
 
-router.get("/",function(req,res)  {
-    AccountsModel.find({},(err,result) => {
-      res.send(result)
-    })
-})
 
-// router.get("/", bodyParser.json(), function(req, res, next) {
-//   console.log('/tokenvortex/accounts reached')
-//   AccountsModel.find({})
-//     .collection(AccountsModel.collection)
-//     .exec((err, accounts) => {
-//       if (err != null) {
-//         return res.send(err);
-//       } 
-//       else {
-//         console.log(accounts)
-//         let refinedAccounts = [] //avoid sending back bytecode and abi
-//         accounts.forEach(account => {
-//           if(account.locked){
-//             refinedAccounts.push(
-//               {
-//                 _id: account._id,
-//                 name: account.name,
-//                 address: account.address,
-//                 locked: account.locked
-//               })
-//           }
-//           else{
-//             refinedAccounts.push(
-//               {
-//                 _id: account._id,
-//                 name: account.name,
-//                 address: account.address,
-//                 publicKey: account.publicKey,
-//                 privateKey: account.privateKey,
-//                 mnemonic: account.mnemonic,
-//                 locked: account.locked
+router.get("/", bodyParser.json(), function(req, res, next) {
+  AccountsModel.find({isActive: true})
+    .collection(AccountsModel.collection)
+    .exec((err, accounts) => {
+      if (err != null) {
+        return res.send(err);
+      } 
+      else {
+        let refinedAccounts = [] //avoid sending back bytecode and abi
+        accounts.forEach(account => {
+          if(account.locked){
+            refinedAccounts.push(
+              {
+                _id: account._id,
+                name: account.name,
+                address: account.address,
+                locked: account.locked
+              })
+          }
+          else{
+            refinedAccounts.push(
+              {
+                _id: account._id,
+                name: account.name,
+                address: account.address,
+                publicKey: account.publicKey,
+                privateKey: account.privateKey,
+                mnemonic: account.mnemonic,
+                locked: account.locked
 
-//               })
+              })
    
-//           }
+          }
 
-//         });
-//         return res.send(refinedAccounts);
-//       }
-//     });
-// });
+        });
+        return res.send(refinedAccounts);
+      }
+    });
+});
 
   
 // router.get("/associative", bodyParser.json(), function(req, res, next) {

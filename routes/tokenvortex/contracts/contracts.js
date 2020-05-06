@@ -1,5 +1,3 @@
-var fs = require('fs');
-var path = require('path');
 var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
@@ -17,7 +15,6 @@ router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
-
 
 var ContractsModel = require('../models/mongodb/contracts');
 

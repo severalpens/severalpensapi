@@ -1,26 +1,47 @@
 #!/usr/bin/env node
 require("dotenv").config();
-var sockets = require("../routes/socket");
+var sockets = require("../socket");
 var fs = require('fs');
 var path = require('path')
 
+
+/**
+ * Module dependencies.
+ */
+
 var app = require('../app');
+var debug = require('debug')('severalpensapi:server');
 var http = require('http');
 
-var port = normalizePort(process.env.PORT || '9002');
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-var server = http.createServer(app);
-const mongoose = require("mongoose");
-const cnString = `mongodb+srv://severalpens:${process.env.password}@tkv-gks7n.gcp.mongodb.net/token_vortex?retryWrites=true&w=majority`
+/**
+ * Create HTTP server.
+ */
 
-mongoose.connect(cnString, {
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+const io = require("socket.io")(server);
+sockets.connect(io, 3000);
+
+const mongoose = require("mongoose");
+const usr = process.env.usr;
+const password = process.env.password;
+const url = process.env.url;
+const connectionString = `mongodb+srv://${usr}:${password}@${url}/token_vortex?retryWrites=true&w=majority`;
+mongoose.connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
 
-const io = require("socket.io")(server);
-sockets.connect(io, 9002);
 
 const mongoose_cn = mongoose.connection;
 mongoose_cn.on("error", console.error.bind(console, "connection error:"));
@@ -29,6 +50,9 @@ mongoose_cn.once("open", function() {
     server.on("error", onError);
     server.on("listening", onListening);
 });
+/**
+ * Normalize a port into a number, string, or false.
+ */
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -45,6 +69,10 @@ function normalizePort(val) {
 
   return false;
 }
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
 
 function onError(error) {
   if (error.syscall !== 'listen') {
@@ -69,6 +97,10 @@ function onError(error) {
       throw error;
   }
 }
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
 
 function onListening() {
   var addr = server.address();
