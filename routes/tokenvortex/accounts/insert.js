@@ -9,6 +9,7 @@ router.post("/", bodyParser.json(), function(req, res, next) {
   let account = {};
     account.name = req.body.name;
     account.address = req.body.address;
+    account.owner = req._id;
     account.privateKey = req.body.privateKey;
     account.publicKey = req.body.publicKey;
     account.mnemonic = req.body.mnemonic;

@@ -1,43 +1,25 @@
 #!/usr/bin/env node
 require("dotenv").config();
 var sockets = require("../socket");
-var fs = require('fs');
-var path = require('path')
-
-
-/**
- * Module dependencies.
- */
-
 var app = require('../app');
-var debug = require('debug')('severalpensapi:server');
 var http = require('http');
 
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.PORT || '9002');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+
 
 var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
 const io = require("socket.io")(server);
-sockets.connect(io, 3000);
-
+sockets.connect(io, 9002);
 const mongoose = require("mongoose");
-const usr = process.env.usr;
-const password = process.env.password;
-const url = process.env.url;
-const connectionString = `mongodb+srv://${usr}:${password}@${url}/token_vortex?retryWrites=true&w=majority`;
-mongoose.connect(connectionString, {
+
+
+//const cnString = `mongodb+srv://severalpens:${process.env.password}@tkv-gks7n.gcp.mongodb.net/auth?retryWrites=true&w=majority`;
+const cnString = `mongodb+srv://severalpens:${process.env.password}@severalpens-oho5x.gcp.mongodb.net/token_vortex?retryWrites=true&w=majority`;
+
+
+mongoose.connect(cnString, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });

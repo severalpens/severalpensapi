@@ -9,7 +9,8 @@ router.use(cors());
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
     let _id = req.params._id;
-    AccountsModel.updateOne({ _id }, { isActive: false }).then(result => {
+    AccountsModel.updateOne({ _id, owner: req._id }, { isActive: false }, (err,result) => {
+      if(err) {return res.send(err)}
       return res.send(result);
     });
 });

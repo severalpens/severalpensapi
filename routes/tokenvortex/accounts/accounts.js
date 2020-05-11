@@ -2,28 +2,27 @@ var express = require("express");
 var router = express.Router();
 var bodyParser = require('body-parser');
 var AccountsModel = require("../models/mongodb/accounts");
-
-
-
+var jwt = require('jsonwebtoken');
 var deleteRouter = require("./delete");
 var lockRouter = require("./lock");
 var insertRouter = require("./insert");
 var newRouter = require("./new");
 var updateRouter = require("./update");
-var cors = require('cors');
-router.use(cors());
-
+// var cors = require('cors');
+// router.use(cors());
 router.use('/delete',deleteRouter);
 router.use('/lock',lockRouter);
 router.use('/insert',insertRouter);
 router.use('/new',newRouter);
 router.use('/update',updateRouter);
 
-
-router.get("/", bodyParser.json(), function(req, res, next) {
-  AccountsModel.find({isActive: true})
-    .collection(AccountsModel.collection)
-    .exec((err, accounts) => {
+router.get("/",  function(req, res, next) {
+  const query = AccountsModel.find(); 
+  query.setOptions({ lean : true });
+  query.collection(AccountsModel.collection)
+ query.or([{ owner: 'public' }, { owner: req._id }])
+  query.where('isActive').equals(true)
+  query.exec((err, accounts) => {
       if (err != null) {
         return res.send(err);
       } 
@@ -58,7 +57,7 @@ router.get("/", bodyParser.json(), function(req, res, next) {
         return res.send(refinedAccounts);
       }
     });
-});
+  });
 
   
 // router.get("/associative", bodyParser.json(), function(req, res, next) {

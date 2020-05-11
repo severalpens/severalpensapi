@@ -6,9 +6,10 @@ var cors = require('cors');
 router.use(cors());
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
+  console.log(req.body)
     let _id = req.params._id;
       AccountsModel.updateOne(
-        { _id, locked: false },
+        { _id, locked: false, owner: req._id },
         {
           name: req.body.name,
           address: req.body.address,

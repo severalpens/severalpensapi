@@ -2,24 +2,49 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 var logger = require('morgan');
-
+var jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
-
-
 var app = express();
+var cors = require('cors');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json({limit: '50mb'}));
 // app.use(express.urlencoded({extended: false }));
 app.use(express.urlencoded({limit: '50mb',extended: false}));
-app.use(cookieParser());
+app.use(bodyParser.json({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use((req,res,next) => {
+  try{
+    console.log(req.headers.authorization)
+    let token = req.headers.authorization.split(' ')[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
+      if(err){
+        console.log(`jwt verify failed`);
+        req.verified = false;
+        return res.status(404).send(false);
+      }
+     req.verified = true;
+     req._id = decoded._id;
+     next();
+    }); 
+  }
+  catch {
+    return res.status(404).send(false);
+  }
+})
+
+
 app.use('/', indexRouter);
+
+
+
 
 
 
