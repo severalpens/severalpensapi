@@ -22,7 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use((req,res,next) => {
   try{
-    console.log(req.headers.authorization)
     let token = req.headers.authorization.split(' ')[1];
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(err, decoded) {
       if(err){

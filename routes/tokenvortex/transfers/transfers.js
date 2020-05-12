@@ -17,15 +17,17 @@ router.use('/delete',deleteRouter);
 var TransfersModel = require('../models/mongodb/transfers');
 
 
-router.get("/", bodyParser.json(), function(req, res, next) {
-  TransfersModel.find()
-    .collection(TransfersModel.collection)
-    .exec((err, contracts) => {
+router.get("/",  function(req, res, next) {
+  const query = TransfersModel.find(); 
+  query.setOptions({ lean : true });
+  query.collection(TransfersModel.collection)
+  query.or([{ owner: 'public' }, { owner: req._id }])
+  query.exec((err, transfers) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        return res.send(contracts);
+        return res.send(transfers);
       }
     });
 });

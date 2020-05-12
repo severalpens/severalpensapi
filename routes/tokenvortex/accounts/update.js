@@ -6,7 +6,6 @@ var cors = require('cors');
 router.use(cors());
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
-  console.log(req.body)
     let _id = req.params._id;
       AccountsModel.updateOne(
         { _id, locked: false, owner: req._id },
@@ -16,7 +15,6 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
           privateKey: req.body.privateKey,
           publicKey: req.body.publicKey,
           mnemonic: req.body.mnemonic,
-          // locked: req.body.locked == "on"
         },
       ).exec((err,result) => {
         if(err){res.send(err)}

@@ -6,6 +6,7 @@ var AccountsModel = require("../models/mongodb/accounts");
 var cors = require('cors');
 router.use(cors());
 router.post("/", bodyParser.json(), function(req, res, next) {
+  console.log(req._id)
   let account = {};
     account.name = req.body.name;
     account.address = req.body.address;
@@ -19,6 +20,7 @@ router.post("/", bodyParser.json(), function(req, res, next) {
       if(err){
         res.send(err);
       }
+      console.log(result);
       res.send(result);
     });
   });

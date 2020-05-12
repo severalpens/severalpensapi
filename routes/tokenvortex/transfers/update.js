@@ -18,6 +18,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         key: req.body.key,
         stage: req.body.stage,
         contract_id: req.body.contract_id,
+        owner: req._id,
         senderNetwork: req.body.senderNetwork,
         senderAddress: req.body.senderAddress,
         recipientNetwork: req.body.recipientNetwork,
@@ -34,9 +35,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
 
 router.post("/stage", bodyParser.json(), function(req, res, next) {
   let _id = req.body.transfer_id;
-  console.log(_id);
   let stage = req.body.stage;
-  console.log(stage);
   if (_id) {
     TransfersModel.updateOne(
       { _id },

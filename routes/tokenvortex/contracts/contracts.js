@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
-
 var deleteRouter = require("./delete");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
@@ -19,10 +18,13 @@ router.use('/update',updateRouter);
 var ContractsModel = require('../models/mongodb/contracts');
 
 
-router.get("/", bodyParser.json(), function(req, res, next) {
-  ContractsModel.find({isActive: true})
-    .collection(ContractsModel.collection)
-    .exec((err, contracts) => {
+router.get("/",  function(req, res, next) {
+  const query = ContractsModel.find(); 
+  query.setOptions({ lean : true });
+  query.collection(ContractsModel.collection)
+ query.or([{ owner: 'public' }, { owner: req._id }])
+  query.where('isActive').equals(true)
+  query.exec((err, contracts) => {
       if (err != null) {
         return res.send(err);
       } 

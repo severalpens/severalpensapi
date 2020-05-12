@@ -14,6 +14,7 @@ router.post("/", bodyParser.json(), function(req, res, next) {
     key: req.body.key,
     stage: req.body.stage,
     contract_id: req.body.contract_id,
+    owner: req._id,
     senderNetwork: req.body.senderNetwork,
     senderAddress: req.body.senderAddress,
     recipientNetwork: req.body.recipientNetwork,
