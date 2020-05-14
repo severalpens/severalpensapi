@@ -15,8 +15,7 @@ sockets.connect(io, 9002);
 const mongoose = require("mongoose");
 
 
-//const cnString = `mongodb+srv://severalpens:${process.env.password}@tkv-gks7n.gcp.mongodb.net/auth?retryWrites=true&w=majority`;
-const cnString = `mongodb+srv://severalpens:${process.env.password}@severalpens-oho5x.gcp.mongodb.net/token_vortex?retryWrites=true&w=majority`;
+const cnString = process.env.CN_STRING
 
 
 mongoose.connect(cnString, {
