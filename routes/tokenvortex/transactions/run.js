@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
+var cors = require('cors');
+router.use(cors());
 
 router.post("/", function (req, res) {
   try {

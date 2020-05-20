@@ -3,6 +3,8 @@ var router = express.Router();
 var insertRouter = require("./insert");
 var deleteRouter = require("./delete");
 var updateRouter = require("./update");
+var cors = require('cors');
+router.use(cors());
 
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
