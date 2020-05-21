@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
+var cors = require('cors');
+router.use(cors());
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
 var ContractsModel = require("../models/mongodb/contracts");
 
-var cors = require('cors');
-router.use(cors());
 
 
 

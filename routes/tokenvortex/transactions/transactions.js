@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+var cors = require('cors');
+router.use(cors());
 var bodyParser = require("body-parser");
 
 var insertRouter = require("./insert");
@@ -7,8 +9,6 @@ var updateRouter = require("./update");
 var deleteRouter = require("./delete");
 var runRouter = require("./run");
 
-var cors = require('cors');
-router.use(cors());
 
 
 router.use('/insert',insertRouter);
