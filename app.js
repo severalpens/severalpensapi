@@ -1,18 +1,18 @@
 var createError = require('http-errors');
+var cors = require('cors');
 var express = require('express');
+var app = express();
+app.use(cors());
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
-var app = express();
-var cors = require('cors');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(cors());
 app.use(logger('dev'));
 app.use(express.json({limit: '50mb'}));
 // app.use(express.urlencoded({extended: false }));
