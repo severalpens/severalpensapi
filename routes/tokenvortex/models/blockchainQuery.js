@@ -14,6 +14,22 @@ class BlockchainQuery {
     );
   }
 
+  transactionProtocol(props,res){
+    let senderAddress=props.senderAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+    let recipientAddress=props.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+    let amount = parseInt(props.amount) || 1;
+    let burnAccount = ethers.Wallet.createRandom();
+    this.ethersContract.transfer(senderAddress,burnAccount.signingKey.address,amount,isValid)
+    .then(burnTx => {
+        burnTx.wait().then(burnTxComplete => {
+
+        })
+    });
+
+
+
+  }
+
   run(props, res){
     let stage = parseInt(props.stage);
     let id = parseInt(props.id) || 1;
@@ -28,15 +44,15 @@ class BlockchainQuery {
     switch (stage) {
       case 0:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
+        .then(tx => {
+            tx.wait().then(x => res.send(x))
         });
        break;
        case 1:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
-        });
+        .then(tx => {
+          tx.wait().then(x => res.send(x))
+      });
        break;
        case 2:
         this.ethersContract.externalTransferSyn(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
@@ -46,15 +62,15 @@ class BlockchainQuery {
        break;
        case 3:
         this.ethersContract.externalTransferSynAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
-        });
+        .then(tx => {
+          tx.wait().then(x => res.send(x))
+      });
        break;
        case 4:
         this.ethersContract.externalTransferAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
-        });
+        .then(tx => {
+          tx.wait().then(x => res.send(x))
+      });
        break;
        case 100:
         this.ethersContract.balanceOf(accountAddress)

@@ -2,8 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var transactionsSchema = new Schema({
-    id: Number,
-    uuid: String,
+    triggerHash: String,
     transactionHash: String,
     stage: Number,
     key: String,
