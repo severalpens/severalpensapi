@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
+var cors = require('cors');
+router.use(cors());
 var usersRouter = require('./users/users');
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
@@ -8,8 +9,7 @@ var transfersRouter = require('./transfers/transfers');
 var transactionsRouter = require('./transactions/transactions');
 const { generateKeyPair } = require('crypto');
 
-var cors = require('cors');
-router.use(cors());
+
 
 router.use('/accounts', accountsRouter);
 router.use('/users', usersRouter);

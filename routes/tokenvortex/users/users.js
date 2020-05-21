@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
+var cors = require('cors');
+router.use(cors());
 var bodyParser = require('body-parser');
 var UsersModel = require("../models/mongodb/users");
 var bcrypt = require('bcrypt');
-var cors = require('cors');
-router.use(cors());
+
 
 
 router.post("/reigster", bodyParser.json(), function(req, res, next) {

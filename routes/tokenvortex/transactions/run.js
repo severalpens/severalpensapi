@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var cors = require('cors');
 router.use(cors());
+var bodyParser = require("body-parser");
+router.use(bodyParser.json());
 var ethers = require("ethers");
 var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
@@ -18,7 +20,7 @@ function newEthersContract(network,contractAddress,abi){
   return  ethersContract; 
 }
 
-router.post("/transactionprotocol", function (req, res) {
+router.post("/transactionprotocol",cors() , function (req, res) {
   try {
     let props = req.body;
     let {senderNetwork,recipientNetwork, contract_id} = props;
