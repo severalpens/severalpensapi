@@ -1,11 +1,11 @@
 var express = require("express");
 var router = express.Router();
+var cors = require('cors');
+router.use(cors());
 var ethers = require("ethers");
 var ContractsModel = require("../models/mongodb/contracts");
 var BlockchainQuery = require("../models/blockchainQuery");
 var TransactionProtocol = require("../models/transactionProtocol");
-var cors = require('cors');
-router.use(cors());
 
 function newEthersContract(network,contractAddress,abi){
   let provider = ethers.getDefaultProvider(network);

@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
+var cors = require('cors');
+router.use(cors());
 var bodyParser = require("body-parser");
 var TransactionsModel = require('../models/mongodb/transactions');
 
-var cors = require('cors');
-router.use(cors());
 
 
 router.post("/", bodyParser.json(), function(req, res, next) {
