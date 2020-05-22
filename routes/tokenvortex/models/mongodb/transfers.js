@@ -2,12 +2,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var transfersSchema = new Schema({
-  stage: Number,
+  status: String,
+  logs: Array,
   contract_id: String,
   owner: String,
   senderNetwork: String,
-  burnAddress: String,
   senderAddress: String,
+  burnAddress: String,
   recipientNetwork: String,
   recipientAddress: String,
   amount: Number

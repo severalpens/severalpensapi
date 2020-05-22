@@ -1,80 +1,80 @@
 var express = require("express");
 var router = express.Router();
-var cors = require('cors');
+var cors = require("cors");
 router.use(cors());
 var bodyParser = require("body-parser");
 router.use(bodyParser.json());
-var ethers = require("ethers");
-var ContractsModel = require("../models/mongodb/contracts");
+var TransfersModel = require("../models/mongodb/transfers");
 var BlockchainQuery = require("../models/blockchainQuery");
 var TransactionProtocol = require("../models/transactionProtocol");
 
-function newEthersContract(network,contractAddress,abi){
-  let provider = ethers.getDefaultProvider(network);
-  let wallet = new ethers.Wallet(process.env.privateKey, provider);
-  let ethersContract = new ethers.Contract(
-    contractAddress,
-    JSON.parse(abi),
-    wallet
-  ); 
-  return  ethersContract; 
-}
-
-router.post("/transactionprotocol",cors() , function (req, res) {
-  try {
-    let props = req.body;
-    let {senderNetwork,recipientNetwork, contract_id} = props;
-    let q1 = ContractsModel.findOne({_id: contract_id});
-    q1.exec((err, contract) => {  
-      let exitContract = newEthersContract(senderNetwork, contract.addresses[senderNetwork], contract.abi);
-      let entryContract = newEthersContract(recipientNetwork, contract.addresses[recipientNetwork], contract.abi);
-      let tx = new TransactionProtocol(exitContract, entryContract,props);
-      tx.run(res);
-    });
-} catch (error) {
-    res.status(404).send(error);
-}
+router.post("/transactionprotocol", cors(), async function (req, res) {
+  let transfersModel = new TransfersModel();
+  transfersModel.status = 'running';
+  transfersModel.contract_id = req.body.contract_id;
+  transfersModel.senderNetwork = req.body.senderNetwork;
+  transfersModel.senderAddress = req.body.senderAddress;
+  transfersModel.recipientNetwork = req.body.recipientNetwork;
+  transfersModel.recipientAddress = req.body.recipientAddress;
+  transfersModel.amount = parseInt(req.body.amount) || 1;
+  transfersModel = await transfersModel.save();
+  
+  //Create a new 'transfer protocol' transfer and run asyncronously. Results will be stored in the db.
+  newTransactionProtocol(transfersModel)
+  
+  //return newly created transfer with _id which will be used to ping db to get transfer results.
+  res.send(transfersModel);
+  
 });
 
+async function newTransactionProtocol(transfersModel){
+  let {contract_id, senderNetwork, recipientNetwork, senderAddress, recipientAddress, amount} = transfersModel
+  let transactionProtocol = new TransactionProtocol(contract_id);
+  await transactionProtocol.exitTransaction(senderNetwork,senderAddress,amount);
+  await transactionProtocol.entryTransaction(recipientNetwork,recipientAddress,amount);
+
+}
 
 router.post("/", function (req, res) {
   try {
     let props = req.body;
-    let {network,contractAddress} = props;
+    let { network, contractAddress } = props;
     let q1 = ContractsModel.findOne({});
     q1.select("abi");
     q1.where(`addresses.${network}`).equals(contractAddress);
-    q1.exec((err, result) => {  
-      let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
-      blockchainQuery.run(props,res);
+    q1.exec((err, result) => {
+      let blockchainQuery = new BlockchainQuery(
+        network,
+        contractAddress,
+        result.abi
+      );
+      blockchainQuery.run(props, res);
     });
-} catch (error) {
+  } catch (error) {
     res.status(404).send(error);
-}
+  }
 });
 
-
-router.post("/balances",  function (req, res) {
+router.post("/balances", function (req, res) {
   try {
-
-  let props = req.body;
-  props.stage = 100;
-  let {network,contractAddress} = props;
-  let q1 = ContractsModel.findOne({});
-  q1.select("abi");
-  q1.where(`addresses.${network}`).equals(contractAddress);
-  q1.exec((err, result) => {  
-    let blockchainQuery = new BlockchainQuery(network, contractAddress,result.abi);
-    blockchainQuery.run(props,res);
-  });
-} catch (error) {
-  res.status(404).send(error);
-}
-
+    let props = req.body;
+    props.stage = 100;
+    let { network, contractAddress } = props;
+    let q1 = ContractsModel.findOne({});
+    q1.select("abi");
+    q1.where(`addresses.${network}`).equals(contractAddress);
+    q1.exec((err, result) => {
+      let blockchainQuery = new BlockchainQuery(
+        network,
+        contractAddress,
+        result.abi
+      );
+      blockchainQuery.run(props, res);
+    });
+  } catch (error) {
+    res.status(404).send(error);
+  }
 });
-
-
-
 
 module.exports = router;
 

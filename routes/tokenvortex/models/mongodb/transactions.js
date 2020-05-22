@@ -4,16 +4,13 @@ var Schema = mongoose.Schema;
 var transactionsSchema = new Schema({
     triggerHash: String,
     transactionHash: String,
-    stage: Number,
-    key: String,
-    msgSender: String,
+    logs: Array,
     network: String,
     transfer_id: String,
     contractAddress: String,
     senderAddress: String,
     recipientAddress: String,
     amount: String,
-    isValid: String,
     status: String
     });
   
