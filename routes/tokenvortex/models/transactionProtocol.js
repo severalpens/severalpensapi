@@ -1,10 +1,14 @@
 var ethers = require("ethers");
 var ContractsModel = require("../models/mongodb/contracts");
+var LogsModel = require("../models/mongodb/logs");
+var TransfersModel = require("../models/mongodb/transfers");
+const Stopwatch = require('statman-stopwatch');
 
 class TransactionProtocol {
-  constructor(_id) {
-    this._id = _id;
-    this.burnAddress = this.genAddress();   
+   constructor(transfer) {
+    this.transfer = transfer;
+    this.transfer.burnAddress = this.genAddress();  
+    this.sw = new Stopwatch(true); 
   }
   
   genAddress() {
@@ -14,39 +18,59 @@ class TransactionProtocol {
   }
 
 
-  exitTransaction(network, sender,  amount) {
+  async exitTransaction() {
+    let {senderNetwork: network,  senderAddress: sender,  amount} = this.transfer
     try {
-      ContractsModel.findOne({ _id: this._id }, async (err, contract) => {
-        let exitContract = newEthersContract(network, contract);
+        let contract = await ContractsModel.findOne({ _id: this.transfer.contract_id }).exec();
+        let exitContract = this.newEthersContract(network, contract);
 
         //submit the exit transaction to the network provider.
-        let exitSubmitted = await exitContract.transferFrom(sender, this.burnAddress, amount);
-        this.log({ exitSubmitted });
+        this.transfer.logbook[0].startTime = this.sw.read();  
+        let exitSubmitted = await exitContract.transferFrom(sender, this.transfer.burnAddress, amount);
+        this.transfer.logbook[0].endTime = this.sw.read();
+        this.transfer.logbook[0].hash = exitSubmitted.hash;
+        TransfersModel.updateOne({_id: this.transfer._id},{logbook: this.transfer.logbook}).exec();
 
         //Use ethers.js 'wait' function to listen for a response from the network and log the result.
+        this.transfer.logbook[1].startTime = this.sw.read();  
         let exitCompleted = await exitSubmitted.wait();
-        this.log({ exitCompleted });
-      });
+        this.transfer.logbook[1].endTime = this.sw.read();
+        this.transfer.logbook[1].hash = exitCompleted.transactionHash;
+        TransfersModel.updateOne({_id: this.transfer._id},{logbook: this.transfer.logbook}).exec();
+
+        return true;
+
+
     } catch {
-      this.log({ exitCompleted: "failed" });
+      TransfersModel.updateOne({_id: this.transfer._id},{status: 'failed'}).exec();     
+      return false;
     }
   }
 
-   entryTransaction(network, recipient,  amount) {
+   async entryTransaction() {
+    let {recipientNetwork: network,  recipientAddress: recipient,  amount} = this.transfer
     try {
-      ContractsModel.findOne({ _id: this._id }, async (err, contract) => {
-        let entryContract = newEthersContract(network, contract);
+      let contract = await ContractsModel.findOne({ _id: this.transfer.contract_id }).exec();
+      let entryContract = this.newEthersContract(network, contract);
 
-        //submit the exit transaction to the network provider.
+        //submit the entry transaction to the network provider.
+        this.transfer.logbook[2].startTime = this.sw.read();  
         let entrySubmitted = await entryContract.transfer(recipient, amount);
-        this.log({ entrySubmitted });
+        this.transfer.logbook[2].endTime = this.sw.read();
+        this.transfer.logbook[2].hash = entrySubmitted.hash;
+        TransfersModel.updateOne({_id: this.transfer._id},{logbook: this.transfer.logbook}).exec();
+
 
         //Use ethers.js 'wait' function to listen for a response from the network and log the result.
+        this.transfer.logbook[3].startTime = this.sw.read();  
         let entryCompleted = await entrySubmitted.wait();
-        this.log({ entryCompleted });
-      });
+        this.transfer.logbook[3].endTime = this.sw.read();
+        this.transfer.logbook[3].hash = entryCompleted.transactionHash;
+        TransfersModel.updateOne({_id: this.transfer._id},{logbook: this.transfer.logbook, status: 'completed'}).exec();
+
     } catch {
-      this.log({ entryCompleted: "failed" });
+      TransfersModel.updateOne({_id: this.transfer._id},{status: 'failed'}).exec();     
+      return false;
     }
   }
 
@@ -58,10 +82,6 @@ class TransactionProtocol {
     return ethersContract;
   }
 
-  log(record){
-    this.transfer.logs.push(record);
-    this.transfer.save();
-  }
 }
 
 module.exports = TransactionProtocol;

@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var transfersSchema = new Schema({
   status: String,
-  logs: Array,
+  logbook: Array,
   contract_id: String,
   owner: String,
   senderNetwork: String,

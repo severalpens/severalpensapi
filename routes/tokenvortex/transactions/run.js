@@ -8,7 +8,7 @@ var TransfersModel = require("../models/mongodb/transfers");
 var BlockchainQuery = require("../models/blockchainQuery");
 var TransactionProtocol = require("../models/transactionProtocol");
 
-router.post("/transactionprotocol", cors(), async function (req, res) {
+router.post("/transactionprotocol",  async function (req, res) {
   let transfersModel = new TransfersModel();
   transfersModel.status = 'running';
   transfersModel.contract_id = req.body.contract_id;
@@ -16,24 +16,33 @@ router.post("/transactionprotocol", cors(), async function (req, res) {
   transfersModel.senderAddress = req.body.senderAddress;
   transfersModel.recipientNetwork = req.body.recipientNetwork;
   transfersModel.recipientAddress = req.body.recipientAddress;
+  transfersModel.logbook = req.body.logbook;
   transfersModel.amount = parseInt(req.body.amount) || 1;
+  let transactionProtocol = new TransactionProtocol(transfersModel);
   transfersModel = await transfersModel.save();
   
-  //Create a new 'transfer protocol' transfer and run asyncronously. Results will be stored in the db.
-  newTransactionProtocol(transfersModel)
+  //Run the transfer asyncronously to avoid timeout problems. Results will be stored in the db.
+  runTransferAsynchronously(transactionProtocol)
   
   //return newly created transfer with _id which will be used to ping db to get transfer results.
   res.send(transfersModel);
   
 });
 
-async function newTransactionProtocol(transfersModel){
-  let {contract_id, senderNetwork, recipientNetwork, senderAddress, recipientAddress, amount} = transfersModel
-  let transactionProtocol = new TransactionProtocol(contract_id);
-  await transactionProtocol.exitTransaction(senderNetwork,senderAddress,amount);
-  await transactionProtocol.entryTransaction(recipientNetwork,recipientAddress,amount);
-
+async function runTransferAsynchronously(transactionProtocol){
+  let exitTransactionSuccessful = await transactionProtocol.exitTransaction();
+  if(exitTransactionSuccessful){
+    transactionProtocol.entryTransaction();
+  }
 }
+
+router.get("/refresh/:_id",  async function (req, res) {
+  let _id = req.params._id;
+  TransfersModel.findOne({_id},(err,transfer) => {
+    res.send(transfer)
+  })
+})
+
 
 router.post("/", function (req, res) {
   try {
