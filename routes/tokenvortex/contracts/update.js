@@ -11,18 +11,19 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   if (_id) {
     ContractsModel.updateOne(
-      { _id, locked: false },
+      { _id },
       {
         fungible: true,
         symbol: req.body.symbol,
         name: req.body.name,
         version: req.body.version,
         addresses: req.body.addresses,
-        owner: req_id,
+        owner: req._id,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,
       },
       function(err, result) {
+        if(err){res.send(err)}
         res.send([req.body, result]);
       }
     );
