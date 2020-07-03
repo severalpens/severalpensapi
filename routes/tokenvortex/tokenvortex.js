@@ -2,25 +2,23 @@ var express = require('express');
 var router = express.Router();
 var cors = require('cors');
 router.use(cors());
-var usersRouter = require('./users/users');
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
 
 var transfersRouter = require('./transfers/transfers');
 var transactionsRouter = require('./transactions/transactions');
 
-var transfersV1Router = require('./transfers/transfersv1');
-var transactionsV1Router = require('./transactions/transactionsv1');
+var transfersV1Router = require('./transfersv1/transfersv1');
+var transactionsV1Router = require('./transactionsv1/transactionsv1');
 
-var transfersV2Router = require('./transfers/transfersv2');
-var transactionsV2Router = require('./transactions/transactionsv2');
+var transfersV2Router = require('./transfersv2/transfersv2');
+var transactionsV2Router = require('./transactionsv2/transactionsv2');
 
 const { generateKeyPair } = require('crypto');
 
 
 
 router.use('/accounts', accountsRouter);
-router.use('/users', usersRouter);
 router.use('/contracts', contractsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
