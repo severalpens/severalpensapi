@@ -21,6 +21,12 @@ var contractsSchema = new Schema({
       ropsten: String,
       kovan: String,
       goerli: String
+    },    
+    publishers: {
+      rinkeby: String,
+      ropsten: String,
+      kovan: String,
+      goerli: String
     },
     soliditycode: String,
     abi: String,

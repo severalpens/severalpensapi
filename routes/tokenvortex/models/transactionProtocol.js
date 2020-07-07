@@ -76,6 +76,7 @@ class TransactionProtocol {
 
   newEthersContract(network, contract) {
     let contractAddress = contract.addresses[network];
+    let contractPublishers = contract.publishers[network];
     let provider = ethers.getDefaultProvider(network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     let ethersContract = new ethers.Contract(contractAddress, JSON.parse(contract.abi), wallet);

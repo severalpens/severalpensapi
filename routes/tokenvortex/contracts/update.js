@@ -18,6 +18,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         name: req.body.name,
         version: req.body.version,
         addresses: req.body.addresses,
+        publishers: req.body.publishers,
         owner: req._id,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,

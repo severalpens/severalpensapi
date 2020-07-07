@@ -15,6 +15,7 @@ router.post("/", bodyParser.json(), function(req, res, next) {
         version: req.body.version,
         locked: false,
         addresses: req.body.addresses,
+        publishers: req.body.publishers,
         owner: req._id,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,
