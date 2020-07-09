@@ -1,0 +1,1 @@
+tree "./routes" > "./tree.txt" /A /A
