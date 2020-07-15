@@ -4,6 +4,7 @@ var cors = require("cors");
 router.use(cors());
 var bodyParser = require("body-parser");
 router.use(bodyParser.json());
+var ContractsModel = require("../models/mongodb/contracts");
 var TransfersModel = require("../models/mongodb/transfers");
 var BlockchainQuery = require("../models/blockchainQuery");
 var TransactionProtocol = require("../models/transactionProtocol");
@@ -20,13 +21,13 @@ router.post("/transactionprotocol",  async function (req, res) {
   transfersModel.amount = parseInt(req.body.amount) || 1;
   let transactionProtocol = new TransactionProtocol(transfersModel);
   transfersModel = await transfersModel.save();
-  
+
   //Run the transfer asyncronously to avoid timeout problems. Results will be stored in the db.
   runTransferAsynchronously(transactionProtocol)
-  
+
   //return newly created transfer with _id which will be used to ping db to get transfer results.
   res.send(transfersModel);
-  
+
 });
 
 async function runTransferAsynchronously(transactionProtocol){
@@ -42,6 +43,8 @@ router.get("/refresh/:_id",  async function (req, res) {
     res.send(transfer)
   })
 })
+
+
 
 
 router.post("/", function (req, res) {
@@ -63,6 +66,7 @@ router.post("/", function (req, res) {
     res.status(404).send(error);
   }
 });
+
 
 router.post("/balances", function (req, res) {
   try {

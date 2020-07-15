@@ -5,29 +5,18 @@ class BlockchainQuery {
   constructor(network,contractAddress, abi) {
     this.network = network;
     this.contractAddress = contractAddress;
-    let provider = ethers.getDefaultProvider(network);
+    if(network === 'ganache'){
+      let provider = ethers.getDefaultProvider('http://127.0.0.1:7545');
+    }else{
+      let provider = ethers.getDefaultProvider(network);
+    }
+    console.log(process.env.privateKey);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     this.ethersContract = new ethers.Contract(
       contractAddress,
       JSON.parse(abi),
       wallet
     );
-  }
-
-  transactionProtocol(props,res){
-    let senderAddress=props.senderAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let recipientAddress=props.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let amount = parseInt(props.amount) || 1;
-    let burnAccount = ethers.Wallet.createRandom();
-    this.ethersContract.transfer(senderAddress,burnAccount.signingKey.address,amount,isValid)
-    .then(burnTx => {
-        burnTx.wait().then(burnTxComplete => {
-
-        })
-    });
-
-
-
   }
 
   run(props, res){
@@ -44,34 +33,24 @@ class BlockchainQuery {
     switch (stage) {
       case 0:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(tx => {
-            tx.wait().then(x => res.send(x))
-        });
+        .then(tx => res.send(tx));
        break;
        case 1:
         this.ethersContract.externalTransferInit(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(tx => {
-          tx.wait().then(x => res.send(x))
-      });
-       break;
+        .then(tx => res.send(tx));
+     break;
        case 2:
         this.ethersContract.externalTransferSyn(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(result => {
-            res.send(result);
-        });
-       break;
+        .then(tx => res.send(tx));
+     break;
        case 3:
         this.ethersContract.externalTransferSynAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(tx => {
-          tx.wait().then(x => res.send(x))
-      });
-       break;
+        .then(tx => res.send(tx));
+     break;
        case 4:
         this.ethersContract.externalTransferAck(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(tx => {
-          tx.wait().then(x => res.send(x))
-      });
-       break;
+        .then(tx => res.send(tx));
+     break;
        case 100:
         this.ethersContract.balanceOf(accountAddress)
         .then(balanceOf => {
@@ -95,6 +74,22 @@ class BlockchainQuery {
     }
   }
 
+
+  // transactionProtocol(props,res){
+  //   let senderAddress=props.senderAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+  //   let recipientAddress=props.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+  //   let amount = parseInt(props.amount) || 1;
+  //   let burnAccount = ethers.Wallet.createRandom();
+  //   this.ethersContract.transfer(senderAddress,burnAccount.signingKey.address,amount,isValid)
+  //   .then(burnTx => {
+  //       burnTx.wait().then(burnTxComplete => {
+
+  //       })
+  //   });
+
+
+
+  // }
 
   getBalances(accountAddress,res) {
     let balances = {

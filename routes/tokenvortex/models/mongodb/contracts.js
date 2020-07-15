@@ -5,7 +5,8 @@ var addressesSchema = new Schema({
   ropsten: String,
   kovan: String,
   rinkeby: String,
-  goerli: String
+  goerli: String,
+  ganache: String,
 });
 
 var contractsSchema = new Schema({
@@ -20,13 +21,15 @@ var contractsSchema = new Schema({
       rinkeby: String,
       ropsten: String,
       kovan: String,
-      goerli: String
+      goerli: String,
+      ganache: String,
     },    
     publishers: {
       rinkeby: String,
       ropsten: String,
       kovan: String,
-      goerli: String
+      goerli: String,
+      ganache: String,
     },
     soliditycode: String,
     abi: String,

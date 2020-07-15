@@ -8,6 +8,7 @@ var TransactionsModel = require('../models/mongodb/transactions');
 
 
 router.post("/", bodyParser.json(), function(req, res, next) {
+  console.log(req.body);
   try {
     TransactionsModel.create({
       id: req.body.id,
