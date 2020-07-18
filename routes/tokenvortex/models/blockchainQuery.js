@@ -5,12 +5,7 @@ class BlockchainQuery {
   constructor(network,contractAddress, abi) {
     this.network = network;
     this.contractAddress = contractAddress;
-    if(network === 'ganache'){
-      let provider = ethers.getDefaultProvider('http://127.0.0.1:7545');
-    }else{
-      let provider = ethers.getDefaultProvider(network);
-    }
-    console.log(process.env.privateKey);
+    let provider = network === 'ganache' ?  ethers.getDefaultProvider('http://127.0.0.1:7545') : ethers.getDefaultProvider(network);
     let wallet = new ethers.Wallet(process.env.privateKey, provider);
     this.ethersContract = new ethers.Contract(
       contractAddress,
