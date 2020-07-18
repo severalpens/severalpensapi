@@ -17,7 +17,7 @@ router.get("/",  function(req, res, next) {
   const query = AccountsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(AccountsModel.collection)
- query.or([{ owner: 'public' }, { owner: req._id }])
+  query.or([{ owner: 'public' }, { owner: req._id }])
   query.where('isActive').equals(true)
   query.exec((err, accounts) => {
       if (err != null) {
@@ -36,15 +36,21 @@ router.get("/",  function(req, res, next) {
               })
           }
           else{
+
+
             refinedAccounts.push(
               {
                 _id: account._id,
-                name: account.name,
-                address: account.address,
-                publicKey: account.publicKey,
-                privateKey: account.privateKey,
-                mnemonic: account.mnemonic,
-                locked: account.locked
+                name: account.name || '',
+                owner: account.owner || '',
+                label: account.label || '',
+                owner: account.balance || 0,
+                address: account.address || '',
+                privateKey: account.privateKey || '',
+                publicKey: account.publicKey || '',
+                mnemonic: account.mnemonic || '',
+                locked: account.locked || false,
+                isActive: account.isActive || true,
 
               })
    

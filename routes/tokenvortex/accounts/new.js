@@ -5,16 +5,33 @@ router.use(cors());
 var ethers = require("ethers");
 
 
+
+// name: String,
+// address: String,
+// owner: String,
+// privateKey: String,
+// publicKey: String,
+// mnemonic: String,
+// locked: Boolean,
+// isActive: Boolean
+
+
+
 router.get("/", function (req, res, next) {
   var wallet = ethers.Wallet.createRandom();
+  console.log(wallet.mnemonic);
   var account = {};
   account._id = '';
   account.name = '';
-  account.address = wallet.signingKey.address;
-  account.privateKey = wallet.signingKey.privateKey;
-  account.publicKey = wallet.signingKey.publicKey;
-  account.mnemonic = wallet.signingKey.mnemonic;
+  account.owner = '';
+  account.label = '';
+  account.balance = '';
+  account.address = wallet.address;
+  account.privateKey = wallet.privateKey;
+  account.publicKey = wallet.publicKey;
+  account.mnemonic = wallet.mnemonic.phrase;
   account.locked = false;
+  account.isActive = true;
 
   res.send(account);
 });
