@@ -31,6 +31,7 @@ app.use((req,res,next) => {
       }
      req.verified = true;
      req._id = decoded._id;
+     req.owner_id = decoded.owner_id;
      next();
     }); 
   }
