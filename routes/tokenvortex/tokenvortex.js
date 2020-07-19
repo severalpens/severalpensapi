@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 var express = require('express');
 var router = express.Router();
 var cors = require('cors');
@@ -52,5 +53,31 @@ router.get('/generatekeypair/:_id', function(req, res) {
   });
     
   
+router.get('/newSecretHashPair/', function(req, res) {
+    let hashPair = newSecretHashPair();
+     return  res.json(hashPair);
+  });
+  
+const bufToStr = b => '0x' + b.toString('hex')
+
+const sha256 = x =>
+  crypto
+    .createHash('sha256')
+    .update(x)
+    .digest()
+
+const random32 = () => crypto.randomBytes(32)
+
+const isSha256Hash = hashStr => /^0x[0-9a-f]{64}$/i.test(hashStr)
+
+const newSecretHashPair = () => {
+  const secret = random32()
+  const hash = sha256(secret)
+  return {
+    secret: bufToStr(secret),
+    hash: bufToStr(hash),
+  }
+}
+
 
 module.exports = router;

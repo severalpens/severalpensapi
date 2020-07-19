@@ -6,8 +6,8 @@ var bodyParser = require("body-parser");
 router.use(bodyParser.json());
 var ContractsModel = require("../models/mongodb/contracts");
 var TransfersModel = require("../models/mongodb/transfers");
-var BlockchainQuery = require("../models/blockchainQuery");
-var TransactionProtocol = require("../models/transactionProtocol");
+var BlockchainQuery = require("../models/ethers/blockchainQuery");
+var TransactionProtocol = require("../models/ethers/transactionProtocol");
 
 router.post("/transactionprotocol",  async function (req, res) {
   let transfersModel = new TransfersModel();

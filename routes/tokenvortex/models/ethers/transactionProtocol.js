@@ -1,6 +1,6 @@
 var ethers = require("ethers");
-var ContractsModel = require("../models/mongodb/contracts");
-var TransfersModel = require("../models/mongodb/transfers");
+var ContractsModel = require("../mongodb/contracts");
+var TransfersModel = require("../mongodb/transfers");
 const Stopwatch = require('statman-stopwatch');
 
 class TransactionProtocol {
