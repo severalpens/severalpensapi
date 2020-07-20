@@ -9,11 +9,7 @@ var contractsRouter = require('./contracts/contracts');
 var transfersRouter = require('./transfers/transfers');
 var transactionsRouter = require('./transactions/transactions');
 
-var transfersV1Router = require('./transfersv1/transfersv1');
-var transactionsV1Router = require('./transactionsv1/transactionsv1');
 
-var transfersV2Router = require('./transfersv2/transfersv2');
-var transactionsV2Router = require('./transactionsv2/transactionsv2');
 
 const { generateKeyPair } = require('crypto');
 
@@ -23,10 +19,6 @@ router.use('/accounts', accountsRouter);
 router.use('/contracts', contractsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
-router.use('/transfersv1', transfersV1Router);
-router.use('/transactionsv1', transactionsV1Router);
-router.use('/transfersv2', transfersV2Router);
-router.use('/transactionsv2', transactionsV2Router);
 
 
 router.get('/generatekeypair/:_id', function(req, res) {

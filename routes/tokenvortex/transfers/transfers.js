@@ -17,7 +17,7 @@ router.get("/",  function(req, res, next) {
   const query = TransfersModel.find(); 
   query.setOptions({ lean : true });
   query.collection(TransfersModel.collection)
-  query.or([{ owner: 'public' }, { owner: req._id }])
+  query.or([{ owner_id: 'public' }, { owner_id: req._id }])
   query.exec((err, transfers) => {
       if (err != null) {
         return res.send(err);
