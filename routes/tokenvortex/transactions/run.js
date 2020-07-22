@@ -49,18 +49,17 @@ router.get("/refresh/:_id",  async function (req, res) {
 
 router.post("/", function (req, res) {
   try {
-    let props = req.body;
-    let { network, contractAddress } = props;
+    let transaction = req.body;
+    let { network, contractAddress } = transaction;
     let q1 = ContractsModel.findOne({});
     q1.select("abi");
     q1.where(`addresses.${network}`).equals(contractAddress);
     q1.exec((err, result) => {
       let blockchainQuery = new BlockchainQuery(
-        network,
-        contractAddress,
+        transaction,
         result.abi
       );
-      blockchainQuery.run(props, res);
+      blockchainQuery.run(res);
     });
   } catch (error) {
     res.status(404).send(error);

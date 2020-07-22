@@ -15,37 +15,54 @@ router.use('/update',updateRouter);
 
 router.get("/",  function(req, res, next) {
   const query = AccountsModel.find(); 
-  query.setOptions({ lean : true });
-  query.collection(AccountsModel.collection)
-  query.or([{ user_id: 'public' }, { user_id: req.user_id }])
+  query.or([{ isLocked: true }, { user_id: req.user_id }])
   query.where('isActive').equals(true)
   query.exec((err, accounts) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        let refinedAccounts = [] //avoid sending back bytecode and abi
-        accounts.forEach(account => {
-          if(account.locked){
-            refinedAccounts.push(
-              {
-                _id: account._id,
-                name: account.name,
-                address: account.address,
-                blaance: account.balance,
-                isLocked: account.isLocked
-              })
-          }
-          else{
-            refinedAccounts.push(account);
-          }
-        return res.send(refinedAccounts);
-      })
-      }
-    
+        return res.json(accounts);
+      }    
   });
   });
 
 
 
 module.exports = router;
+
+
+
+
+// router.get("/",  function(req, res, next) {
+//   const query = AccountsModel.find(); 
+//   query.setOptions({ lean : true });
+//   query.collection(AccountsModel.collection)
+//   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
+//   query.where('isActive').equals(true)
+//   query.exec((err, accounts) => {
+//       if (err != null) {
+//         return res.send(err);
+//       } 
+//       else {
+//         let refinedAccounts = [] //avoid sending back bytecode and abi
+//         accounts.forEach(account => {
+//           if(account.locked){
+//             refinedAccounts.push(
+//               {
+//                 _id: account._id,
+//                 name: account.name,
+//                 address: account.address,
+//                 blaance: account.balance,
+//                 isLocked: account.isLocked
+//               })
+//           }
+//           else{
+//             refinedAccounts.push(account);
+//           }
+//         return res.send(refinedAccounts);
+//       })
+//       }
+    
+//   });
+//   });

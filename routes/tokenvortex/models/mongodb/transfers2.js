@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var transfersSchema = new Schema({
+var transfers2Schema = new Schema({
+  _id: String,
   user_id: String,  
   contract_id: String,
   token_id: String,
@@ -24,6 +25,6 @@ var transfersSchema = new Schema({
   });
 
   
-  var TransfersModel = mongoose.model("transfers", transfersSchema, "transfers");
+  var Transfers2Model = mongoose.model("transfers2", transfers2Schema, "transfers");
   
-  module.exports = TransfersModel;
+  module.exports = Transfers2Model;

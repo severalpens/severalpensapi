@@ -20,15 +20,16 @@ router.use('/distribute',distributeRouter);
 
 var TransactionsModel = require('../models/mongodb/transactions');
 
-router.get("/", bodyParser.json(), function(req, res, next) {
-  TransactionsModel.find({})
+router.get("/:transfer_id", bodyParser.json(), function(req, res, next) {
+  TransactionsModel.find({transfer_id: req.params.transfer_id})
     .collection(TransactionsModel.collection)
-    .exec((err, contracts) => {
+    .exec((err, transactions) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        return res.send(contracts);
+
+        return res.send(transactions);
       }
     });
 });

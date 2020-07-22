@@ -13,14 +13,14 @@ const AccountsModel = require("../models/mongodb/accounts");
 router.post("/",  async function (req, res) {
   //extract args
   let {network, contract_id,senderAddress, recipientAddress, amount} = req.body;
-  if(!network){console.log('missing req.body.network')}
-  if(!contract_id){console.log('missing req.body.contract_id')}
-  if(!amount){console.log('missing req.body.amount')}
-  if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
+  // if(!network){console.log('missing req.body.network')}
+  // if(!contract_id){console.log('missing req.body.contract_id')}
+  // if(!amount){console.log('missing req.body.amount')}
+  // if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
 
-  if(network){console.log(`req.body.network: ${network}`)}
-  if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
-  if(amount){console.log(`req.body.amount: ${amount}`)}
+  // if(network){console.log(`req.body.network: ${network}`)}
+  // if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
+  // if(amount){console.log(`req.body.amount: ${amount}`)}
 
   // get mongodb records
   let accounts = await AccountsModel.find({}).exec();
@@ -29,18 +29,18 @@ router.post("/",  async function (req, res) {
   // parse mongodb records
   let contractAddress = contract.addresses[network];
   let publisherAddress = contract.publishers[network];
-  if(!publisherAddress){console.log(`cannot find publisherAddress for ${network}`)}
-  if(publisherAddress){console.log(`publisherAddress: ${publisherAddress}`)}
+  // if(!publisherAddress){console.log(`cannot find publisherAddress for ${network}`)}
+  // if(publisherAddress){console.log(`publisherAddress: ${publisherAddress}`)}
 
   let publisherAccount = accounts.find(x => x.address === publisherAddress);
-  if(!publisherAccount){console.log(`cannot find publisher account for ${publisherAddress}`)}
-  if(!publisherAccount.privateKey){console.log(`cannot find private key for ${publisherAccount.name}`)}
-  if(publisherAccount){console.log(`publisherAccount.name: ${publisherAccount.name}`)}
-  if(publisherAccount.address){console.log(`publisherAccount.address: ${publisherAccount.address}`)}
-  if(publisherAccount.privateKey){console.log(`publisherAccount.privateKey: ${publisherAccount.privateKey}`)}
+  // if(!publisherAccount){console.log(`cannot find publisher account for ${publisherAddress}`)}
+  // if(!publisherAccount.privateKey){console.log(`cannot find private key for ${publisherAccount.name}`)}
+  // if(publisherAccount){console.log(`publisherAccount.name: ${publisherAccount.name}`)}
+  // if(publisherAccount.address){console.log(`publisherAccount.address: ${publisherAccount.address}`)}
+  // if(publisherAccount.privateKey){console.log(`publisherAccount.privateKey: ${publisherAccount.privateKey}`)}
 
   let recipientAccounts = accounts.filter(x => x.address !== publisherAddress);
-  if(!recipientAccounts){console.log(`Error: no recipient accounts found:  ${recipientAccounts}`)}
+  // if(!recipientAccounts){console.log(`Error: no recipient accounts found:  ${recipientAccounts}`)}
   
   let provider = ethers.getDefaultProvider(network);
   let wallet = new ethers.Wallet(publisherAccount.privateKey, provider);
@@ -48,7 +48,7 @@ router.post("/",  async function (req, res) {
 
   let hexBalance = await ethersContract.balanceOf(senderAddress);
   let balance = hexBalance.toNumber();
-  console.log(balance);
+  // console.log(balance);
 
   if(balance >= amount){
     let transfer =  await ethersContract.transfer(recipientAddress,amount);
@@ -65,14 +65,14 @@ router.post("/",  async function (req, res) {
 router.post("/senderbalance",  async function (req, res) {
   //extract args
   let {network, contract_id,senderAddress,  amount} = req.body;
-  if(!network){console.log('missing req.body.network')}
-  if(!senderAddress){console.log('missing req.body.senderAddress')}
-  if(!contract_id){console.log('missing req.body.contract_id')}
-  if(!amount){console.log('missing req.body.amount')}
-  if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
-  if(network){console.log(`req.body.network: ${network}`)}
-  if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
-  if(amount){console.log(`req.body.amount: ${amount}`)}
+  // if(!network){console.log('missing req.body.network')}
+  // if(!senderAddress){console.log('missing req.body.senderAddress')}
+  // if(!contract_id){console.log('missing req.body.contract_id')}
+  // if(!amount){console.log('missing req.body.amount')}
+  // if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
+  // if(network){console.log(`req.body.network: ${network}`)}
+  // if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
+  // if(amount){console.log(`req.body.amount: ${amount}`)}
 
   // get mongodb records
   let accounts = await AccountsModel.find({}).exec();
@@ -80,14 +80,14 @@ router.post("/senderbalance",  async function (req, res) {
   
   // parse mongodb records
   let contractAddress = contract.addresses[network];
-  if(senderAddress){console.log(`senderAddress: ${senderAddress}`)}
+  // if(senderAddress){console.log(`senderAddress: ${senderAddress}`)}
 
   let senderAccount = accounts.find(x => x.address === senderAddress);
-  if(!senderAccount){console.log(`cannot find sender account for ${senderAddress}`)}
-  if(!senderAccount.privateKey){console.log(`cannot find private key for ${senderAccount.name}`)}
-  if(senderAccount){console.log(`senderAccount.name: ${senderAccount.name}`)}
-  if(senderAccount.address){console.log(`senderAccount.address: ${senderAccount.address}`)}
-  if(senderAccount.privateKey){console.log(`senderAccount.privateKey: ${senderAccount.privateKey}`)}
+  // if(!senderAccount){console.log(`cannot find sender account for ${senderAddress}`)}
+  // if(!senderAccount.privateKey){console.log(`cannot find private key for ${senderAccount.name}`)}
+  // if(senderAccount){console.log(`senderAccount.name: ${senderAccount.name}`)}
+  // if(senderAccount.address){console.log(`senderAccount.address: ${senderAccount.address}`)}
+  // if(senderAccount.privateKey){console.log(`senderAccount.privateKey: ${senderAccount.privateKey}`)}
   
   let provider = ethers.getDefaultProvider(network);
   let wallet = new ethers.Wallet(senderAccount.privateKey, provider);
@@ -103,15 +103,15 @@ router.post("/senderbalance",  async function (req, res) {
 router.post("/recipientbalance",  async function (req, res) {
   //extract args
   let {network, contract_id,recipientAddress,  amount} = req.body;
-  if(!network){console.log('missing req.body.network')}
-  if(!recipientAddress){console.log('missing req.body.recipientAddress')}
-  if(!recipientAddress){console.log('missing req.body.recipientAddress')}
-  if(!contract_id){console.log('missing req.body.contract_id')}
-  if(!amount){console.log('missing req.body.amount')}
-  if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
-  if(network){console.log(`req.body.network: ${network}`)}
-  if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
-  if(amount){console.log(`req.body.amount: ${amount}`)}
+  // if(!network){console.log('missing req.body.network')}
+  // if(!recipientAddress){console.log('missing req.body.recipientAddress')}
+  // if(!recipientAddress){console.log('missing req.body.recipientAddress')}
+  // if(!contract_id){console.log('missing req.body.contract_id')}
+  // if(!amount){console.log('missing req.body.amount')}
+  // if(typeof(amount) !== 'number'){console.log('amount is not a valid number')}
+  // if(network){console.log(`req.body.network: ${network}`)}
+  // if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
+  // if(amount){console.log(`req.body.amount: ${amount}`)}
 
   // get mongodb records
   let accounts = await AccountsModel.find({}).exec();
@@ -119,14 +119,14 @@ router.post("/recipientbalance",  async function (req, res) {
   
   // parse mongodb records
   let contractAddress = contract.addresses[network];
-  if(recipientAddress){console.log(`recipientAddress: ${recipientAddress}`)}
+  // if(recipientAddress){console.log(`recipientAddress: ${recipientAddress}`)}
 
   let recipientAccount = accounts.find(x => x.address === recipientAddress);
-  if(!recipientAccount){console.log(`cannot find recipient account for ${recipientAddress}`)}
-  if(!recipientAccount.privateKey){console.log(`cannot find private key for ${recipientAccount.name}`)}
-  if(recipientAccount){console.log(`recipientAccount.name: ${recipientAccount.name}`)}
-  if(recipientAccount.address){console.log(`recipientAccount.address: ${recipientAccount.address}`)}
-  if(recipientAccount.privateKey){console.log(`recipientAccount.privateKey: ${recipientAccount.privateKey}`)}
+  // if(!recipientAccount){console.log(`cannot find recipient account for ${recipientAddress}`)}
+  // if(!recipientAccount.privateKey){console.log(`cannot find private key for ${recipientAccount.name}`)}
+  // if(recipientAccount){console.log(`recipientAccount.name: ${recipientAccount.name}`)}
+  // if(recipientAccount.address){console.log(`recipientAccount.address: ${recipientAccount.address}`)}
+  // if(recipientAccount.privateKey){console.log(`recipientAccount.privateKey: ${recipientAccount.privateKey}`)}
   
   let provider = ethers.getDefaultProvider(network);
   let wallet = new ethers.Wallet(recipientAccount.privateKey, provider);
@@ -143,23 +143,23 @@ router.post("/recipientbalance",  async function (req, res) {
 router.post("/refreshbalance",  async function (req, res) {
   //extract args
   let {network, contract_id,account_id} = req.body;
-  if(!network){console.log('missing req.body.network')}
-  if(!account_id){console.log('missing req.body.account_id')}
-  if(!contract_id){console.log('missing req.body.contract_id')}
-  if(network){console.log(`req.body.network: ${network}`)}
-  if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
-  if(account_id){console.log(`req.body.account_id: ${account_id}`)}
+  // if(!network){console.log('missing req.body.network')}
+  // if(!account_id){console.log('missing req.body.account_id')}
+  // if(!contract_id){console.log('missing req.body.contract_id')}
+  // if(network){console.log(`req.body.network: ${network}`)}
+  // if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
+  // if(account_id){console.log(`req.body.account_id: ${account_id}`)}
 
   // get mongodb records
   let account = await AccountsModel.findById(account_id).exec();
   let contract = await ContractsModel.findById(contract_id).exec();
-  if(!account.address){console.log('missing account.address')}
-  if(!account.privateKey){console.log('missing account.privateKey')}
+  // if(!account.address){console.log('missing account.address')}
+  // if(!account.privateKey){console.log('missing account.privateKey')}
   
 
   // parse mongodb records
   let contractAddress = contract.addresses[network];
-  if(!contractAddress){console.log('missing contractAddress')}
+  // if(!contractAddress){console.log('missing contractAddress')}
 
   let provider = ethers.getDefaultProvider(network);
   let wallet = new ethers.Wallet(account.privateKey, provider);

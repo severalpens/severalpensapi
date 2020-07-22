@@ -15,9 +15,8 @@ var contractsSchema = new Schema({
     symbol: String,
     name: String,
     version: String,
-    owner: String,
-    locked: Boolean,
-    accounts: Array,
+    user_id: String,
+    isLocked: Boolean,
     addresses: {
       ropsten: String,
       kovan: String,

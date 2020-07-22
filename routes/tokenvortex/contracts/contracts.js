@@ -19,10 +19,11 @@ var ContractsModel = require('../models/mongodb/contracts');
 
 
 router.get("/",  function(req, res, next) {
+  console.log(req.user_id);
   const query = ContractsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(ContractsModel.collection)
- query.or([{ owner: 'public' }, { owner: req._id }])
+query.or([{ user_id: 'public' }, { user_id: req.user_id }])
   query.where('isActive').equals(true)
   query.exec((err, contracts) => {
       if (err != null) {

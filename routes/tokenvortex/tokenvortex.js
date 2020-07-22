@@ -39,7 +39,6 @@ router.get('/generatekeypair/:_id', function(req, res) {
         let privateKey = private.split('-----')[2];
         let publicKey = public.split('-----')[2];
         let result = {privateKey,publicKey};
-        console.log(result);
         res.send(result);
     });
   });

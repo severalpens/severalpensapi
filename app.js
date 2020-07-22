@@ -30,7 +30,7 @@ app.use((req,res,next) => {
         return res.status(404).send(false);
       }
      req.verified = true;
-     req.user_id = decoded.user_id;
+     req.user_id = decoded._id;
      next();
     }); 
   }
