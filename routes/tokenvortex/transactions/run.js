@@ -54,16 +54,18 @@ router.post("/", function (req, res) {
     let q1 = ContractsModel.findOne({});
     q1.select("abi");
     q1.where(`addresses.${network}`).equals(contractAddress);
-    q1.exec((err, result) => {
+    q1.exec((err, abi) => {
+      abiJson = JSON.parse(abi.abi);
       let blockchainQuery = new BlockchainQuery(
         transaction,
-        result.abi
+        abiJson
       );
       blockchainQuery.run(res);
     });
-  } catch (error) {
-    res.status(404).send(error);
-  }
+    } 
+    catch (error) {
+      res.status(404).send(error);
+    }
 });
 
 

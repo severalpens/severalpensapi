@@ -1,5 +1,14 @@
 var ethers = require("ethers");
 
+function genAddress() {
+  let burnAccount = ethers.Wallet.createRandom();
+  let ba = burnAccount;
+  console.log(ba);
+  console.log(ba.address);
+  let burnAddress = ba.address;
+  return burnAddress;
+}
+
 
 class BlockchainQuery {
   constructor(tx, abi) {
@@ -17,38 +26,37 @@ class BlockchainQuery {
     let wallet = new ethers.Wallet(tx.msgSenderPrivateKey, provider);
     this.ethersContract = new ethers.Contract(
       tx.contractAddress,
-      JSON.parse(abi),
+      abi,
       wallet
     );
   }
 
   run(res){
-    let stage = parseInt(this.tx.stage);
-    let timelock = parseInt(this.tx.timelock) || new Date().getTime();
-    let hashlock =this.tx.hashlock|| "hashlock";
-    let senderAddress=this.tx.senderAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let burnAddress = "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let recipientAddress=this.tx.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let accountAddress=thi.stx.accountAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
-    let amount = parseInt(this.tx.amount) || 1;
-    let isValid=this.tx.isValid|| true;
 
-    switch (stage) {
+    switch (this.tx.stage) {
       case 0:
-        // address _burnAddress,
-        // bytes32 _hashlock,
-        // uint256 _timelock,
-        // address _tokenContract,
-        // uint256 _amount
-        this.ethersContract.exitTransaction(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
-        .then(tx => res.send(tx));
+        let burnAddress = genAddress();
+        let hashlock =this.tx.hashlock|| "hashlock";
+        let timelock = parseInt(this.tx.timelock) || new Date().getTime();
+        let tokenAddress =this.tx.tokenAddress || "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+        let amount = parseInt(this.tx.amount) || 1;
+        console.log(this.ethersContract);
+        this.ethersContract.exitTransaction(burnAddress,hashlock,timelock,tokenAddress,amount)
+        .then(tx => res.json({tx, burnAddress}));
        break;
-       case 1:
-        this.ethersContract.entryTransaction(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+       case 1: 
+
+       contractId =this.tx.contractId|| "contractId";
+       let recipient =this.tx.recipientAddress|| "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
+       let preimage =this.tx.preimage|| "preimage";
+
+
+        this.ethersContract.entryTransaction(contractId, recipient, preimage)
         .then(tx => res.send(tx));
      break;
        case 2:
-        this.ethersContract.reclaimTransaction(id,uuid,key,senderAddress,recipientAddress,amount,isValid)
+       contractId =this.tx.contractId|| "contractId";
+        this.ethersContract.reclaimTransaction(contractId)
         .then(tx => res.send(tx));
      break;
       default:
