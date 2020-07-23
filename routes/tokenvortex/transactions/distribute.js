@@ -143,23 +143,23 @@ router.post("/recipientbalance",  async function (req, res) {
 router.post("/refreshbalance",  async function (req, res) {
   //extract args
   let {network, contract_id,account_id} = req.body;
-  // if(!network){console.log('missing req.body.network')}
-  // if(!account_id){console.log('missing req.body.account_id')}
-  // if(!contract_id){console.log('missing req.body.contract_id')}
-  // if(network){console.log(`req.body.network: ${network}`)}
-  // if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
-  // if(account_id){console.log(`req.body.account_id: ${account_id}`)}
+  if(!network){console.log('missing req.body.network')}
+  if(!account_id){console.log('missing req.body.account_id')}
+  if(!contract_id){console.log('missing req.body.contract_id')}
+  if(network){console.log(`req.body.network: ${network}`)}
+  if(contract_id){console.log(`req.body.contract_id: ${contract_id}`)}
+  if(account_id){console.log(`req.body.account_id: ${account_id}`)}
 
   // get mongodb records
   let account = await AccountsModel.findById(account_id).exec();
   let contract = await ContractsModel.findById(contract_id).exec();
-  // if(!account.address){console.log('missing account.address')}
-  // if(!account.privateKey){console.log('missing account.privateKey')}
+  if(!account.address){console.log('missing account.address')}
+  if(!account.privateKey){console.log('missing account.privateKey')}
   
 
   // parse mongodb records
   let contractAddress = contract.addresses[network];
-  // if(!contractAddress){console.log('missing contractAddress')}
+  if(!contractAddress){console.log('missing contractAddress')}
 
   let provider = ethers.getDefaultProvider(network);
   let wallet = new ethers.Wallet(account.privateKey, provider);
