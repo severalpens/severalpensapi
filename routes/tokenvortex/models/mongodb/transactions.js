@@ -15,9 +15,9 @@ var transactionsSchema = new Schema({
   senderAddress: String,
   recipientAddress: String,
   burnAddress: String,
-  triggerHash: String,
+  contractId: String,
+  log_id: String,
   transactionHash: String,
-  isValid: Boolean,
   status: String,
   creationUtc: Number,
  });
@@ -25,51 +25,5 @@ var transactionsSchema = new Schema({
   var TransactionsModel = mongoose.model("transactions", transactionsSchema, "transactions");
 
 
- var oldSchema = {
-  transfer_id: String,
-  network: String,
-  contract_id: String,
-  token_id: String,
-  owner_id: String,
-  stage: Number,
-  senderAddress: String,
-  recipientAddress: String,
-  amount: Number,
-  triggerHash: String,
-  transactionHash: String,
-  isValid: Boolean,
-  status: String,
- }
-
-  var oldOldSchema = {
-    id: Number,
-    uuid: String,
-    transactionHash: String,
-    stage: Number,
-    key: String,
-    msgSender: String,
-    network: String,
-    transfer_id: String,
-    contractAddress: String,
-    senderAddress: String,
-    recipientAddress: String,
-    amount: Number,
-    isValid: Boolean,
-    status: String   
-      }
-
-
-    var oldOldSchema = {
-      triggerHash: String,
-      transactionHash: String,
-      logs: Array,
-      network: String,
-      transfer_id: String,
-      contractAddress: String,
-      senderAddress: String,
-      recipientAddress: String,
-      amount: String,
-      status: String
-      }
   module.exports = TransactionsModel;
 

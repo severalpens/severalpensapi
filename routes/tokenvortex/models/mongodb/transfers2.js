@@ -12,6 +12,7 @@ var transfers2Schema = new Schema({
   senderNetwork: String,
   senderAddress: String,
   burnAddress: String,
+  contractId: String,
   recipientNetwork: String,
   recipientAddress: String,
   amount: Number,

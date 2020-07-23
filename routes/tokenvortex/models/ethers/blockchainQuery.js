@@ -1,4 +1,5 @@
 var ethers = require("ethers");
+var LogsModel = require("../mongodb/logs");
 
 function genAddress() {
   let burnAccount = ethers.Wallet.createRandom();
@@ -31,7 +32,7 @@ class BlockchainQuery {
     );
   }
 
-  run(res){
+ async run(res){
 
     switch (this.tx.stage) {
       case 0:
@@ -41,8 +42,12 @@ class BlockchainQuery {
         let tokenAddress =this.tx.tokenAddress || "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
         let amount = parseInt(this.tx.amount) || 1;
         console.log(this.ethersContract);
-        this.ethersContract.exitTransaction(burnAddress,hashlock,timelock,tokenAddress,amount)
-        .then(tx => res.json({tx, burnAddress}));
+        let ethersTx = await this.ethersContract.exitTransaction(burnAddress,hashlock,timelock,tokenAddress,amount);
+        res.json({tx: ethersTx, burnAddress});
+        let log = new LogsModel();
+        log.transaction_id = this.tx._id;
+        log.log = await ethersTx.wait();
+        log.save();
        break;
        case 1: 
 
