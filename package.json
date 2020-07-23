@@ -1,11 +1,13 @@
 {
   "name": "severalpensapi",
   "version": "0.0.0",
+  "engines": {
+    "node": "12.18.0",
+    "npm:": "6.14.4"
+  },
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "test": "mocha",
-    "build": "waffle"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
@@ -17,7 +19,6 @@
     "delay": "^4.3.0",
     "dotenv": "^8.2.0",
     "ejs": "~2.6.1",
-    "ethereum-waffle": "^3.0.2",
     "ethers": "^5.0.4",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
