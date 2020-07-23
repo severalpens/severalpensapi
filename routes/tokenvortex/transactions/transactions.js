@@ -3,6 +3,9 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
+router.use(express.json({limit: '50mb'}));
+router.use(express.urlencoded({limit: '50mb',extended: false}));
+router.use(bodyParser.json({extended: false}));
 
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
@@ -10,6 +13,7 @@ var deleteRouter = require("./delete");
 var runRouter = require("./run");
 var distributeRouter = require("./distribute");
 
+router.use(cors());
 
 
 router.use('/insert',insertRouter);

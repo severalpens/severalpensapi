@@ -1,6 +1,6 @@
 var express = require("express");
-var router = express.Router();
 var cors = require("cors");
+var router = express.Router();
 router.use(cors());
 var bodyParser = require("body-parser");
 router.use(bodyParser.json());
@@ -8,6 +8,33 @@ var ContractsModel = require("../models/mongodb/contracts");
 var TransfersModel = require("../models/mongodb/transfers");
 var BlockchainQuery = require("../models/ethers/blockchainQuery");
 var TransactionProtocol = require("../models/ethers/transactionProtocol");
+router.use(cors());
+router.use(express.json({limit: '50mb'}));
+router.use(express.urlencoded({limit: '50mb',extended: false}));
+router.use(bodyParser.json({extended: false}));
+
+
+router.post("/", async function (req, res) {
+  try {
+    let transaction = req.body;
+    let { network, contractAddress } = transaction;
+    let q1 = ContractsModel.findOne({});
+    q1.select("abi");
+    q1.where(`addresses.${network}`).equals(contractAddress);
+    q1.exec((err, abi) => {
+      abiJson = JSON.parse(abi.abi);
+      let blockchainQuery = new BlockchainQuery(
+        transaction,
+        abiJson
+      );
+      blockchainQuery.run(res);
+    });
+    } 
+    catch (error) {
+      res.status(404).send(error);
+    }
+});
+
 
 router.post("/transactionprotocol",  async function (req, res) {
   let transfersModel = new TransfersModel();
@@ -45,28 +72,6 @@ router.get("/refresh/:_id",  async function (req, res) {
 })
 
 
-
-
-router.post("/", function (req, res) {
-  try {
-    let transaction = req.body;
-    let { network, contractAddress } = transaction;
-    let q1 = ContractsModel.findOne({});
-    q1.select("abi");
-    q1.where(`addresses.${network}`).equals(contractAddress);
-    q1.exec((err, abi) => {
-      abiJson = JSON.parse(abi.abi);
-      let blockchainQuery = new BlockchainQuery(
-        transaction,
-        abiJson
-      );
-      blockchainQuery.run(res);
-    });
-    } 
-    catch (error) {
-      res.status(404).send(error);
-    }
-});
 
 
 router.post("/balances", function (req, res) {
