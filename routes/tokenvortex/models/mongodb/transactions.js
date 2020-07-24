@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var transactionsSchema = new Schema({
   transfer_id: String,
+  desc: String,
   msgSenderAddress: String,
   msgSenderPrivateKey: String,
   hashSecret: String,

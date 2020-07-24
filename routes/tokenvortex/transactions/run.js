@@ -17,6 +17,7 @@ router.use(bodyParser.json({extended: false}));
 router.post("/", async function (req, res) {
   try {
     let transaction = req.body;
+    transaction.user_id = req.user_id;
     let { network, contractAddress } = transaction;
     let q1 = ContractsModel.findOne({});
     q1.select("abi");
@@ -25,13 +26,14 @@ router.post("/", async function (req, res) {
       abiJson = JSON.parse(abi.abi);
       let blockchainQuery = new BlockchainQuery(
         transaction,
-        abiJson
+        abiJson,
+        res
       );
       blockchainQuery.run(res);
     });
     } 
     catch (error) {
-      res.status(404).send(error);
+      res.json({tx: error, burnAddress: '0x0'});
     }
 });
 

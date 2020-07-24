@@ -6,6 +6,7 @@ var transfersSchema = new Schema({
   contract_id: String,
   token_id: String,
   account_id: String,
+  desc: String,
   stage: Number,
   status: String,
   logbook: Array,

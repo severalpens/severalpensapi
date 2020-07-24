@@ -10,6 +10,7 @@ router.use(bodyParser.json({extended: false}));
 
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
+var logsRouter = require('./logs/logs');
 
 var transfersRouter = require('./transfers/transfers');
 router.use(cors());
@@ -23,6 +24,7 @@ const { generateKeyPair } = require('crypto');
 
 router.use('/accounts', accountsRouter);
 router.use('/contracts', contractsRouter);
+router.use('/logs', logsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
 
