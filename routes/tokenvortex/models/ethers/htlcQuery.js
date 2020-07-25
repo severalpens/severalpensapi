@@ -8,7 +8,7 @@ function genAddress() {
   return burnAddress;
 }
 
-class BlockchainQuery {
+class HtlcQuery {
   constructor(tx, abi, res) {
     this.tx = tx;
     let provider = ethers.getDefaultProvider(tx.network);
@@ -34,7 +34,8 @@ class BlockchainQuery {
         let tokenAddress =
           this.tx.tokenAddress || "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
         let amount = parseInt(this.tx.amount) || 1;
-        this.ethersContract['exitTransaction'](burnAddress, hashlock, timelock, tokenAddress, amount)
+        this.ethersContract
+          .newContract(burnAddress, hashlock, timelock, tokenAddress, amount)
           .then((tx) => {
             res.json({ tx, burnAddress });
             let log = new LogsModel();
@@ -78,19 +79,16 @@ class BlockchainQuery {
         break;
       case 1:
         contractId = this.tx.contractId || "contractId";
-        let recipient =
-          this.tx.recipientAddress ||
-          "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
         let preimage = this.tx.preimage || "preimage";
 
         this.ethersContract
-          .entryTransaction(contractId, recipient, preimage)
+          .withdraw(contractId,  preimage)
           .then((tx) => res.send(tx));
         break;
       case 2:
         contractId = this.tx.contractId || "contractId";
         this.ethersContract
-          .reclaimTransaction(contractId)
+          .refund(contractId)
           .then((tx) => res.send(tx));
         break;
       default:
@@ -128,7 +126,7 @@ class BlockchainQuery {
   }
 }
 
-module.exports = BlockchainQuery;
+module.exports = HtlcQuery;
 
 /*
 1: Why not the address? - Because ethers requires the abi code to create the appropriate contract object.

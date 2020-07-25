@@ -4,10 +4,8 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "ganache-start": "ganache-cli --networkId 4447 --port 7545",
-    "start": "node ./bin/www",
-    "ethereum-htlc": "truffle compile"
-  },
+    "start": "node ./bin/www"
+ },
   "keywords": [
     "ethereum",
     "solidity"
@@ -30,14 +28,7 @@
     "mongoose": "^5.9.7",
     "morgan": "~1.9.1",
     "socket.io": "^2.3.0",
+    "solc": "^0.5.17",
     "statman-stopwatch": "^2.11.1"
-  },
-  "devDependencies": {
-    "eslint": "^5.13.0",
-    "ethlint": "^1.2.5",
-    "ganache-cli": "^6.9.0",
-    "truffle": "^5.1.0",
-    "truffle-assertions": "^0.8.2",
-    "truffle-hdwallet-provider": "^1.0.3"
   }
 }

@@ -8,7 +8,7 @@ function genAddress() {
   return burnAddress;
 }
 
-class BlockchainQuery {
+class BlockchainDynamicQuery {
   constructor(tx, abi, res) {
     this.tx = tx;
     let provider = ethers.getDefaultProvider(tx.network);

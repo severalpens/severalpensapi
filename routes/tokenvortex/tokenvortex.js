@@ -11,6 +11,7 @@ router.use(bodyParser.json({extended: false}));
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
 var logsRouter = require('./logs/logs');
+var txbsRouter = require('./txbs/txbs');
 
 var transfersRouter = require('./transfers/transfers');
 router.use(cors());
@@ -27,6 +28,7 @@ router.use('/contracts', contractsRouter);
 router.use('/logs', logsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
+router.use('/txbs', txbsRouter);
 
 
 router.get('/generatekeypair/:_id', function(req, res) {
