@@ -16,7 +16,7 @@ var transactionsSchema = new Schema({
   senderAddress: String,
   recipientAddress: String,
   burnAddress: String,
-  contractId: String,
+  returnVal: String,
   log_id: String,
   transactionHash: String,
   status: String,

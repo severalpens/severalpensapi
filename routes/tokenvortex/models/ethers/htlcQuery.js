@@ -78,17 +78,17 @@ class HtlcQuery {
 
         break;
       case 1:
-        contractId = this.tx.contractId || "contractId";
+        returnVal = this.tx.returnVal || "returnVal";
         let preimage = this.tx.preimage || "preimage";
 
         this.ethersContract
-          .withdraw(contractId,  preimage)
+          .withdraw(returnVal,  preimage)
           .then((tx) => res.send(tx));
         break;
       case 2:
-        contractId = this.tx.contractId || "contractId";
+        returnVal = this.tx.returnVal || "returnVal";
         this.ethersContract
-          .refund(contractId)
+          .refund(returnVal)
           .then((tx) => res.send(tx));
         break;
       default:

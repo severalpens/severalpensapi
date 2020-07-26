@@ -7,11 +7,17 @@ var TxbsModel = require('../models/mongodb/txbs');
 
 
 
-router.post("/", bodyParser.json(), function(req, res, next) {
+router.post("/", bodyParser.json(), async function(req, res, next) {
   try {
-    TxbsModel.create(req.body).then(result => {
+    delete req.body._id;
+    let txbs = new TxbsModel(req.body);
+      let result = await txbs.save();
       res.send(result);
-    });
+
+  //   TxbsModel.create(req.body).then(result => {
+  //     console.log(result);
+  //     res.send(result);
+  //   });
   } catch (error) {
     res.status(404).send(error);
   }

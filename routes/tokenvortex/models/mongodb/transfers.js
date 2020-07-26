@@ -43,7 +43,7 @@ var transfersSchema = new Schema({
   
   // generated values
   burnAddress: String,
-  contractId: String,
+  returnVal: String,
   withdrawn: Boolean,
   refunded: Boolean,
   preimage: String,

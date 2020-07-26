@@ -77,20 +77,20 @@ class BlockchainQuery {
 
         break;
       case 1:
-        contractId = this.tx.contractId || "contractId";
+        returnVal = this.tx.returnVal || "returnVal";
         let recipient =
           this.tx.recipientAddress ||
           "0x4B7C980fDb1bb81a36967fE9CB245531f4751804";
         let preimage = this.tx.preimage || "preimage";
 
         this.ethersContract
-          .entryTransaction(contractId, recipient, preimage)
+          .entryTransaction(returnVal, recipient, preimage)
           .then((tx) => res.send(tx));
         break;
       case 2:
-        contractId = this.tx.contractId || "contractId";
+        returnVal = this.tx.returnVal || "returnVal";
         this.ethersContract
-          .reclaimTransaction(contractId)
+          .reclaimTransaction(returnVal)
           .then((tx) => res.send(tx));
         break;
       default:

@@ -6,7 +6,7 @@ var bodyParser = require("body-parser");
 router.use(bodyParser.json());
 var ContractsModel = require("../models/mongodb/contracts");
 var TransfersModel = require("../models/mongodb/transfers");
-var BlockchainQuery = require("../models/ethers/blockchainQuery");
+var BlockchainQuery = require("../models/ethers/tbxBlockchainQuery");
 var HtlcQuery = require("../models/ethers/htlcQuery");
 var TransactionProtocol = require("../models/ethers/transactionProtocol");
 router.use(cors());
@@ -16,32 +16,21 @@ router.use(bodyParser.json({extended: false}));
 
 
 router.post("/", async function (req, res) {
-  try {
-    let transaction = req.body;
-    transaction.user_id = req.user_id;
-    let { network, contractAddress, runVersion } = transaction;
-    let q1 = ContractsModel.findOne({});
-    q1.select("abi");
-    q1.where(`addresses.${network}`).equals(contractAddress);
-    q1.exec((err, abi) => {
-      abiJson = JSON.parse(abi.abi);
-      switch (runVersion) {
-        case 1:
-          let htlcQuery = new HtlcQuery(transaction,abiJson,res);
-          htlcQuery.run(res);
-          break;
-              
-        default:
-          let blockchainQuery = new BlockchainQuery(transaction,abiJson,res);
-          blockchainQuery.run(res);
-          break;
+  // try {
+    let {transfer, txb} = req.body;
+    transfer.user_id = req.user_id;
+    txb.user_id = req.user_id;
+    let network = transfer[txb.networkProp.toString()];
 
-      }
+    let q1 = ContractsModel.findById(transfer.contract_id);
+    q1.exec((err, contract) => {
+      let blockchainQuery = new BlockchainQuery(contract, transfer,txb,  network);
+      blockchainQuery.run(res);
     });
-    } 
-    catch (error) {
-      res.json({tx: error, burnAddress: '0x0'});
-    }
+    // } 
+    // catch (error) {
+    //   res.json({tx: error, burnAddress: '0x0'});
+    // }
 });
 
 
