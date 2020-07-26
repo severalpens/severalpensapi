@@ -4,6 +4,8 @@ var Schema = mongoose.Schema;
 var txbsSchema = new Schema({
   transfer_id: String,
   desc: String,
+  methodName: String,
+  methodArgs: Array,
   msgSenderAddress: String,
   msgSenderPrivateKey: String,
   hashSecret: String,

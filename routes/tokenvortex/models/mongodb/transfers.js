@@ -2,28 +2,51 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var transfersSchema = new Schema({
-  user_id: String,  
+
+
+  // Props populated by the constructor
+  user_id: String,
+  creationUtc: Number,
+  
+  // Mongodb IDs
   contract_id: String,
   token_id: String,
-  account_id: String,
+  msgSender_id: String,
+  sender_id: String,
+  recipient_id: String,
+  
+  //log fields
   desc: String,
   stage: Number,
   status: String,
-  logbook: Array,
+
+  
+  //native transaction arg options
   senderNetwork: String,
+  recipientNetwork: String,
+  amount: Number,
+  hashSecret: String,
+  hashlock: String,
+  timelock: Number,
+  
+  //derived  transaction arg options
+  msgSenderAddress: String, 
+  msgSenderPrivateKey: String,
   senderAddress: String,
+  senderPrivateKey: String,
+  recipientAddress: String,
+  recipientPrivateKey: String,
+  senderContractAddress: String,
+  recipientContractAddress: String,
+  senderTokenAddress: String,
+  recipientTokenAddress: String,
+  
+  // generated values
   burnAddress: String,
   contractId: String,
-  recipientNetwork: String,
-  recipientAddress: String,
-  amount: Number,
-  timelock: Number,
   withdrawn: Boolean,
   refunded: Boolean,
   preimage: String,
-  hashlock: String,
-  hashSecret: String,
-  creationUtc: Number,
   });
 
   
