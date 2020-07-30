@@ -8,17 +8,14 @@ router.use(express.json({limit: '50mb'}));
 router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
 
+router.use(cors());
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
 var logsRouter = require('./logs/logs');
-var txbsRouter = require('./txbs/txbs');
-
+var txbdsRouter = require('./txbds/txbds');
+var tfrbdsRouter = require('./tfrbds/tfrbds');
 var transfersRouter = require('./transfers/transfers');
-router.use(cors());
 var transactionsRouter = require('./transactions/transactions');
-
-
-
 const { generateKeyPair } = require('crypto');
 
 
@@ -28,7 +25,8 @@ router.use('/contracts', contractsRouter);
 router.use('/logs', logsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
-router.use('/txbs', txbsRouter);
+router.use('/tfrbds', tfrbdsRouter);
+router.use('/txbds', txbdsRouter);
 
 
 router.get('/generatekeypair/:_id', function(req, res) {
