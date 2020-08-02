@@ -35,6 +35,7 @@ var contractsSchema = new Schema({
         },
     soliditycode: String,
     abi: String,
+    abiJson: Array,
     isActive: Boolean
   });
   

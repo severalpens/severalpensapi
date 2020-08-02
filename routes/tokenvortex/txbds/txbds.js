@@ -24,15 +24,16 @@ router.use('/distribute',distributeRouter);
 
 var TxbdsModel = require('../models/mongodb/txbds');
 
-router.get("/:transfer_id", bodyParser.json(), function(req, res, next) {
-  TxbdsModel.find({transfer_id: req.params.transfer_id})
+router.get("/:tfrbd_id", bodyParser.json(), function(req, res, next) {
+  TxbdsModel.find({tfrbd_id: req.params.tfrbd_id})
     .collection(TxbdsModel.collection)
     .exec((err, txbds) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-
+        console.log('txbds');
+        console.log(txbds);
         return res.send(txbds);
       }
     });
