@@ -9,6 +9,7 @@ var TxbdsModel = require('../models/mongodb/txbds');
 
 router.post("/", bodyParser.json(), function(req, res, next) {
   req.body.user_id = req.user_id;
+  delete req.body._id;
   try {
     TxbdsModel.create(req.body).then(result => {
       res.send(result);

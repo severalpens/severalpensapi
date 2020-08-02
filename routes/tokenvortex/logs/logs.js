@@ -22,7 +22,6 @@ router.get("/", function (req, res, next) {
     } else {
       res.send(logs);
 
-      console.log(logs);
     }
   });
 });

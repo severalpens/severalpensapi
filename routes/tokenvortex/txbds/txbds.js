@@ -32,8 +32,6 @@ router.get("/:tfrbd_id", bodyParser.json(), function(req, res, next) {
         return res.send(err);
       } 
       else {
-        console.log('txbds');
-        console.log(txbds);
         return res.send(txbds);
       }
     });

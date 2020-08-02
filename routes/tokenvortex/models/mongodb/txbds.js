@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var txbdsSchema = new Schema({
+  id: Number,
   user_id: String,
   stage: Number,
   status: String,
@@ -19,14 +20,3 @@ var txbdsSchema = new Schema({
 
 
   module.exports = txbdsModel;
-
-  // _id?: string;
-  // stage: number;
-  // status: string;
-  // tfrbd_id: string;
-  // network: string;
-  // msgSender_id: string;
-  // contract_id: string;
-  // method: any;
-  // amount: number;
-  // creationUtc: number;
