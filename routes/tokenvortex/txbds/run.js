@@ -18,27 +18,16 @@ router.use(bodyParser.json({extended: false}));
 
 
 router.post("/", async function (req, res) {
-    let txbd = req.body;
-    txbd.user_id = req.user_id;
+  let txbd = req.body[0];
+  let inputs = req.body[1];
     let contract = await ContractsModel.findById(txbd.contract_id);
     let abi = JSON.parse(contract.abi);
     let msgSender = await AccountsModel.findById(txbd.msgSender_id);
     let provider = ethers.getDefaultProvider(txbd.network);
     let wallet = new ethers.Wallet(msgSender.privateKey, provider);
     let ethersContract = new ethers.Contract(contract.addresses[txbd.network], abi, wallet);
-    let methodArgs = txbd.method.inputs.map(x =>{ 
-      let y = x;
-      switch (x.type.slice(0,3)) {
-        case 'uin':
-          y.value = parseInt(x.value) || 1;
-          break;
-        default:
-          break;
-      }
-      return y;
-    
-    });
     let method = ethersContract[txbd.method.name];
+    let methodArgs = inputs.map(x => x.value);
     method(...methodArgs)
       .then((tx) => {
         res.json({ tx });

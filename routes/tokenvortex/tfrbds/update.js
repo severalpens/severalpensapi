@@ -9,7 +9,10 @@ var TransfersModel = require('../models/mongodb/tfrbds');
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
+  console.log('object');
   let _id = req.params._id;
+  req.body.user_id = req.user_id;
+  console.log(req.body);
   if (_id) {
     TransfersModel.updateOne(
       { _id },
