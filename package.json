@@ -4,8 +4,11 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/www"
- },
+    "server": "node ./bin/www",
+    "flatten": "npx waffle flatten",
+    "start": "node index.js",
+    "wafflebuild": "waffle"
+  },
   "keywords": [
     "ethereum",
     "solidity"
@@ -21,6 +24,7 @@
     "delay": "^4.3.0",
     "dotenv": "^8.2.0",
     "ejs": "~2.6.1",
+    "ethereum-waffle": "^3.0.2",
     "ethers": "^5.0.4",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
