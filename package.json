@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "server": "node ./bin/www",
+    "start": "node ./bin/www",
     "flatten": "npx waffle flatten",
-    "start": "node index.js",
+    "index": "node index.js",
     "wafflebuild": "waffle"
   },
   "keywords": [
@@ -33,6 +33,7 @@
     "morgan": "~1.9.1",
     "socket.io": "^2.3.0",
     "solc": "^0.5.17",
-    "statman-stopwatch": "^2.11.1"
+    "statman-stopwatch": "^2.11.1",
+    "winston": "^3.3.3"
   }
 }

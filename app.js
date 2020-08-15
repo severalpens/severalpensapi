@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
+var btcRouter = require('./routes/btc/btc');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,7 +20,7 @@ app.use(express.json({limit: '50mb'}));
 app.use(express.urlencoded({limit: '50mb',extended: false}));
 app.use(bodyParser.json({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/btc', btcRouter);
 app.use((req,res,next) => {
   try{
     let token = req.headers.authorization.split(' ')[1];
