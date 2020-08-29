@@ -6,6 +6,7 @@ var bodyParser = require("body-parser");
 router.use(express.json({limit: '50mb'}));
 router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
+var parklandsLogsModel = require("../models/mongodb/parklandsLogs");
 
 var updateRouter = require("./update");
 var insertRouter = require("./insert");
@@ -20,6 +21,11 @@ router.use('/delete',deleteRouter);
 var SchedulesModel = require('../models/mongodb/schedules');
 
 router.get("/", bodyParser.json(), function(req, res, next) {
+  let log = new parklandsLogsModel();
+  log.type = 'schedules';
+  log.username = req.username;
+  log.save();
+
   SchedulesModel.find({})
     .collection(SchedulesModel.collection)
     .exec((err, schedules) => {
@@ -32,8 +38,14 @@ router.get("/", bodyParser.json(), function(req, res, next) {
     });
 });
 
+
+
 router.get("/:id", bodyParser.json(), function(req, res, next) {
   let id = req.params.id;
+  let log = new parklandsLogsModel();
+  log.type = `schedule for ${id}`;
+  log.username = req.username;
+  // console.log('asdfasf');
   SchedulesModel.findOne({id})
     .collection(SchedulesModel.collection)
     .exec((err, schedule) => {
@@ -41,7 +53,8 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
         return res.send(err);
       } 
       else {
-        console.log(schedule);
+        log.result = 'success';
+        log.save();
         return res.send(schedule);
       }
     });
