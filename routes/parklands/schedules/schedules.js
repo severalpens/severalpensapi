@@ -43,6 +43,7 @@ router.get("/", bodyParser.json(), function(req, res, next) {
 router.get("/:id", bodyParser.json(), function(req, res, next) {
   let id = req.params.id;
   let log = new parklandsLogsModel();
+  log.params = req.params;
   log.type = `schedule for ${id}`;
   log.username = req.username;
   // console.log('asdfasf');
@@ -50,12 +51,14 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
   .collection(SchedulesModel.collection)
   .exec((err, schedule) => {
     if (err != null) {
+      log.result = err;
+      log.save();
       return res.send(err);
     } 
     else {
       log.result = schedule;
       log.save();
-        return res.send(schedule);
+      return res.send(schedule);
       }
     });
 });
