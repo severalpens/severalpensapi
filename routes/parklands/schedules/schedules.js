@@ -45,16 +45,16 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
   let log = new parklandsLogsModel();
   log.type = `schedule for ${id}`;
   log.username = req.username;
-  log.save();
   // console.log('asdfasf');
   SchedulesModel.findOne({id})
-    .collection(SchedulesModel.collection)
-    .exec((err, schedule) => {
-      if (err != null) {
-        return res.send(err);
-      } 
-      else {
-        log.result = 'success';
+  .collection(SchedulesModel.collection)
+  .exec((err, schedule) => {
+    if (err != null) {
+      return res.send(err);
+    } 
+    else {
+      log.result = schedule;
+      log.save();
         return res.send(schedule);
       }
     });
