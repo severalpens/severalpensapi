@@ -6,12 +6,12 @@ var bodyParser = require("body-parser");
 var SchedulesModel = require('../models/mongodb/schedules');
 
 
-router.post("/:_id", bodyParser.json(), function(req, res, next) {
+router.post("/:id", bodyParser.json(), function(req, res, next) {
   try {
-  let _id = req.params._id;
-  if (_id) {
+  let id = req.params.id;
+  if (id) {
     SchedulesModel.updateOne(
-      { _id},
+      { id},
       req.body,
       function(err, result) {
         res.send(result);

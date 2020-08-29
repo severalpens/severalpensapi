@@ -32,4 +32,19 @@ router.get("/", bodyParser.json(), function(req, res, next) {
     });
 });
 
+router.get("/:id", bodyParser.json(), function(req, res, next) {
+  let id = req.params.id;
+  SchedulesModel.findOne({id})
+    .collection(SchedulesModel.collection)
+    .exec((err, schedule) => {
+      if (err != null) {
+        return res.send(err);
+      } 
+      else {
+        console.log(schedule);
+        return res.send(schedule);
+      }
+    });
+});
+
 module.exports = router;
