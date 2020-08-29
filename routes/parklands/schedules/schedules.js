@@ -45,6 +45,7 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
   let log = new parklandsLogsModel();
   log.type = `schedule for ${id}`;
   log.username = req.username;
+  log.save();
   // console.log('asdfasf');
   SchedulesModel.findOne({id})
     .collection(SchedulesModel.collection)
@@ -54,7 +55,6 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
       } 
       else {
         log.result = 'success';
-        log.save();
         return res.send(schedule);
       }
     });
