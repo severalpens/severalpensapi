@@ -11,7 +11,7 @@ var router = express.Router();
 
 router.use(cors());
 router.use(bodyParser.json());
-router.use(cors());
+
 router.use(express.json({limit: '50mb'}));
 router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));

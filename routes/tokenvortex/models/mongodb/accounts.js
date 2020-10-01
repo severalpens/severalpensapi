@@ -7,8 +7,6 @@ var accountsSchema = new Schema({
     address: String,
     user_id: String,
     privateKey: String,
-    publicKey: String,
-    mnemonic: String,
     isLocked: Boolean,
     isActive: Boolean
   });

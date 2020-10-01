@@ -23,7 +23,7 @@ router.get("/",  function(req, res, next) {
   const query = ContractsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(ContractsModel.collection)
-query.or([{ user_id: 'public' }, { user_id: req.user_id }])
+  query.or([{ user_id: 'public' }, { user_id: req.user_id }])
   query.where('isActive').equals(true)
   query.exec((err, contracts) => {
       if (err != null) {

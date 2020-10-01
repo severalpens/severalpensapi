@@ -6,25 +6,28 @@ var bodyParser = require("body-parser");
 var AccountsModel = require("../models/mongodb/accounts");
 
 
-
-
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
+  // console.log(req.params);
+  // console.log(req.user_id);
+  // console.log(req.body);
       AccountsModel.updateOne(
         { 
           _id: req.params._id, 
           isLocked: false, 
-          owner: req.user_id
+          user_id: req.user_id
          },
         {
           name: req.body.name,
-          balance: req.body.balance,
           address: req.body.address,
           privateKey: req.body.privateKey,
-          publicKey: req.body.publicKey,
-          mnemonic: req.body.mnemonic,
         },
-      ).exec((err,result) => {
-        if(err){res.send(err)}
+      )
+      .exec((err,result) => {
+        if(err){
+          console.log(err);
+          res.send(err)
+        }
+        console.log(result);
         res.send(result)
       });
   });
