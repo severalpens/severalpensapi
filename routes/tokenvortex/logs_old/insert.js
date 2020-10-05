@@ -7,18 +7,13 @@ var LogsModel = require('../models/mongodb/logs');
 
 
 
-
-
-router.post("/:_id", bodyParser.json(), function(req, res, next) {
-    let _id = req.params._id;
-    LogsModel.updateOne({ _id }, { isActive: false }).then(result => {
-      return res.send(result);
-    });
+router.post("/", bodyParser.json(), function(req, res, next) {
+  let log = req.body;
+  log.user_id = req.user_id;
+  log.isActive = true;
+  LogsModel.create(log).then(result => {
+    res.send(result);
   });
-  
-    
-
-
-
+});
 
 module.exports = router;

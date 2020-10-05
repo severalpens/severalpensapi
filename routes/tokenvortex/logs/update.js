@@ -3,22 +3,19 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var SequencesModel = require('../models/mongodb/sequences');
+var LogsModel = require('../models/mongodb/logs');
 
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   if (_id) {
-    SequencesModel.updateOne(
+    LogsModel.updateOne(
       { _id },
       {
         fungible: true,
         symbol: req.body.symbol,
         name: req.body.name,
-        fled_ids: req.body.fled_ids,
-        step_ids: req.body.step_ids,
-        log_ids: req.body.log_ids,
         version: req.body.version,
         addresses: req.body.addresses,
         publishers: req.body.publishers,

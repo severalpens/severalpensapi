@@ -16,7 +16,6 @@ var SequencesModel = require('../models/mongodb/sequences');
 
 
 router.get("/",  function(req, res, next) {
-  console.log(req.user_id);
   const query = SequencesModel.find(); 
   query.setOptions({ lean : true });
   query.collection(SequencesModel.collection)

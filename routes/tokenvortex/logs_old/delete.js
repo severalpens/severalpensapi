@@ -18,6 +18,13 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   
     
 
+  router.delete("/all", bodyParser.json(), function(req, res, next) {
+    LogsModel.deleteMany({}, (result) => {
+      return res.send('LogsModel truncated')
+    })
+  });
+  
+    
 
 
 

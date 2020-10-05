@@ -16,7 +16,6 @@ var FledsModel = require('../models/mongodb/fleds');
 
 
 router.get("/",  function(req, res, next) {
-  console.log(req.user_id);
   const query = FledsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(FledsModel.collection)
@@ -27,7 +26,6 @@ router.get("/",  function(req, res, next) {
         return res.send(err);
       } 
       else {
-        console.log(fleds);
         return res.send(fleds);
       }
     });

@@ -19,7 +19,6 @@ var ContractsModel = require('../models/mongodb/contracts');
 
 
 router.get("/",  function(req, res, next) {
-  console.log(req.user_id);
   const query = ContractsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(ContractsModel.collection)

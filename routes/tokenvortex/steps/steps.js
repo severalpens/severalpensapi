@@ -16,7 +16,6 @@ var StepsModel = require('../models/mongodb/steps');
 
 
 router.get("/",  function(req, res, next) {
-  console.log(req.user_id);
   const query = StepsModel.find(); 
   query.setOptions({ lean : true });
   query.collection(StepsModel.collection)
@@ -27,7 +26,6 @@ router.get("/",  function(req, res, next) {
         return res.send(err);
       } 
       else {
-        console.log(steps);
         return res.send(steps);
       }
     });

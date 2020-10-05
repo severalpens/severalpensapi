@@ -2,15 +2,11 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var logsSchema = new Schema({
-  transaction_id: String,
-  user_id: String,
-  network: String,
-  log: Object,
-  timestamp: Number
- });
+    name: String,
+    user_id: String,
+    isActive: Boolean
+  });
   
-  var logsModel = mongoose.model("logs", logsSchema, "logs");
-
-
-  module.exports = logsModel;
-
+  var LogsModel = mongoose.model("logs", logsSchema, "logs");
+  
+  module.exports = LogsModel;
