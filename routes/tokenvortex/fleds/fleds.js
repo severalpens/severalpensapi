@@ -12,30 +12,31 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var SequencesModel = require('../models/mongodb/sequences');
+var FledsModel = require('../models/mongodb/fleds');
 
 
 router.get("/",  function(req, res, next) {
   console.log(req.user_id);
-  const query = SequencesModel.find(); 
+  const query = FledsModel.find(); 
   query.setOptions({ lean : true });
-  query.collection(SequencesModel.collection)
+  query.collection(FledsModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
   query.where('isActive').equals(true)
-  query.exec((err, sequences) => {
+  query.exec((err, fleds) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        return res.send(sequences);
+        console.log(fleds);
+        return res.send(fleds);
       }
     });
 });
 
 
 router.get("/associative", bodyParser.json(), function(req, res, next) {
-  SequencesModel.find()
-    .collection(SequencesModel.collection)
+  FledsModel.find()
+    .collection(FledsModel.collection)
     .exec((err, body) => {
       if (err != null) {
         return res.send(err);
@@ -54,7 +55,7 @@ router.get("/associative", bodyParser.json(), function(req, res, next) {
 
 router.get("/:id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  SequencesModel.findOne({ _id }).exec((err, result) => {
+  FledsModel.findOne({ _id }).exec((err, result) => {
     if(err){
       return res.send(err)
     }else{
@@ -65,7 +66,7 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
 
 router.get("/:address", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  SequencesModel.findOne({ _id }).exec((err, result) => {
+  FledsModel.findOne({ _id }).exec((err, result) => {
     res.send(result);
   });
 });
@@ -74,7 +75,7 @@ router.get("/:address", bodyParser.json(), function(req, res, next) {
 router.get("/:network/:_id/address", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   let network = req.params.network;
-   SequencesModel.findOne({_id}).then((result) => {
+   FledsModel.findOne({_id}).then((result) => {
       res.send(
         { 
           _id: _id,
@@ -89,7 +90,7 @@ router.get("/:network/:_id/address", bodyParser.json(), function(req, res, next)
 
 router.get("/:_id/islocked", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  SequencesModel.findOne({_id},(err,result) => {
+  FledsModel.findOne({_id},(err,result) => {
     return res.send(result[0].locked);
   }); 
 });

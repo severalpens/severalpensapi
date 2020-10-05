@@ -5,6 +5,7 @@ var sequencesSchema = new Schema({
     name: String,
     description: String,
     user_id: String,
+    fled_ids: Array,
     isActive: Boolean
   });
   
