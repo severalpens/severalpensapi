@@ -4,11 +4,14 @@ var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
 var deleteRouter = require("./delete");
+var truncateRouter = require("./truncate");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
 var lockRouter = require("./lock");
+
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
+router.use('/truncate',truncateRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
