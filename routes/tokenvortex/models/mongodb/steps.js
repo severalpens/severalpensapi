@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var stepsSchema = new Schema({
     name: String,
+    user_id: String,
     isActive: Boolean
   });
   

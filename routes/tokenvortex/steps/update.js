@@ -3,14 +3,14 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var SequencesModel = require('../models/mongodb/sequences');
+var StepsModel = require('../models/mongodb/steps');
 
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   if (_id) {
-    SequencesModel.updateOne(
+    StepsModel.updateOne(
       { _id },
       {
         fungible: true,
