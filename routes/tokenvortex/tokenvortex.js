@@ -11,6 +11,7 @@ router.use(bodyParser.json({extended: false}));
 router.use(cors());
 var accountsRouter = require('./accounts/accounts');
 var contractsRouter = require('./contracts/contracts');
+var sequencesRouter = require('./sequences/sequences');
 var logsRouter = require('./logs/logs');
 var txbdsRouter = require('./txbds/txbds');
 var tfrbdsRouter = require('./tfrbds/tfrbds');
@@ -22,6 +23,7 @@ const { generateKeyPair } = require('crypto');
 
 router.use('/accounts', accountsRouter);
 router.use('/contracts', contractsRouter);
+router.use('/sequences', sequencesRouter);
 router.use('/logs', logsRouter);
 router.use('/transfers', transfersRouter);
 router.use('/transactions', transactionsRouter);
@@ -57,7 +59,7 @@ router.get('/newSecretHashPair/', function(req, res) {
      return  res.json(hashPair);
   });
   
-const bufToStr = b => '0x' + b.toString('hex')
+const bufToStr = b => '0x' + b.toString('hex');
 
 const sha256 = x =>
   crypto

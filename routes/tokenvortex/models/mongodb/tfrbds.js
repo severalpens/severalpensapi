@@ -12,7 +12,10 @@ var TfrbdsSchema = new Schema({
   hashSecret: String,
   hashlock: String,
   timelock: Number,
+  customFields: Array,
   amount: Number,
+  transactions: Array,
+  logs: Array,
   creationUtc: Number
 
   });
