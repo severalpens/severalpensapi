@@ -8,6 +8,7 @@ var FledsModel = require('../models/mongodb/fleds');
 
 
 router.post("/", bodyParser.json(), function(req, res, next) {
+  console.log('insert fleds reached');
   let fled = req.body;
   fled.user_id = req.user_id;
   fled.isActive = true;

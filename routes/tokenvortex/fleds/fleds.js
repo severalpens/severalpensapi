@@ -13,6 +13,11 @@ router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
 var FledsModel = require('../models/mongodb/fleds');
+var HashPair = require('../models/mongodb/fleds');
+var RandomAccount = require('../models/mongodb/fleds');
+var Timer = require('../models/mongodb/fleds');
+var Generic = require('../models/mongodb/fleds');
+
 
 
 router.get("/",  function(req, res, next) {
@@ -20,7 +25,6 @@ router.get("/",  function(req, res, next) {
   query.setOptions({ lean : true });
   query.collection(FledsModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.where('isActive').equals(true)
   query.exec((err, fleds) => {
       if (err != null) {
         return res.send(err);

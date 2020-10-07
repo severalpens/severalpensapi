@@ -9,26 +9,15 @@ var FledsModel = require('../models/mongodb/fleds');
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
+  let fled = req.body;
+  fled.user_id = req.user_id;
   if (_id) {
     FledsModel.updateOne(
       { _id },
-      {
-        fungible: true,
-        symbol: req.body.symbol,
-        name: req.body.name,
-        value: req.body.value,
-        lifespan: req.body.lifespan,
-        type: req.body.type,
-        version: req.body.version,
-        addresses: req.body.addresses,
-        publishers: req.body.publishers,
-        owner: req._id,
-        soliditycode: req.body.soliditycode,
-        abi: req.body.abi,
-      },
+      fled,
       function(err, result) {
         if(err){res.send(err)}
-        res.send([req.body, result]);
+        res.send([fled, result]);
       }
     );
   }
