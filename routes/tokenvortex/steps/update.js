@@ -5,24 +5,15 @@ router.use(cors());
 var bodyParser = require("body-parser");
 var StepsModel = require('../models/mongodb/steps');
 
-
-
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
+  let step = req.body;
+  step.user_id = req.user_id;
+
   if (_id) {
     StepsModel.updateOne(
       { _id },
-      {
-        fungible: true,
-        symbol: req.body.symbol,
-        name: req.body.name,
-        version: req.body.version,
-        addresses: req.body.addresses,
-        publishers: req.body.publishers,
-        owner: req._id,
-        soliditycode: req.body.soliditycode,
-        abi: req.body.abi,
-      },
+      step,
       function(err, result) {
         if(err){res.send(err)}
         res.send([req.body, result]);

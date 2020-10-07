@@ -7,6 +7,7 @@ var deleteRouter = require("./delete");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
 var lockRouter = require("./lock");
+
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
@@ -20,7 +21,6 @@ router.get("/",  function(req, res, next) {
   query.setOptions({ lean : true });
   query.collection(StepsModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.where('isActive').equals(true)
   query.exec((err, steps) => {
       if (err != null) {
         return res.send(err);

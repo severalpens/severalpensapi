@@ -5,12 +5,9 @@ router.use(cors());
 var bodyParser = require("body-parser");
 var StepsModel = require('../models/mongodb/steps');
 
-
-
 router.post("/", bodyParser.json(), function(req, res, next) {
   let step = req.body;
   step.user_id = req.user_id;
-  step.isActive = true;
   StepsModel.create(step).then(result => {
     res.send(result);
   });
