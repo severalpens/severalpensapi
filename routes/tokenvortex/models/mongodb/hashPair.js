@@ -14,6 +14,6 @@ var hashPairSchema = new Schema({
 
   });
   
-  var HashPairModel = mongoose.model("hashPair", hashPairSchema, "fleds");
+  var HashPairModel = mongoose.model("hashPair", hashPairSchema, "fields");
   
   module.exports = HashPairModel;

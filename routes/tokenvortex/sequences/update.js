@@ -16,7 +16,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         fungible: true,
         symbol: req.body.symbol,
         name: req.body.name,
-        fled_ids: req.body.fled_ids,
+        field_ids: req.body.field_ids,
         step_ids: req.body.step_ids,
         log_ids: req.body.log_ids,
         version: req.body.version,

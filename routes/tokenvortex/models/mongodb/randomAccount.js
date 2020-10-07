@@ -13,6 +13,6 @@ var randomAccountSchema = new Schema({
   
   });
   
-  var RandomAccountModel = mongoose.model("randomAccount", randomAccountSchema, "fleds");
+  var RandomAccountModel = mongoose.model("randomAccount", randomAccountSchema, "fields");
   
   module.exports = RandomAccountModel;

@@ -3,21 +3,21 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var FledsModel = require('../models/mongodb/fleds');
+var FieldsModel = require('../models/mongodb/fields');
 
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  let fled = req.body;
-  fled.user_id = req.user_id;
+  let field = req.body;
+  field.user_id = req.user_id;
   if (_id) {
-    FledsModel.updateOne(
+    FieldsModel.updateOne(
       { _id },
-      fled,
+      field,
       function(err, result) {
         if(err){res.send(err)}
-        res.send([fled, result]);
+        res.send([field, result]);
       }
     );
   }

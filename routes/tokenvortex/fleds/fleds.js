@@ -12,33 +12,33 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var FledsModel = require('../models/mongodb/fleds');
-var HashPair = require('../models/mongodb/fleds');
-var RandomAccount = require('../models/mongodb/fleds');
-var Timer = require('../models/mongodb/fleds');
-var Generic = require('../models/mongodb/fleds');
+var FieldsModel = require('../models/mongodb/fields');
+var HashPair = require('../models/mongodb/fields');
+var RandomAccount = require('../models/mongodb/fields');
+var Timer = require('../models/mongodb/fields');
+var Generic = require('../models/mongodb/fields');
 
 
 
 router.get("/",  function(req, res, next) {
-  const query = FledsModel.find(); 
+  const query = FieldsModel.find(); 
   query.setOptions({ lean : true });
-  query.collection(FledsModel.collection)
+  query.collection(FieldsModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.exec((err, fleds) => {
+  query.exec((err, fields) => {
       if (err != null) {
         return res.send(err);
       } 
       else {
-        return res.send(fleds);
+        return res.send(fields);
       }
     });
 });
 
 
 router.get("/associative", bodyParser.json(), function(req, res, next) {
-  FledsModel.find()
-    .collection(FledsModel.collection)
+  FieldsModel.find()
+    .collection(FieldsModel.collection)
     .exec((err, body) => {
       if (err != null) {
         return res.send(err);
@@ -57,7 +57,7 @@ router.get("/associative", bodyParser.json(), function(req, res, next) {
 
 router.get("/:id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  FledsModel.findOne({ _id }).exec((err, result) => {
+  FieldsModel.findOne({ _id }).exec((err, result) => {
     if(err){
       return res.send(err)
     }else{
@@ -68,7 +68,7 @@ router.get("/:id", bodyParser.json(), function(req, res, next) {
 
 router.get("/:address", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  FledsModel.findOne({ _id }).exec((err, result) => {
+  FieldsModel.findOne({ _id }).exec((err, result) => {
     res.send(result);
   });
 });
@@ -77,7 +77,7 @@ router.get("/:address", bodyParser.json(), function(req, res, next) {
 router.get("/:network/:_id/address", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   let network = req.params.network;
-   FledsModel.findOne({_id}).then((result) => {
+   FieldsModel.findOne({_id}).then((result) => {
       res.send(
         { 
           _id: _id,
@@ -92,7 +92,7 @@ router.get("/:network/:_id/address", bodyParser.json(), function(req, res, next)
 
 router.get("/:_id/islocked", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
-  FledsModel.findOne({_id},(err,result) => {
+  FieldsModel.findOne({_id},(err,result) => {
     return res.send(result[0].locked);
   }); 
 });

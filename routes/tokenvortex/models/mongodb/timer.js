@@ -11,6 +11,6 @@ var timerSchema = new Schema({
   value: Number
   });
   
-  var TimerModel = mongoose.model("timer", timerSchema, "fleds");
+  var TimerModel = mongoose.model("timer", timerSchema, "fields");
   
   module.exports = TimerModel;

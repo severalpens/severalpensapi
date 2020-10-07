@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var fledsSchema = new Schema({
+var fieldsSchema = new Schema({
     name: String,
     type: String,
     lifespan: String,
@@ -13,6 +13,6 @@ var fledsSchema = new Schema({
 
   });
   
-  var FledsModel = mongoose.model("fleds", fledsSchema, "fleds");
+  var FieldsModel = mongoose.model("fields", fieldsSchema, "fields");
   
-  module.exports = FledsModel;
+  module.exports = FieldsModel;

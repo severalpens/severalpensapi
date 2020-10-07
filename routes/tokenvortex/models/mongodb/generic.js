@@ -11,6 +11,6 @@ var genericSchema = new Schema({
   value: String
   });
   
-  var GenericModel = mongoose.model("generic", genericSchema, "fleds");
+  var GenericModel = mongoose.model("generic", genericSchema, "fields");
   
   module.exports = GenericModel;
