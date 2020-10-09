@@ -14,14 +14,21 @@ router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
 var StepsModel = require('../models/mongodb/steps');
+var SequencesModel = require('../models/mongodb/sequences');
 
 
-router.get("/",  function(req, res, next) {
-  const query = StepsModel.find(); 
-  query.setOptions({ lean : true });
-  query.collection(StepsModel.collection)
-  query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.exec((err, steps) => {
+router.get("/:sequence_id", async function(req, res, next) {
+  let user_id = req.user_id;
+  let _id = req.params.sequence_id;
+
+  let sequence = await SequencesModel
+  .findOne({user_id,_id})
+  .exec();
+
+  StepsModel
+  .find({})
+  .where('_id').in(sequence.step_ids)
+  .exec((err, steps) => {
       if (err != null) {
         return res.send(err);
       } 
