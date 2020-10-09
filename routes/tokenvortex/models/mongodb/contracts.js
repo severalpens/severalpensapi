@@ -25,9 +25,13 @@ var contractsSchema = new Schema({
       goerli: String,
         },    
     soliditycode: String,
-    abi: String,
-    abiJson: Array,
-    isActive: Boolean
+    abi: Array,
+    abiString: String,
+    isActive: Boolean,
+    tabbieJson: Array,
+    tabbieString: String,
+    tabbieJson: Array,
+
   });
   
   var ContractsModel = mongoose.model("contracts", contractsSchema, "contracts");

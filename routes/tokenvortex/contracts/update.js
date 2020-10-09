@@ -22,6 +22,9 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
         owner: req._id,
         soliditycode: req.body.soliditycode,
         abi: req.body.abi,
+        abiString: req.body.abiString,
+        // tabbieJson: req.body.tabbieJson,
+        // tabbieString: req.body.tabbieString,
       },
       function(err, result) {
         if(err){res.send(err)}
