@@ -7,7 +7,6 @@ var fieldsSchema = new Schema({
     lifespan: String,
     isReadOnly: String,
     user_id: String,
-
     value: String,
     secret: String,
 

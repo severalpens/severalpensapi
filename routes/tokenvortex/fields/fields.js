@@ -13,6 +13,7 @@ router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
 var FieldsModel = require('../models/mongodb/fields');
+var SequencesModel = require('../models/mongodb/sequences');
 var HashPair = require('../models/mongodb/fields');
 var RandomAccount = require('../models/mongodb/fields');
 var Timer = require('../models/mongodb/fields');
@@ -26,6 +27,28 @@ router.get("/",  function(req, res, next) {
   query.collection(FieldsModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
   query.exec((err, fields) => {
+      if (err != null) {
+        return res.send(err);
+      } 
+      else {
+        return res.send(fields);
+      }
+    });
+});
+
+
+router.get("/:sequence_id", async function(req, res, next) {
+  let user_id = req.user_id;
+  let _id = req.params.sequence_id;
+
+  let sequence = await SequencesModel
+  .findOne({user_id,_id})
+  .exec();
+
+  FieldsModel
+  .find({})
+  .where('_id').in(sequence.field_ids)
+  .exec((err, fields) => {
       if (err != null) {
         return res.send(err);
       } 
