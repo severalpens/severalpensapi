@@ -7,10 +7,10 @@ var stepsSchema = new Schema({
   msgSender_id:  String,
   contract_id:  String,
   constant: Boolean,
-  inputs: Array,
+  orderId: Number,
+  method: Object,
   name: String,
   user_id: String,
-  outputs: Array,
   payable: Boolean,
   stateMutability: String
   });

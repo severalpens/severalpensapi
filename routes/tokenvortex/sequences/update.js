@@ -9,23 +9,11 @@ var SequencesModel = require('../models/mongodb/sequences');
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
+  let sequence = req.body;
+  sequence.user_id = req.user_id;
   if (_id) {
     SequencesModel.updateOne(
-      { _id },
-      {
-        fungible: true,
-        symbol: req.body.symbol,
-        name: req.body.name,
-        field_ids: req.body.field_ids,
-        step_ids: req.body.step_ids,
-        log_ids: req.body.log_ids,
-        version: req.body.version,
-        addresses: req.body.addresses,
-        publishers: req.body.publishers,
-        owner: req._id,
-        soliditycode: req.body.soliditycode,
-        abi: req.body.abi,
-      },
+      { _id }, sequence ,
       function(err, result) {
         if(err){res.send(err)}
         res.send([req.body, result]);

@@ -8,9 +8,8 @@ var FieldsModel = require('../models/mongodb/fields');
 
 
 router.post("/", bodyParser.json(), function(req, res, next) {
-  console.log('insert fields reached');
-  let field = req.body;
-  console.log(field);
+  let field = new FieldsModel();
+
   field.user_id = req.user_id;
   field.isActive = true;
   FieldsModel.create(field).then(result => {

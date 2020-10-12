@@ -10,6 +10,7 @@ var FieldsModel = require('../models/mongodb/fields');
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;
   let field = req.body;
+  console.log(field);
   field.user_id = req.user_id;
   if (_id) {
     FieldsModel.updateOne(

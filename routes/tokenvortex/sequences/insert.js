@@ -10,9 +10,6 @@ var SequencesModel = require('../models/mongodb/sequences');
 router.post("/", bodyParser.json(), function(req, res, next) {
   let sequence = req.body;
   sequence.user_id = req.user_id;
-  sequence.field_ids = req.field_ids;
-  sequence.step_ids = req.step_ids;
-  sequence.log_ids = req.log_ids;
   sequence.isActive = true;
   SequencesModel.create(sequence).then(result => {
     res.send(result);

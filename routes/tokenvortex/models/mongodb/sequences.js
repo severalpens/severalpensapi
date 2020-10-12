@@ -5,9 +5,9 @@ var sequencesSchema = new Schema({
     name: String,
     description: String,
     user_id: String,
-    field_ids: Array,
-    step_ids: Array,
-    log_ids: Array,
+    fields: Array,
+    step: Array,
+    logs: Array,
     isActive: Boolean
   });
   
