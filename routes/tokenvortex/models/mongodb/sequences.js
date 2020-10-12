@@ -6,7 +6,7 @@ var sequencesSchema = new Schema({
     description: String,
     user_id: String,
     fields: Array,
-    step: Array,
+    steps: Array,
     logs: Array,
     isActive: Boolean
   });
