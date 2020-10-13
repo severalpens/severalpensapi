@@ -8,12 +8,14 @@ var truncateRouter = require("./truncate");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
 var lockRouter = require("./lock");
+var runRouter = require("./run")
 
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
 router.use('/truncate',truncateRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
+router.use('/run',runRouter);
 
 var SequencesModel = require('../models/mongodb/sequences');
 
