@@ -10,6 +10,7 @@ var updateRouter = require("./update");
 var lockRouter = require("./lock");
 var runRouter = require("./run")
 var ethBalanceRouter = require("./ethbalance")
+var contractBalanceRouter = require("./contractbalance")
 
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
@@ -18,6 +19,7 @@ router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 router.use('/run',runRouter);
 router.use('/ethbalance',ethBalanceRouter);
+router.use('/contractbalance',contractBalanceRouter);
 
 var SequencesModel = require('../models/mongodb/sequences');
 
