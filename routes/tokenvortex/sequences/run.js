@@ -17,11 +17,10 @@ router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
 
 
-router.post("/", async function (req, res) {
+router.post("/:posid", async function (req, res) {
   let step = req.body;
   step.user_id = req.user_id;
     let contract = await ContractsModel.findById(step.contract_id);
-    // let abi = JSON.parse(contract.abi);
     let msgSender = await AccountsModel.findById(step.msgSender_id);
     let provider = new ethers.providers.InfuraProvider(step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
     let wallet = new ethers.Wallet(msgSender.privateKey, provider);
@@ -30,44 +29,40 @@ router.post("/", async function (req, res) {
     let methodArgs = step.method.inputs.map(x => x.internalType);
     method(...methodArgs)
       .then((tx) => {
-        res.json({ tx });
         let log = new LogsModel();
-        log.user_id = step.user_id;
-        log.network = step.network;
+        log.posId = req.params.posid;
+        log.step = step;
         log.timestamp = new Date().getTime();
-        log.transaction_id = step._id;
-        log.log = tx;
-        log.save();
+        log.tx = tx;
         tx.wait()
           .then((tx2) => {
             let log = new LogsModel();
-            log.user_id = step.user_id;
-            log.network = step.network;
+            log.posId = req.params.posid;
+            log.step = step;
             log.timestamp = new Date().getTime();
-            log.transaction_id = step._id;
-            log.log = tx2;
+            log.tx = tx2;
             log.save();
+            res.send(log);
           })
           .catch((error) => {
             let log = new LogsModel();
-            log.user_id = step.user_id;
-            log.network = step.network;
+            log.posId = req.params.posid;
+            log.step = step;
             log.timestamp = new Date().getTime();
-            log.transaction_id = step._id;
-            log.log = error;
+            log.tx = error;
             log.save();
+            res.send(log);
           });
       })
       .catch((error) => {
         let log = new LogsModel();
-        log.user_id = step.user_id;
-        log.network = step.network;
+        log.posId = req.params.posid;
+        log.step = step;
         log.timestamp = new Date().getTime();
-        log.transaction_id = step._id;
-        log.log = error;
+        log.tx = error;
         log.save();
-        res.json({ tx: error });
-      });
+        res.send(log);
+  });
 
 });
 

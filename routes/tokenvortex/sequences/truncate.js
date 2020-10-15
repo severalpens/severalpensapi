@@ -13,10 +13,11 @@ var LogsModel = require('../models/mongodb/logs');
 
 
 router.post("/", bodyParser.json(), async function(req, res, next) {
-  await LogsModel.deleteMany({}).exec();
-  await StepsModel.deleteMany({}).exec();
-  await FieldsModel.deleteMany({}).exec();
-  await SequencesModel.deleteMany({}).exec();
+  let user_id = req.user_id;
+  await LogsModel.deleteMany({user_id}).exec();
+  await StepsModel.deleteMany({user_id}).exec();
+  await FieldsModel.deleteMany({user_id}).exec();
+  await SequencesModel.deleteMany({user_id}).exec();
   return res.end();
 });
   

@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var sequencesSchema = new Schema({
     name: String,
+    posId: Number,
     description: String,
     user_id: String,
     fields: Array,

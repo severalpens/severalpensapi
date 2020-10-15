@@ -3,8 +3,10 @@ var Schema = mongoose.Schema;
 
 var logsSchema = new Schema({
     name: String,
-    user_id: String,
-    isActive: Boolean
+    posId: Number,
+    step: Object,
+    timestamp: Date,
+    tx: Object
   });
   
   var LogsModel = mongoose.model("logs", logsSchema, "logs");
