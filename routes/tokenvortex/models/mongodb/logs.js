@@ -2,11 +2,12 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var logsSchema = new Schema({
-    name: String,
+    seq_id: String,
     posId: Number,
     step: Object,
     timestamp: Date,
-    tx: Object
+    tx: Object,
+    status: String
   });
   
   var LogsModel = mongoose.model("logs", logsSchema, "logs");

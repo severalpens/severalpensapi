@@ -11,6 +11,7 @@ var lockRouter = require("./lock");
 var runRouter = require("./run")
 var ethBalanceRouter = require("./ethbalance")
 var contractBalanceRouter = require("./contractbalance")
+var logsRouter = require("./logs")
 
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
@@ -20,6 +21,7 @@ router.use('/update',updateRouter);
 router.use('/run',runRouter);
 router.use('/ethbalance',ethBalanceRouter);
 router.use('/contractbalance',contractBalanceRouter);
+router.use('/logs',logsRouter);
 
 var SequencesModel = require('../models/mongodb/sequences');
 
@@ -41,68 +43,19 @@ router.get("/",  function(req, res, next) {
 });
 
 
-router.get("/associative", bodyParser.json(), function(req, res, next) {
-  SequencesModel.find()
-    .collection(SequencesModel.collection)
-    .exec((err, body) => {
+router.get("/:_id",  function(req, res, next) {
+  const query = SequencesModel.findById(req.params._id); 
+  query.where({ user_id: req.user_id })
+  query.where('isActive').equals(true)
+  query.exec((err, sequences) => {
       if (err != null) {
         return res.send(err);
-      } else {
-        let associativeList = {};
-        body.forEach(account => {
-          associativeList[account._id] = account;
-        });
-        return res.send(associativeList);
+      } 
+      else {
+        return res.send(sequences);
       }
     });
 });
-
-
-
-
-router.get("/:id", bodyParser.json(), function(req, res, next) {
-  let _id = req.params._id;
-  SequencesModel.findOne({ _id }).exec((err, result) => {
-    if(err){
-      return res.send(err)
-    }else{
-      res.send(result);
-    }
-  });
-});
-
-router.get("/:address", bodyParser.json(), function(req, res, next) {
-  let _id = req.params._id;
-  SequencesModel.findOne({ _id }).exec((err, result) => {
-    res.send(result);
-  });
-});
-
-
-router.get("/:network/:_id/address", bodyParser.json(), function(req, res, next) {
-  let _id = req.params._id;
-  let network = req.params.network;
-   SequencesModel.findOne({_id}).then((result) => {
-      res.send(
-        { 
-          _id: _id,
-          network: network,
-          address: result.addresses[network]
-        }
-      )
-   })
-});
-
-
-
-router.get("/:_id/islocked", bodyParser.json(), function(req, res, next) {
-  let _id = req.params._id;
-  SequencesModel.findOne({_id},(err,result) => {
-    return res.send(result[0].locked);
-  }); 
-});
-
-
 
 
 module.exports = router;

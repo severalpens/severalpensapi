@@ -9,7 +9,8 @@ var sequencesSchema = new Schema({
     fields: Array,
     steps: Array,
     logs: Array,
-    isActive: Boolean
+    isActive: Boolean,
+    status: String
   });
   
   var SequencesModel = mongoose.model("sequences", sequencesSchema, "sequences");
