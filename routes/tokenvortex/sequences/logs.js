@@ -14,7 +14,9 @@ const LogsModel = require("../models/mongodb/logs");
 
 router.get("/:seq_id",  function(req, res, next) {
   let seq_id = req.params.seq_id;
-  const query = LogsModel.find({seq_id}); 
+  let user_id = req.user_id;
+
+  const query = LogsModel.find({seq_id,user_id}); 
  // query.or([{ user_id: 'public' }, { user_id: req.user_id }])
   query.exec((err, logs) => {
       if (err != null) {
@@ -26,11 +28,14 @@ router.get("/:seq_id",  function(req, res, next) {
     });
 });
 
-router.post("/delete/:_id", bodyParser.json(), function(req, res, next) {
+router.get("/delete/:seq_id/:_id", bodyParser.json(),async function(req, res, next) {
+  let seq_id = req.params.seq_id;
   let _id = req.params._id;
-  LogsModel.deleteOne({_id}).exec((result) => {
-    res.send(result);
-  })
+  let user_id = req.user_id;
+  await LogsModel.deleteOne({_id,user_id,seq_id}).exec();
+  let logs = await LogsModel.find({seq_id, user_id}).exec();
+  res.send(logs)
+
 });
 
   

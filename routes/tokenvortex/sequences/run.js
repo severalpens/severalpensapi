@@ -15,15 +15,9 @@ router.use(express.json({ limit: '50mb' }));
 router.use(express.urlencoded({ limit: '50mb', extended: false }));
 router.use(bodyParser.json({ extended: false }));
 
-
-
-
-router.post("/:seq_id/:posid", async function (req, res) {
-  let log = {};
-  log.posId = req.params.posid;
-  log.seq_id = req.params.seq_id;
-  let sequence = await SequencesModel.findById(log.seq_id);
-  log.step = sequence.steps[log.posId];
+router.post("/", async function (req, res) {
+  let log = new LogsModel(req.body);
+  log.user_id = req.user_id;
   let contract = await ContractsModel.findById(log.step.contract_id);
   let msgSender = await AccountsModel.findById(log.step.msgSender_id);
   let provider = new ethers.providers.InfuraProvider(log.step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
@@ -31,44 +25,42 @@ router.post("/:seq_id/:posid", async function (req, res) {
   let ethersContract = new ethers.Contract(contract.addresses[log.step.network], contract.abi, wallet);
   let method = ethersContract[log.step.method.name];
   let methodArgs = log.step.method.inputs.map(x => x.internalType);
-
   method(...methodArgs)
     .then(async (tx) => {
-      log.timestamp = new Date().getTime();
       log.tx = tx;
-      log.status = 'table-warning';
-      sequence.steps[log.posId].status = 'table-warning';
-      sequence.logs.push(log)
-      sequence.posId = nextPosId(sequence.posId,sequence.steps.length -1)
-      await sequence.save();
-      res.send(sequence)
-      tx.wait()
-        .then((tx2) => {
-          log.timestamp = new Date().getTime();
-          log.tx = tx2;
-          log.status = 'table-success';
-          sequence.save();
-        })
-        .catch((error) => {
-          log.timestamp = new Date().getTime();
-          log.tx = error;
-          log.status = 'table-danger';
-          sequence.save();
-        });
+      if (log.step.method.stateMutability === 'view') {
+        log.status = 'table-success';
+      }
+      else {
+        log.status = 'table-warning';
+        tx.wait()
+          .then(async (tx2) => {
+            log.tx = tx2;
+            log.status = 'table-success';
+          })
+          .catch(async (error) => {
+            log.tx = error;
+            log.status = 'table-danger';
+          })
+          .finally(async () => {
+            await log.save();
+          })
+      }
     })
-    .catch((error) => {
-      log.timestamp = new Date().getTime();
+    .catch(async (error) => {
       log.tx = error;
       log.status = 'table-danger';
-      sequence.save();
-    });
+    })
+    .finally(async () => {
+      await log.save();
+      res.send(log);
+    })
 
 });
-function nextPosId(current,max) {
+
+function nextPosId(current, max) {
   return current === max ? 0 : current + 1;
 }
-
-
 
 router.get("/refresh/:_id", async function (req, res) {
   let _id = req.params._id;
@@ -76,9 +68,6 @@ router.get("/refresh/:_id", async function (req, res) {
     res.send(transfer)
   })
 })
-
-
-
 
 router.post("/balances", function (req, res) {
   try {

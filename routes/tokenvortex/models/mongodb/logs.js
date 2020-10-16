@@ -3,9 +3,10 @@ var Schema = mongoose.Schema;
 
 var logsSchema = new Schema({
     seq_id: String,
+    user_id: String,
     posId: Number,
     step: Object,
-    timestamp: Date,
+    timestamp: Number,
     tx: Object,
     status: String
   });
