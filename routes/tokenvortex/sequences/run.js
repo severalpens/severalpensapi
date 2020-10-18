@@ -65,42 +65,46 @@ router.post("/", async function (req, res) {
 
 });
 
-function nextPosId(current, max) {
-  return current === max ? 0 : current + 1;
-}
 
-router.get("/refresh/:_id", async function (req, res) {
-  let _id = req.params._id;
-  TransfersModel.findOne({ _id }, (err, transfer) => {
-    res.send(transfer)
-  })
-})
 
-router.post("/balances", function (req, res) {
-  try {
-    let props = req.body;
-    props.stage = 100;
-    let { network, contractAddress } = props;
-    let q1 = ContractsModel.findOne({});
-    q1.select("abi");
-    q1.where(`addresses.${network}`).equals(contractAddress);
-    q1.exec((err, result) => {
-      let blockchainQuery = new BlockchainQuery(
-        network,
-        contractAddress,
-        result.abi
-      );
-      blockchainQuery.run(props, res);
-    });
-  } catch (error) {
-    res.status(404).send(error);
+router.post("/test", async function (req, res) {
+  let user_id = req.user_id;
+  let step = req.body;
+  let msgSender = {};
+
+  if(step.msgSender_id === 'admin'){
+    msgSender = {privateKey: '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077'};
   }
+  else{
+    msgSender = await AccountsModel.findById(step.msgSender_id);
+  }
+  
+  let provider = new ethers.providers.InfuraProvider(step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');  
+  let wallet = new ethers.Wallet(msgSender.privateKey, provider);
+  let contract = await ContractsModel.findById(step.contract_id);
+  let ethersContract = new ethers.Contract(contract.addresses[step.network], contract.abi, wallet);
+  let method = ethersContract[step.method.name];
+  let methodArgs = step.method.inputs.map(x => x.internalType);
+  let result = {};
+  method(...methodArgs)
+    .then(async (tx) => {
+      if (step.method.stateMutability === 'view') {
+        res.send(tx);
+      }
+      else {
+        tx.wait()
+          .then(async (tx2) => {
+            res.send(tx2);
+          })
+          .catch(async (error) => {
+            res.send(error);
+          })
+      }
+    })
+    .catch(async (error) => {
+      res.send(error);
+    })
 });
 
-module.exports = router;
 
-/*
-1: Why not the address? - Because ethers requires the abi code to create the required contract object.
-Therefore its a lot easier for the server to  retreive the contract document from the database and extract both the address
-and abi code rather than require the client to post it all.
-*/
+module.exports = router;
