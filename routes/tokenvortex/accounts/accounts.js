@@ -7,62 +7,29 @@ var lockRouter = require("./lock");
 var insertRouter = require("./insert");
 var newRouter = require("./new");
 var updateRouter = require("./update");
+var cors = require('cors');
+router.use(cors());
 router.use('/delete',deleteRouter);
 router.use('/lock',lockRouter);
 router.use('/insert',insertRouter);
 router.use('/new',newRouter);
 router.use('/update',updateRouter);
 
-router.get("/",  function(req, res, next) {
-  const query = AccountsModel.find(); 
-  query.or([{ isLocked: true }, { user_id: req.user_id }])
-  query.where('isActive').equals(true)
-  query.exec((err, accounts) => {
-      if (err != null) {
-        return res.send(err);
-      } 
-      else {
-        return res.json(accounts);
-      }    
-  });
-  });
+router.get("/", async  function(req, res, next) {
+  let user_id = req.user_id;
+  const accounts = await AccountsModel.find({user_id}).exec();
+  res.send(accounts); 
+});
 
-
+router.get("/:_id", async  function(req, res, next) {
+  let _id = req.params._id;
+  let user_id = req.user_id;
+  const account = await AccountsModel
+    .findById(_id)
+    .where({user_id})
+    .exec();
+    res.send(account); 
+});
 
 module.exports = router;
 
-
-
-
-// router.get("/",  function(req, res, next) {
-//   const query = AccountsModel.find(); 
-//   query.setOptions({ lean : true });
-//   query.collection(AccountsModel.collection)
-//   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-//   query.where('isActive').equals(true)
-//   query.exec((err, accounts) => {
-//       if (err != null) {
-//         return res.send(err);
-//       } 
-//       else {
-//         let refinedAccounts = [] //avoid sending back bytecode and abi
-//         accounts.forEach(account => {
-//           if(account.locked){
-//             refinedAccounts.push(
-//               {
-//                 _id: account._id,
-//                 name: account.name,
-//                 address: account.address,
-//                 blaance: account.balance,
-//                 isLocked: account.isLocked
-//               })
-//           }
-//           else{
-//             refinedAccounts.push(account);
-//           }
-//         return res.send(refinedAccounts);
-//       })
-//       }
-    
-//   });
-//   });

@@ -7,12 +7,16 @@ var cors = require('cors');
 router.use(cors());
 
 
-router.post("/:_id", bodyParser.json(), function(req, res, next) {
+router.post("/:_id", bodyParser.json(),async  function(req, res, next) {
     let _id = req.params._id;
-    AccountsModel.updateOne({ _id, owner: req._id }, { isActive: false }, (err,result) => {
-      if(err) {return res.send(err)}
-      return res.send(result);
-    });
+    // AccountsModel.updateOne({ _id, owner: req._id }, { isActive: false }, (err,result) => {
+    //   if(err) {return res.send(err)}
+    //   return res.send(result);
+    // });
+
+   let result =  await AccountsModel.findByIdAndDelete(_id).exec();
+   return res.send(result);
+
 });
   
 

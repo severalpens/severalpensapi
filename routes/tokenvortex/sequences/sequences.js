@@ -8,10 +8,11 @@ var truncateRouter = require("./truncate");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
 var lockRouter = require("./lock");
-var runRouter = require("./run")
-var ethBalanceRouter = require("./ethbalance")
-var contractBalanceRouter = require("./contractbalance")
-var logsRouter = require("./logs")
+var runRouter = require("./run");
+var ethBalanceRouter = require("./ethbalance");
+var contractBalanceRouter = require("./contractbalance");
+var logsRouter = require("./logs");
+var seedRouter = require("./seed");
 
 router.use('/lock',lockRouter);
 router.use('/delete',deleteRouter);
@@ -22,6 +23,7 @@ router.use('/run',runRouter);
 router.use('/ethbalance',ethBalanceRouter);
 router.use('/contractbalance',contractBalanceRouter);
 router.use('/logs',logsRouter);
+router.use('/seed',seedRouter);
 
 var SequencesModel = require('../models/mongodb/sequences');
 

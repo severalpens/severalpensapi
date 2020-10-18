@@ -18,10 +18,17 @@ router.use(bodyParser.json({ extended: false }));
 router.post("/", async function (req, res) {
   let log = new LogsModel(req.body);
   log.user_id = req.user_id;
-  let contract = await ContractsModel.findById(log.step.contract_id);
-  let msgSender = await AccountsModel.findById(log.step.msgSender_id);
-  let provider = new ethers.providers.InfuraProvider(log.step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
+  let msgSender = {};
+  if(log.step.msgSender_id === 'admin'){
+    msgSender = {privateKey: '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077'};
+  }
+  else{
+    msgSender = await AccountsModel.findById(log.step.msgSender_id);
+  }
+  
+  let provider = new ethers.providers.InfuraProvider(log.step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');  
   let wallet = new ethers.Wallet(msgSender.privateKey, provider);
+  let contract = await ContractsModel.findById(log.step.contract_id);
   let ethersContract = new ethers.Contract(contract.addresses[log.step.network], contract.abi, wallet);
   let method = ethersContract[log.step.method.name];
   let methodArgs = log.step.method.inputs.map(x => x.internalType);
