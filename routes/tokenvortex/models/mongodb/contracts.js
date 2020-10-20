@@ -11,6 +11,7 @@ var addressesSchema = new Schema({
 });
 
 var contractsSchema = new Schema({
+  entityType: String,
     fungible: Boolean,
     symbol: String,
     name: String,
@@ -34,6 +35,6 @@ var contractsSchema = new Schema({
 
   });
   
-  var ContractsModel = mongoose.model("contracts", contractsSchema, "contracts");
+  var ContractsModel = mongoose.model("contracts", contractsSchema, "entities");
   
   module.exports = ContractsModel;

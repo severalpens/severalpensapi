@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var stepsSchema = new Schema({
+  entityType: String,
   status: String,
   network:  String,
   msgSender_id:  String,

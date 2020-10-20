@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var logsSchema = new Schema({
+    entityType: String,
     seq_id: String,
     user_id: String,
     posId: Number,

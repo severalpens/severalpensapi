@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 
 var accountsSchema = new Schema({
+    entityType: String,
     name: String,
     address: String,
     user_id: String,
@@ -27,7 +28,7 @@ var accountsSchema = new Schema({
   var AccountsModel = mongoose.model(
     "accounts",
     accountsSchema,
-    "accounts"
+    "entities"
   );
   
   module.exports = AccountsModel

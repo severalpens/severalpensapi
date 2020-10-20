@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var hashPairSchema = new Schema({
+  entitytype: String,
   name: String,
   type: String,
   lifespan: String,
@@ -14,6 +15,6 @@ var hashPairSchema = new Schema({
 
   });
   
-  var HashPairModel = mongoose.model("hashPair", hashPairSchema, "fields");
+  var HashPairModel = mongoose.model("hashPair", hashPairSchema, "entities");
   
   module.exports = HashPairModel;

@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var fieldsSchema = new Schema({
+  entityType:String,
     name: String,
     type: String,
     subtype: String,
