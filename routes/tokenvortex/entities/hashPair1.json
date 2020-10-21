@@ -16,5 +16,5 @@
     "secret": "0x0633e8738d6fb9f2704b9ceedc391c27ed70b3fac120ba1d31d044906973ebbd",
     "hash": "0x37cb3d3b9fdcf4c6105e3d95732501183748e90d00815048e0c7518fa4fe609f"
   },
-  "lifespan": "sequence"
+  "lifespan": "entity"
 }
