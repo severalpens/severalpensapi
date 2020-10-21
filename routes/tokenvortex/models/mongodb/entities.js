@@ -2,9 +2,16 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var entitiesSchema = new Schema({
+  // _id?: string;
+    user_id: String,
     entityType: String,
-    entity: Object
+    name: String,
+    body: Object,
+    options: Array,
+    lifespan: String
   });
+
+
   
   var EntitiesModel = mongoose.model("entities", entitiesSchema, "entities");
   

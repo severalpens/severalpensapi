@@ -1,6 +1,17 @@
+
 {
-  "entityType":"account",
-  "name":"Alice",
-  "address":"0x601333429BB2d38561e0d21ca5751B7f6e8aa170",
-  "privateKey":"0xacbec3eb3aa75435f57a33eecce439ec2990f5fd9485e1ecfce68bcd210af341"
+  "options": [
+    {
+      "text": "Address",
+      "value": "0x601333429BB2d38561e0d21ca5751B7f6e8aa170"
+    }
+  ],
+  "user_id": "5f0e602d0f6c863ac8898eff",
+  "name": "Alice",
+  "entityType": "account",
+  "body": {
+    "address":"0x601333429BB2d38561e0d21ca5751B7f6e8aa170",
+    "privateKey":"0xacbec3eb3aa75435f57a33eecce439ec2990f5fd9485e1ecfce68bcd210af341"
+  },
+  "lifespan": "static"
 }

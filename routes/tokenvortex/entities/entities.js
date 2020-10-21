@@ -6,20 +6,21 @@ var bodyParser = require("body-parser");
 var deleteRouter = require("./delete");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
+var seedRouter = require("./seed");
 
 router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
+router.use('/seed',seedRouter);
 
 var SequencesModel = require('../models/mongodb/sequences');
+const EntitiesModel = require("../models/mongodb/entities");
 
 
 router.get("/",  function(req, res, next) {
-  const query = SequencesModel.find(); 
-  query.setOptions({ lean : true });
-  query.collection(SequencesModel.collection)
-  query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.where('isActive').equals(true)
+  let user_id = req.user_id;
+  const query = EntitiesModel.find({user_id}); 
+  query.where('entityType').nin(['contract','account'])
   query.exec((err, sequences) => {
       if (err != null) {
         return res.send(err);

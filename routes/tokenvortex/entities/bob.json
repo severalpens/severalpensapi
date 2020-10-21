@@ -1,6 +1,17 @@
+
 {
-  "entityType":"account",
-  "name":"Bob",
-  "address":"0x86c973084760b513c227099DCa098527754D398B",
-  "privateKey":"0xf76058af9672d2f1741eb6b8add8c86c640b9d47d20e0db38bba44dd1e035c5b"
+  "options": [
+    {
+      "text": "Address",
+      "value": "0x86c973084760b513c227099DCa098527754D398B"
+    }
+  ],
+  "user_id": "5f0e602d0f6c863ac8898eff",
+  "name": "Bob",
+  "entityType": "account",
+  "body": {
+    "address":"0x86c973084760b513c227099DCa098527754D398B",
+    "privateKey":"0xf76058af9672d2f1741eb6b8add8c86c640b9d47d20e0db38bba44dd1e035c5b"
+  },
+  "lifespan": "static"
 }

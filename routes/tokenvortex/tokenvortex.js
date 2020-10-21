@@ -15,9 +15,8 @@ var sequencesRouter = require('./sequences/sequences');
 var fieldsRouter = require('./fields/fields');
 var stepsRouter = require('./steps/steps');
 var logsRouter = require('./logs/logs');
+var entitiesRouter = require('./entities/entities');
 const { generateKeyPair } = require('crypto');
-
-
 
 router.use('/accounts', accountsRouter);
 router.use('/contracts', contractsRouter);
@@ -25,6 +24,7 @@ router.use('/sequences', sequencesRouter);
 router.use('/fields', fieldsRouter);
 router.use('/steps', stepsRouter);
 router.use('/logs', logsRouter);
+router.use('/entities', entitiesRouter);
 
 
 router.get('/generatekeypair/:_id', function(req, res) {

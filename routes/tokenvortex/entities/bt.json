@@ -1,12 +1,13 @@
 {
+  "name": "BasicToken",
+  "entityType": "contract",
+  "body": {
   "addresses": {
     "ropsten": "0xC6607773099D462BB89A74dBD54abcF6Ac35e84C",
     "kovan": "0x99A3904FF473a63Ca90FcC90Daf4BE5f760c6047",
     "rinkeby": "0xfD6f44b58e93f2ef192c5Fe4dad265B8aF86e38C",
     "goerli": ""
   },
-  "name": "BasicToken",
-  "entityType": "contract",
   "symbol": "BSC",
   "version": "0.0.0",
   "description": "Basic ERC20 token from OpenZeppelin",
@@ -323,4 +324,11 @@
   ],
   "isActive": true,
   "fungible": true
+}
+,"lifespan":"static",
+"options": [
+  {"text": "Ropsten Address","value":"0xC6607773099D462BB89A74dBD54abcF6Ac35e84C"},
+  {"text": "Kovan Address","value":"0x99A3904FF473a63Ca90FcC90Daf4BE5f760c6047"},
+  {"text": "Rinkeby Address","value":"0xfD6f44b58e93f2ef192c5Fe4dad265B8aF86e38C"},
+  {"text": "Goerli Address","value":""}]
 }

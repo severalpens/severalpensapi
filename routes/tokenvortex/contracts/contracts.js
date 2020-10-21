@@ -15,7 +15,9 @@ router.use('/update',updateRouter);
 
 router.get("/", async  function(req, res, next) {
   let user_id = req.user_id;
-  const contracts = await ContractsModel.find({user_id}).exec();
+  let entityType = 'contract';
+  const contracts = await ContractsModel
+  .find({user_id,entityType}).exec();
   res.send(contracts); 
 });
 

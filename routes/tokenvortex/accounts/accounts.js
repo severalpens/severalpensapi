@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var bodyParser = require('body-parser');
-var AccountsModel = require("../models/mongodb/accounts");
+var EntitiesModel = require("../models/mongodb/entities");
 var deleteRouter = require("./delete");
 var lockRouter = require("./lock");
 var insertRouter = require("./insert");
@@ -17,7 +17,10 @@ router.use('/update',updateRouter);
 
 router.get("/", async  function(req, res, next) {
   let user_id = req.user_id;
-  const accounts = await AccountsModel.find({user_id}).exec();
+  let entityType = 'account';
+  const accounts = await EntitiesModel
+  .find({user_id, entityType})
+  .exec();
   res.send(accounts); 
 });
 

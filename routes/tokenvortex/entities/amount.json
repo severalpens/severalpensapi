@@ -1,0 +1,15 @@
+{
+  "options": [
+    {
+      "text": "amount",
+      "value": "1"
+    }
+  ],
+  "user_id": "5f0e602d0f6c863ac8898eff",
+  "name": "amount",
+  "entityType": "generic",
+  "body": {
+    "value": "1"
+  },
+  "lifespan": "static"
+}

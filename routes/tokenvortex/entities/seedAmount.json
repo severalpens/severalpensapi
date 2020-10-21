@@ -1,0 +1,15 @@
+{
+  "options": [
+    {
+      "text": "Seed Amount",
+      "value": "1000"
+    }
+  ],
+  "user_id": "5f0e602d0f6c863ac8898eff",
+  "name": "Seed Amount",
+  "entityType": "generic",
+  "body": {
+    "value": "1000"
+  },
+  "lifespan": "static"
+}
