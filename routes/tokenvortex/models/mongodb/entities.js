@@ -8,7 +8,8 @@ var entitiesSchema = new Schema({
     name: String,
     body: Object,
     options: Array,
-    lifespan: String
+    lifespan: String,
+    buildOptions: Object
   });
 
 

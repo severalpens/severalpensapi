@@ -7,23 +7,16 @@ var EntitiesModel = require('../models/mongodb/entities');
 
 
 
-router.post("/:_id", bodyParser.json(), function(req, res, next) {
+router.post("/:_id", bodyParser.json(), async function (req, res, next) {
   let _id = req.params._id;
   let entity = req.body;
+  console.log(entity);
+  delete entity._id;
   entity.user_id = req.user_id;
-  if (_id) {
-    EntitiesModel.updateOne(
-      { _id }, entity ,
-      function(err, result) {
-        if(err){res.send(err)}
-        res.send(result);
-      }
-    );
-  }
+  await EntitiesModel.updateOne({ _id }, entity).exec();
+  let updatedEntity = await EntitiesModel.findById(_id).exec();
+  res.send(updatedEntity);
 });
-
-
-
 
 
 module.exports = router;

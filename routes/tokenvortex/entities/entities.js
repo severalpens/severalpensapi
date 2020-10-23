@@ -19,7 +19,22 @@ const EntitiesModel = require("../models/mongodb/entities");
 router.get("/",  function(req, res, next) {
   let user_id = req.user_id;
   const query = EntitiesModel.find({user_id}); 
-  query.where('entityType').nin(['contract','account'])
+  query.exec((err, entities) => {
+      if (err != null) {
+        return res.send(err);
+      } 
+      else {
+        return res.send(entities);
+      }
+    });
+});
+
+
+
+router.get("/customfields",  function(req, res, next) {
+  let user_id = req.user_id;
+  const query = EntitiesModel.find({user_id}); 
+  query.where('entityType').in(['hashPair','generic','randomAccount'])
   query.exec((err, entities) => {
       if (err != null) {
         return res.send(err);
