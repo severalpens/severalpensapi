@@ -3,7 +3,7 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var SequencesModel = require('../models/mongodb/sequences');
+var SequencesModel = require('../_models/sequences');
 
 
 

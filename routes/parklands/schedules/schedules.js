@@ -6,7 +6,7 @@ var bodyParser = require("body-parser");
 router.use(express.json({limit: '50mb'}));
 router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
-var parklandsLogsModel = require("../models/mongodb/parklandsLogs");
+var parklandsLogsModel = require("../_models/parklandsLogs");
 
 var updateRouter = require("./update");
 var insertRouter = require("./insert");
@@ -18,7 +18,7 @@ router.use('/update',updateRouter);
 router.use('/insert',insertRouter);
 router.use('/delete',deleteRouter);
 
-var SchedulesModel = require('../models/mongodb/schedules');
+var SchedulesModel = require('../_models/schedules');
 
 router.get("/", bodyParser.json(), function(req, res, next) {
   let log = new parklandsLogsModel();

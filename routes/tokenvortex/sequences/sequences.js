@@ -25,7 +25,7 @@ router.use('/contractbalance',contractBalanceRouter);
 router.use('/logs',logsRouter);
 router.use('/seed',seedRouter);
 
-var SequencesModel = require('../models/mongodb/sequences');
+var SequencesModel = require('../_models/sequences');
 
 
 router.get("/",  function(req, res, next) {

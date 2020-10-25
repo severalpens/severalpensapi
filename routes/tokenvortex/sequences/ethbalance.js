@@ -2,10 +2,8 @@ var ethers = require("ethers");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var AccountsModel = require("../models/mongodb/accounts");
-var ContractsModel = require("../models/mongodb/contracts");
-var StepsModel = require("../models/mongodb/steps");
-var LogsModel = require("../models/mongodb/logs");
+var StepsModel = require("../_models/steps");
+var LogsModel = require("../_models/logs");
 
 var router = express.Router();
 

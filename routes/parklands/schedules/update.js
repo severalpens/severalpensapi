@@ -3,7 +3,7 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var SchedulesModel = require('../models/mongodb/schedules');
+var SchedulesModel = require('../_models/schedules');
 
 
 router.post("/:id", bodyParser.json(), function(req, res, next) {

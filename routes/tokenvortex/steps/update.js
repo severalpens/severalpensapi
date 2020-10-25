@@ -3,7 +3,7 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var StepsModel = require('../models/mongodb/steps');
+var StepsModel = require('../_models/steps');
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.params._id;

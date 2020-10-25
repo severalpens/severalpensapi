@@ -4,7 +4,7 @@ var cors = require('cors');
 router.use(cors());
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
-var StepsModel = require("../models/mongodb/steps");
+var StepsModel = require("../_models/steps");
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {

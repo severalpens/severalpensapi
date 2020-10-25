@@ -13,8 +13,8 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var StepsModel = require('../models/mongodb/steps');
-var SequencesModel = require('../models/mongodb/sequences');
+var StepsModel = require('../_models/steps');
+var SequencesModel = require('../_models/sequences');
 
 
 router.get("/:sequence_id", async function(req, res, next) {

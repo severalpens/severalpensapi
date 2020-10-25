@@ -9,7 +9,7 @@ router.use(bodyParser.json());
 router.use(express.json({limit: '50mb'}));
 router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
-const LogsModel = require("../models/mongodb/logs");
+const LogsModel = require("../_models/logs");
 
 
 router.get("/:seq_id",  function(req, res, next) {

@@ -3,7 +3,7 @@ var router = express.Router();
 var cors = require('cors');
 router.use(cors());
 var bodyParser = require("body-parser");
-var LogsModel = require('../models/mongodb/logs');
+var LogsModel = require('../_models/logs');
 
 
 

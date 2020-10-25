@@ -13,7 +13,7 @@ router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 router.use('/seed',seedRouter);
 
-const EntitiesModel = require("../models/mongodb/entities");
+const EntitiesModel = require("../_models/entities");
 
 
 router.get("/",  function(req, res, next) {
@@ -30,41 +30,18 @@ router.get("/",  function(req, res, next) {
 });
 
 
-
-router.get("/customfields",  function(req, res, next) {
+router.get("/:entityType",  function(req, res, next) {
   let user_id = req.user_id;
-  const query = EntitiesModel.find({user_id}); 
-  query.where('entityType').in(['hashPair','generic','randomAccount'])
-  query.exec((err, entities) => {
-      if (err != null) {
-        return res.send(err);
-      } 
-      else {
-        return res.send(entities);
-      }
-    });
-});
+  let entityType = req.params.entityType;
+  const query = EntitiesModel.find({user_id});
+  
+  if(entityType === 'customFields'){
+    query.where('entityType').in( ['hashPair','generic','randomAccount']);
+  }
+  else{
+    query.where('entityType').equals(entityType);
+  }
 
-
-router.get("/all",  function(req, res, next) {
-  let user_id = req.user_id;
-  const query = EntitiesModel.find({user_id}); 
-  //query.where('entityType').nin(['contract','account'])
-  query.exec((err, entities) => {
-      if (err != null) {
-        return res.send(err);
-      } 
-      else {
-        return res.send(entities);
-      }
-    });
-});
-
-
-router.get("/:_id",  function(req, res, next) {
-  const query = EntitiesModel.findById(req.params._id); 
-  query.where({ user_id: req.user_id })
-  query.where('isActive').equals(true)
   query.exec((err, entities) => {
       if (err != null) {
         return res.send(err);

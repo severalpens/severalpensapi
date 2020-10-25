@@ -2,10 +2,9 @@ var ethers = require("ethers");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var AccountsModel = require("../models/mongodb/accounts");
-var ContractsModel = require("../models/mongodb/contracts");
-var StepsModel = require("../models/mongodb/steps");
-var LogsModel = require("../models/mongodb/logs");
+var StepsModel = require("../_models/steps");
+var LogsModel = require("../_models/logs");
+const EntitiesModel = require("../_models/entities");
 
 var router = express.Router();
 
@@ -41,9 +40,9 @@ router.post("/", async function (req, res) {
 });
 
 async function getContract(_id, user_id) {
-  const contractsQuery = ContractsModel.findById(_id);
+  const contractsQuery = EntitiesModel.findById(_id);
   contractsQuery.setOptions({ lean: true });
-  contractsQuery.collection(ContractsModel.collection);
+  contractsQuery.collection(EntitiesModel.collection);
   contractsQuery.or([{ user_id: 'public' }, { user_id }]);
   contractsQuery.where('isActive').equals(true);
   return await contractsQuery.exec();
@@ -51,9 +50,9 @@ async function getContract(_id, user_id) {
 
 
 async function getAccount(_id, user_id) {
-  const accountsQuery = AccountsModel.findById(_id);
+  const accountsQuery = EntitiesModel.findById(_id);
   accountsQuery.setOptions({ lean: true });
-  accountsQuery.collection(AccountsModel.collection);
+  accountsQuery.collection(EntitiesModel.collection);
   accountsQuery.or([{ user_id: 'public' }, { user_id }]);
   accountsQuery.where('isActive').equals(true);
   return await accountsQuery.exec();

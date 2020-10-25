@@ -4,7 +4,7 @@ var cors = require('cors');
 router.use(cors());
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
-var SequencesModel = require("../models/mongodb/sequences");
+var SequencesModel = require("../_models/sequences");
 
 
 

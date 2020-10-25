@@ -4,7 +4,7 @@ var cors = require('cors');
 router.use(cors());
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
-var LogsModel = require("../models/mongodb/logs");
+var LogsModel = require("../_models/logs");
 
 
 

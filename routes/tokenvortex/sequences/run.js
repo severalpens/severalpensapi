@@ -2,11 +2,10 @@ var ethers = require("ethers");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var AccountsModel = require("../models/mongodb/accounts");
-var ContractsModel = require("../models/mongodb/contracts");
-var StepsModel = require("../models/mongodb/steps");
-var SequencesModel = require("../models/mongodb/sequences");
-var LogsModel = require("../models/mongodb/logs");
+var StepsModel = require("../_models/steps");
+var SequencesModel = require("../_models/sequences");
+var LogsModel = require("../_models/logs");
+var EntitiesModel = require("../_models/entities");
 
 var router = express.Router();
 router.use(cors());
@@ -23,12 +22,12 @@ router.post("/", async function (req, res) {
     msgSender = {privateKey: '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077'};
   }
   else{
-    msgSender = await AccountsModel.findById(log.step.msgSender_id);
+    msgSender = await EntitiesModel.findById(log.step.msgSender_id);
   }
   
   let provider = new ethers.providers.InfuraProvider(log.step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');  
   let wallet = new ethers.Wallet(msgSender.privateKey, provider);
-  let contract = await ContractsModel.findById(log.step.contract_id);
+  let contract = await EntitiesModel.findById(log.step.contract_id);
   let ethersContract = new ethers.Contract(contract.addresses[log.step.network], contract.abi, wallet);
   let method = ethersContract[log.step.method.name];
   let methodArgs = log.step.method.inputs.map(x => x.internalType);

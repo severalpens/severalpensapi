@@ -2,12 +2,11 @@ var ethers = require("ethers");
 var express = require("express");
 var bodyParser = require("body-parser");
 var cors = require("cors");
-var AccountsModel = require("../models/mongodb/accounts");
-var ContractsModel = require("../models/mongodb/contracts");
-var StepsModel = require("../models/mongodb/steps");
-var SequencesModel = require("../models/mongodb/sequences");
-var LogsModel = require("../models/mongodb/logs");
-var contractTemplate = require('./btc.json');
+var EntitiesModel = require("../_models/entities");
+var StepsModel = require("../_models/steps");
+var SequencesModel = require("../_models/sequences");
+var LogsModel = require("../_models/logs");
+var contractTemplate = require('./seed/btc.json');
 
 var router = express.Router();
 router.use(cors());
@@ -18,37 +17,36 @@ router.use(bodyParser.json({ extended: false }));
 
 router.get("/", async function(req, res, next) {
 
-  let alice = new AccountsModel();
+  let alice = new EntitiesModel();
   let random1 = ethers.Wallet.createRandom();
   alice.user_id = req.user_id;
   alice.name = 'Alice';
-  alice.address = random1.address;
-  alice.privateKey = random1.privateKey;
+  alice.body = {};
+  alice.body.address = random1.address;
+  alice.body.privateKey = random1.privateKey;
   isLocked = false;
   isActive = true;
   await alice.save();
 
-  let bob = new AccountsModel();
+  let bob = new EntitiesModel();
   let random2 = ethers.Wallet.createRandom();
   bob.user_id = req.user_id;
   bob.name = 'Bob';
-  bob.address = random2.address;
-  bob.privateKey = random2.privateKey;
-  isLocked = false;
-  isActive = true;
+  bob.body = {};
+  bob.body.address = random2.address;
+  bob.body.privateKey = random2.privateKey;
   await bob.save();
 
-  let btc = new ContractsModel();
-  btc.addresses = contractTemplate.addresses;
+  let btc = new EntitiesModel();
+  btc.body = {};
+  btc.body.addresses = contractTemplate.addresses;
   btc.name = contractTemplate.name;
-  btc.symbol = contractTemplate.symbol;
-  btc.version  = contractTemplate.version;
-  btc.description = contractTemplate.description;
+  btc.body.symbol = contractTemplate.symbol;
+  btc.body.version  = contractTemplate.version;
+  btc.body.description = contractTemplate.description;
   btc.user_id = req.user_id;
-  btc.soliditycode = contractTemplate.soliditycode;
-  btc.abi = contractTemplate.abi;
-  btc.isActive = true;
-  btc.fungible = true;
+  btc.body.soliditycode = contractTemplate.soliditycode;
+  btc.body.abi = contractTemplate.abi;
   await btc.save();
 
 

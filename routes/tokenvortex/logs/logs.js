@@ -12,7 +12,7 @@ router.use('/delete',deleteRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
-var LogsModel = require('../models/mongodb/logs');
+var LogsModel = require('../_models/logs');
 
 
 router.get("/",  function(req, res, next) {

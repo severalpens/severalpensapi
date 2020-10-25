@@ -7,7 +7,6 @@ var sequencesSchema = new Schema({
     posId: Number,
     description: String,
     user_id: String,
-    fields: Array,
     steps: Array,
     logs: Array,
     isActive: Boolean,
