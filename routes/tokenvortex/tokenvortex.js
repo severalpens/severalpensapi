@@ -9,10 +9,10 @@ router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
 
 router.use(cors());
-var sequencesRouter = require('./sequences/sequences');
-var stepsRouter = require('./steps/steps');
-var logsRouter = require('./logs/logs');
-var entitiesRouter = require('./entities/entities');
+var sequencesRouter = require('./api/sequences/sequences');
+var stepsRouter = require('./api/steps/steps');
+var logsRouter = require('./api/logs/logs');
+var entitiesRouter = require('./api/entities/entities');
 const { generateKeyPair } = require('crypto');
 
 router.use('/sequences', sequencesRouter);
