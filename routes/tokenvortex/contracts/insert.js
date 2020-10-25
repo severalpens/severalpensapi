@@ -11,6 +11,7 @@ router.post("/", bodyParser.json(), function(req, res, next) {
   let contract = req.body;
   contract.user_id = req.user_id;
   contract.isActive = true;
+  contract.entityType = 'contract';
   ContractsModel.create(contract).then(result => {
     res.send(result);
   });

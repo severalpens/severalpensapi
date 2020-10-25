@@ -7,20 +7,15 @@ var AccountsModel = require("../models/mongodb/accounts");
 
 
 router.post("/:_id", bodyParser.json(), function(req, res, next) {
-  // console.log(req.params);
-  // console.log(req.user_id);
-  // console.log(req.body);
+    let account = req.body;
+    account.user_id = req.user_id;
+    
       AccountsModel.updateOne(
         { 
           _id: req.params._id, 
-          isLocked: false, 
           user_id: req.user_id
          },
-        {
-          name: req.body.name,
-          address: req.body.address,
-          privateKey: req.body.privateKey,
-        },
+        account,
       )
       .exec((err,result) => {
         if(err){

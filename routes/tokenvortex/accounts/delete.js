@@ -3,18 +3,18 @@ var router = express.Router();
 var ethers = require("ethers");
 var bodyParser = require("body-parser");
 var AccountsModel = require("../models/mongodb/accounts");
+var EntitiesModel = require("../models/mongodb/entities");
 var cors = require('cors');
 router.use(cors());
 
 
 router.post("/:_id", bodyParser.json(),async  function(req, res, next) {
     let _id = req.params._id;
-    // AccountsModel.updateOne({ _id, owner: req._id }, { isActive: false }, (err,result) => {
-    //   if(err) {return res.send(err)}
-    //   return res.send(result);
-    // });
-
-   let result =  await AccountsModel.findByIdAndDelete(_id).exec();
+    let user_id = req.user_id;
+   let result =  await AccountsModel
+   .findByIdAndDelete(_id)
+   .where(user_id)
+   .exec();
    return res.send(result);
 
 });
