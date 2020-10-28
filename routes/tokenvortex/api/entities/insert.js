@@ -7,6 +7,7 @@ var EntitiesModel = require('../../models/entities');
 const crypto = require('crypto');
 const ethers = require('ethers');
 const functions = require('./functions');
+const admin_id = '5f8f88e5d28b37394459bbba';
 
 
 
