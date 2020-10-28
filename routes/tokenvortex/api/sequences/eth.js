@@ -12,21 +12,35 @@ router.use(express.urlencoded({limit: '50mb',extended: false}));
 router.use(bodyParser.json({extended: false}));
 
 
-router.post("/", async function (req, res) {
+router.post("/balance", async function (req, res) {
   let address = req.body;
   address.user_id = req.user_id;
   let provider = new ethers.providers.InfuraProvider(address.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
   let balance = await provider.getBalance(address.address);
   res.send(balance);
+});
 
+
+
+router.post("/transfer", async function (req, res) {
+  let transfer = req.body;
+  let provider = new ethers.providers.InfuraProvider(transfer.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
+  let wallet = new ethers.Wallet(transfer.sender.body.privateKey, provider);
+  let amount = ethers.utils.parseUnits(transfer.amount.toString(),transfer.denomination.unit);
+  
+  let tx = {
+      to: transfer.recipient.body.address,
+      value: amount
+  };
+  
+  let sendPromise = wallet.sendTransaction(tx);
+  
+  sendPromise.then((tx) => {
+      console.log(tx);
+      res.send(tx);
+  });
 });
 
 
 
 module.exports = router;
-
-/*
-1: Why not the address? - Because ethers requires the abi code to create the required contract object.
-Therefore its a lot easier for the server to  retreive the contract document from the database and extract both the address
-and abi code rather than require the client to post it all.
-*/

@@ -16,7 +16,7 @@ router.use(bodyParser.json({ extended: false }));
 router.post("/", async function (req, res) {
   let x = req.body.balanceQuery;
   let contract = await EntitiesModel.findById(req.body.contract_id).lean().exec();
-  let addressSource = {}
+  let addressSource = {};
   let address = '';
   addressSource = await EntitiesModel.findById(req.body.balanceQuery._id).lean().exec();
   address = x.type === 'contract' ? addressSource.body.addresses[req.body.network] : addressSource.body.address;
