@@ -8,8 +8,10 @@ var bodyParser = require("body-parser");
 var deleteRouter = require("./delete");
 var insertRouter = require("./insert");
 var updateRouter = require("./update");
+var deployRouter = require("./deploy");
 
 router.use('/delete',deleteRouter);
+router.use('/deploy',deployRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 
@@ -53,9 +55,6 @@ router.get("/:entityType",  function(req, res, next) {
         return res.send(err);
       } 
       else {
-        if(entityType === 'account'){
-         entities.push(admin);
-        }
         return res.send(entities);
       }
     });

@@ -1,17 +1,11 @@
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
-var logsSchema = new Schema({
-    entityType: String,
-    seq_id: String,
-    user_id: String,
-    posId: Number,
-    step: Object,
-    timestamp: Number,
-    tx: Object,
-    status: String
+var logbookSchema = new Schema({
+  sequence_id: String,
+    logs: Array,
   });
   
-  var LogsModel = mongoose.model("logs", logsSchema, "logs");
+  var LogbookModel = mongoose.model("logbook", logbookSchema, "logbook");
   
-  module.exports = LogsModel;
+  module.exports = LogbookModel;

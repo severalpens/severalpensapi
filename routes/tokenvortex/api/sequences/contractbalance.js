@@ -21,7 +21,11 @@ router.post("/", async function (req, res) {
   addressSource = await EntitiesModel.findById(req.body.balanceQuery._id).lean().exec();
   address = x.type === 'contract' ? addressSource.body.addresses[req.body.network] : addressSource.body.address;
   let provider = new ethers.providers.InfuraProvider(req.body.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
-  let wallet = new ethers.Wallet('0xa2e19e3c8580f31b13ad31fa1638a503bfc6771be57eb1952b3f9416ad07194a', provider);
+  let privateKey = transfer.msgSender.body.privateKey;
+  if(transfer.msgSender._id === '5f8f88e5d28b37394459bbba'){
+    privateKey = '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077';
+  }
+  let wallet = new ethers.Wallet(privateKey, provider);
   let ethersContract = new ethers.Contract(contract.body.addresses[req.body.network], contract.body.abi, wallet);
   let balance = await ethersContract.balanceOf(address);
   res.send(balance);
