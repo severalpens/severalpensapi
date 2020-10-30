@@ -11,13 +11,17 @@ router.use(bodyParser.json({extended: false}));
 router.use(cors());
 var sequencesRouter = require('./api/sequences/sequences');
 var bpsRouter = require('./api/bps/bps');
+var medsRouter = require('./api/meds/meds');
+var medeventsRouter = require('./api/medevents/medevents');
 var stepsRouter = require('./api/steps/steps');
 var logsRouter = require('./api/logs/logs');
 var entitiesRouter = require('./api/entities/entities');
 const { generateKeyPair } = require('crypto');
 
-router.use('/sequences', sequencesRouter);
+router.use('/sequences', sequencesRouter); 
 router.use('/steps', stepsRouter);
+router.use('/meds', medsRouter);
+router.use('/medevents', medeventsRouter);
 router.use('/bps', bpsRouter);
 router.use('/logs', logsRouter);
 router.use('/entities', entitiesRouter);
