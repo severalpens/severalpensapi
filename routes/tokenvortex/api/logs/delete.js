@@ -9,14 +9,15 @@ var LogsModel = require('../../models/logs');
 
 
 
-router.post("/:_id", bodyParser.json(), function(req, res, next) {
-    let _id = req.params._id;
-    LogsModel.updateOne({ _id }, { isActive: false }).then(result => {
-      return res.send(result);
-    });
+//delete by id
+router.post("/:_id", bodyParser.json(), async function(req, res, next) {
+  let _id = req.params._id
+  let result = {};
+    result =  await LogsModel.findByIdAndDelete(_id).exec();
+    let res2 = await LogsModel.find({}).exec();
+  return res.send(res2);
   });
   
-    
 
 
 

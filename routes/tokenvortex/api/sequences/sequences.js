@@ -9,6 +9,7 @@ var insertRouter = require("./insert");
 var updateRouter = require("./update");
 var lockRouter = require("./lock");
 var runRouter = require("./run");
+var resetRouter = require("./reset");
 var ethRouter = require("./eth");
 var tokenRouter = require("./token")
 var logsRouter = require("./logs");
@@ -19,6 +20,7 @@ router.use('/truncate',truncateRouter);
 router.use('/insert',insertRouter);
 router.use('/update',updateRouter);
 router.use('/run',runRouter);
+router.use('/reset',resetRouter);
 router.use('/eth',ethRouter);
 router.use('/token',tokenRouter);
 router.use('/logs',logsRouter);
@@ -31,7 +33,6 @@ router.get("/",  function(req, res, next) {
   query.setOptions({ lean : true });
   query.collection(SequencesModel.collection)
   query.or([{ user_id: 'public' }, { user_id: req.user_id }])
-  query.where('isActive').equals(true)
   query.exec((err, sequences) => {
       if (err != null) {
         return res.send(err);
@@ -46,7 +47,6 @@ router.get("/",  function(req, res, next) {
 router.get("/:_id",  function(req, res, next) {
   const query = SequencesModel.findById(req.params._id); 
   query.where({ user_id: req.user_id })
-  query.where('isActive').equals(true)
   query.exec((err, sequences) => {
       if (err != null) {
         return res.send(err);

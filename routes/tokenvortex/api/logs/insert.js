@@ -9,8 +9,6 @@ var LogsModel = require('../../models/logs');
 
 router.post("/", bodyParser.json(), function(req, res, next) {
   let log = req.body;
-  log.user_id = req.user_id;
-  log.isActive = true;
   LogsModel.create(log).then(result => {
     res.send(result);
   });
