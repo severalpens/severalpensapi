@@ -10,6 +10,7 @@ router.post("/:_id", bodyParser.json(), function(req, res, next) {
   let _id = req.body._id;
   console.log(_id);
   let bp = req.body;
+  console.log(bp);
   bp.user_id = req.user_id;
 
   if (_id) {

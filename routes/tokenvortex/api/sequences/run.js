@@ -33,8 +33,12 @@ router.get("/:_id", async function (req, res) {
   if (msgSender.body.address === '0x83f53D5327bdaa0eC946A0d1447EA8B71b680Ca9') {
     msgSender.body.privateKey = '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077';
   }
-
-  let methodArgs = step.method.inputs.map(x => x.internalType);
+  let methodArgs = [];
+  step.method.inputs.forEach(async (input) => {
+    let entity = await EntitiesModel.findById(input.source_id).lean().exec();
+    let option = entity.options[input.posId];
+    methodArgs.push(option.value);
+  });
   let provider = new ethers.providers.InfuraProvider(step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
   let wallet = new ethers.Wallet(msgSender.body.privateKey, provider);
   let contract = await EntitiesModel.findById(step.contract_id).lean().exec();
@@ -49,7 +53,6 @@ router.get("/:_id", async function (req, res) {
       }
       else {
         await updateSteps(sequence, 'table-warning', false);
-        res.send(sequence);
         tx.wait()
           .then(async (tx2) => {
             log.tx = tx2;
@@ -71,6 +74,10 @@ router.get("/:_id", async function (req, res) {
       await log.save();
       await updateSteps(sequence, 'table-danger', true);
       console.log('tx.danger');
+
+    })
+    .finally(async () => {
+      res.send(sequence);
 
     })
 });

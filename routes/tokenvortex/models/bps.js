@@ -6,6 +6,7 @@ var bpsSchema = new Schema({
   tm: String,
   sys:  String,
   dia:  String,
+  hr: String
   });
   
   var BpsModel = mongoose.model("bps", bpsSchema, "bps");
