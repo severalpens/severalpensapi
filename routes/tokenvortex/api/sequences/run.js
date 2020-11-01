@@ -14,14 +14,6 @@ router.use(express.urlencoded({ limit: '50mb', extended: false }));
 router.use(bodyParser.json({ extended: false }));
 
 
-// router.get("/:_id", async function (req, res) {
-//   let _id = req.params._id;
-//   let sequence = await SequencesModel.findById(_id).lean().exec();
-//   sequence.steps[0].status = 'status';
-//   await SequencesModel.findByIdAndUpdate(_id,sequence)
-//   res.send(sequence)
-// })
-
 router.get("/:_id", async function (req, res) {
   let _id = req.params._id;
   let sequence = await SequencesModel.findById(_id).lean().exec();
@@ -30,15 +22,19 @@ router.get("/:_id", async function (req, res) {
   let step = sequence.steps[sequence.posId];
   log.step = step;
   let msgSender = await EntitiesModel.findById(step.msgSender_id).lean().exec();
+
   if (msgSender.body.address === '0x83f53D5327bdaa0eC946A0d1447EA8B71b680Ca9') {
     msgSender.body.privateKey = '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077';
   }
+
   let methodArgs = [];
-  step.method.inputs.forEach(async (input) => {
-    let entity = await EntitiesModel.findById(input.source_id).lean().exec();
-    let option = entity.options[input.posId];
+  
+  for (const input of step.method.inputs) {
+    let contract = await EntitiesModel.findById(input.source_id).lean().exec();
+    let option = contract.options[input.posId];
     methodArgs.push(option.value);
-  });
+  }
+
   let provider = new ethers.providers.InfuraProvider(step.network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
   let wallet = new ethers.Wallet(msgSender.body.privateKey, provider);
   let contract = await EntitiesModel.findById(step.contract_id).lean().exec();
@@ -89,7 +85,7 @@ async function updateSteps(sequence, status, increment) {
     });
   }
 
-  sequence.steps[0].status = status;
+  sequence.steps[sequence.posId].status = status;
 
   if (sequence.steps.length > 1)
     if (increment) {
@@ -99,7 +95,7 @@ async function updateSteps(sequence, status, increment) {
       }
     }
 
-    await SequencesModel.findByIdAndUpdate(sequence._id,sequence,{useFindAndModify: false})
+  await SequencesModel.findByIdAndUpdate(sequence._id, sequence, { useFindAndModify: false })
 
 }
 
