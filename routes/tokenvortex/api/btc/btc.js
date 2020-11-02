@@ -33,23 +33,12 @@ router.get("/", async function(req, res, next) {
 });
 
 
-router.get("/:entityType",  function(req, res, next) {
-  let user_id = req.user_id;
-  let entityType = req.params.entityType;
-  const query = BtcModel.find({});  
-  switch (entityType) {
-    case 'customFields':
-      query.where('entityType').in( ['hashPair','generic','randomAccount']);
-      break;
-      case 'account':
-        query.or([{ user_id }, { _id: admin_id }]);
-        query.where('entityType').equals('account');
-        break;
-    default:
-      query.where('entityType').equals(entityType);
-      break;
-  }
 
+
+router.get("/update", async function(req, res, next) {
+  let user_id = req.user_id;
+  const query = BtcModel.find({});
+  query.or([{ user_id }, { _id: admin_id }])
   query.exec((err, btc) => {
       if (err != null) {
         return res.send(err);
@@ -59,6 +48,24 @@ router.get("/:entityType",  function(req, res, next) {
       }
     });
 });
+
+
+
+
+router.get("/run", async function(req, res, next) {
+  let user_id = req.user_id;
+  const query = BtcModel.find({});
+  query.or([{ user_id }, { _id: admin_id }])
+  query.exec((err, btc) => {
+      if (err != null) {
+        return res.send(err);
+      } 
+      else {
+        return res.send(btc);
+      }
+    });
+});
+
 
 
 module.exports = router;
