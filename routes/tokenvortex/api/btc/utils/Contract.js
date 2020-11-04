@@ -68,7 +68,8 @@ class Contract {
 		return txSummary;
 	}
 
-	async run(method, args, stopwatch,isPayable) {		
+	async run(method, args, stopwatch) {	
+		let isPayable = true;	
 		console.log(method);
 		let txLog = isPayable ? await this.runPayable(method, args, stopwatch) : await this.runView(method, args, stopwatch);
 		return txLog;

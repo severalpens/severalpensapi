@@ -13,10 +13,5 @@
     },
     "abi": "",
     "bytecode": ""
-  },
-  "truncateDb": false,
-  "dbCollection": "btc",
-  "iterations": 1,
-  "deploy": false,
-  "sendLogbookToDb": true
+  }
 }

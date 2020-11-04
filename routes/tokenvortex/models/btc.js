@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var btcSchema = new Schema({
     user_id: String,
     settings: Object,
+    results: Array
   });
 
 
