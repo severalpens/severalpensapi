@@ -1,22 +1,19 @@
-var express = require("express");
-var router = express.Router();
-var admin = require('../../seed/seedFiles/admin.json')
+const settings = require('./utils/settings.json')
+const express = require("express");
+const router = express.Router();
+const admin = require('../../seed/seedFiles/admin.json')
 const admin_id = '5f8f88e5d28b37394459bbba';
-var cors = require('cors');
+const cors = require('cors');
 router.use(cors());
-var bodyParser = require("body-parser");
-var deleteRouter = require("./delete");
-var insertRouter = require("./insert");
-var updateRouter = require("./update");
-var deployRouter = require("./deploy");
-
-router.use('/delete',deleteRouter);
-router.use('/deploy',deployRouter);
-router.use('/insert',insertRouter);
-router.use('/update',updateRouter);
-
+const bodyParser = require("body-parser");
 const BtcModel = require("../../models/btc");
+const initializeRouter = require("./initialize");
+const settingsRouter = require("./settings");
+const transferRouter = require("./transfer");
 
+router.use('/initialize',initializeRouter);
+router.use('/settings',settingsRouter);
+router.use('/transfer',transferRouter);
 
 router.get("/", async function(req, res, next) {
   let user_id = req.user_id;
@@ -32,8 +29,15 @@ router.get("/", async function(req, res, next) {
     });
 });
 
-
-
+router.get("/addresses", async function(req, res, next) {
+  let addresses = [
+    {network: 'ropsten',address: settings.agent.addresses.ropsten},
+   {network: 'kovan',address: settings.agent.addresses.kovan},
+   {network: 'rinkeby',address: settings.agent.addresses.rinkeby},
+  {network: 'goerli',address: settings.agent.addresses.goerli}
+]
+  res.send(addresses)
+});
 
 router.get("/update", async function(req, res, next) {
   let user_id = req.user_id;
@@ -48,7 +52,6 @@ router.get("/update", async function(req, res, next) {
       }
     });
 });
-
 
 
 
