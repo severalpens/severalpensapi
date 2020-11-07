@@ -15,6 +15,7 @@ router.post("/", bodyParser.json(), function (req, res, next) {
   let entity = req.body;
   entity.user_id = req.user_id;
   delete entity._id;
+  
   entity.isActive = true;
   entity = functions.customise(entity);
   EntitiesModel.create(entity).then(result => {
