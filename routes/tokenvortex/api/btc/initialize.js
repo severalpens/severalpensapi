@@ -3,7 +3,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const EntitiesModel = require("../../models/entities");
-const settings = require('./utils/settings.json')
 
 var router = express.Router();
 

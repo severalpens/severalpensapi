@@ -4,8 +4,6 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const BtcModel = require("../../models/btc");
 const EntitiesModel = require("../../models/entities");
-const settings = require('./utils/settings.json');
-const { Mongoose } = require("mongoose");
 
 var router = express.Router();
 

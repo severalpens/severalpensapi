@@ -19,6 +19,5 @@ crypto.newSecretHashPair = () => {
   };
 };
 
-console.log(crypto.newSecretHashPair());
 
 module.exports = crypto;

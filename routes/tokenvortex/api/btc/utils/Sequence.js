@@ -6,22 +6,21 @@ class Sequence {
     this.transactionId = '';
     this.entities  = entities;
     this.settings = settings;
-    this.instance = instances;
+    this.instances = instances;
   }
 
   async runTxs() {
     let results = [];
-    stopwatch.start();
-    results.push(await this.instances.senderToken.run(
+    results.push(await this.instances.senderToken.runSimple(
       'approve',
       [
         this.instances.senderAgent.address, 
         this.settings.tokenAmount
-      ],
-      stopwatch
+      ]
     ));
 
-    results.push(await this.instances.senderAgent.run(
+    this.instances.senderAgent.timer.init(this.settings.timeoutSeconds);
+    let exitTxResult  = await this.instances.senderAgent.runSimple(
       'exitTransaction',
       [
         this.instances.burnAccount.address, 
@@ -29,24 +28,24 @@ class Sequence {
         this.instances.senderAgent.timer.periodEndSeconds,
         this.instances.senderToken.address, 
         this.settings.tokenAmount
-      ],
-      stopwatch
-    ));
-    this.transactionId = log.completedTx.events[log.completedTx.events.length - 1].args.transactionId;
+      ]
+    );
+
+    this.transactionId = exitTxResult.events[exitTxResult.events.length - 1].args.transactionId;
+    results.push(exitTxResult);
 
 
-    if(checkTimeout(stopwatch,false)){
-      results.push(await instances.senderAgent.run(
+    if(this.checkTimeout(stopwatch,false)){
+      results.push(await this.instances.senderAgent.runSimple(
       'reclaimTransaction',
       [
         this.transactionId
-      ],
-      stopwatch
+      ]
     ));
     }
 
-    if(checkTimeout(stopwatch,true)){
-      results.push(await this.instances.recipientAgent.run(
+    if(this.checkTimeout(stopwatch,true)){
+      results.push(await this.instances.recipientAgent.runSimple(
       'add',
       [
         this.instances.senderAgent.address,
@@ -56,34 +55,30 @@ class Sequence {
         this.instances.senderAgent.timer.periodEndSeconds,
         this.instances.recipientToken.address,
         this.settings.tokenAmount
-      ],
-      stopwatch
+      ]
     ));
     }
 
-    if(checkTimeout(stopwatch,true)){
-      results.push(await instances.recipientAgent.run(
+    if(this.checkTimeout(stopwatch,true)){
+      results.push(await this.instances.recipientAgent.runSimple(
       'entryTransaction',
       [
         this.settings.tokenAmount,
         this.entities.recipient.body.address,
         this.transactionId,
-        this.instances.recipientToken.address,
         this.instances.hashPair.secret
-      ],
-      stopwatch
+      ]
     ));
     }
 
-    if(checkTimeout(stopwatch,true)){
-      results.push(await instances.senderAgent.run(
+    if(this.checkTimeout(stopwatch,true)){
+      results.push(await this.instances.senderAgent.runSimple(
       'update',
       [
         this.instances.recipientAgent.address,
         this.transactionId,
         this.instances.hashPair.secret,
-      ],
-      stopwatch
+      ]
     ));
     }
     return results;
@@ -100,7 +95,7 @@ checkTimeout(stopwatch,preTimeout) {
   }
   return false;
 }
-
 }
+
 
 module.exports = Sequence;

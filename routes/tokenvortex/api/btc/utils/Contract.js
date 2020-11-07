@@ -1,22 +1,24 @@
 
-const fs = require('fs-extra');
-const statman = require('statman');
 const pidusage = require('pidusage');
-const si = require('systeminformation');
 const ethers = require("ethers");
 const TimeHelper = require('./TimeHelper');
-const LogbookModel = require('./models/logbook');
 class Contract {
-	constructor(network, msgSender, contractSettings, artifact) {
+	constructor(network, msgSender, contractSettings, abi) {
 		this.network = network;
 		this.msgSender = msgSender;
 		this.contractSettings = contractSettings;
-		this.address = contractSettings.addresses[network];
+		this.address = contractSettings.body.addresses[network];
 		const infura = new ethers.providers.InfuraProvider(network, 'abf62c2c62304ddeb3ccb2d6fb7a8b96');
 		const ganache = new ethers.providers.JsonRpcProvider('http://127.0.0.1:7545');
 		this.provider = network == "ganache" ? ganache : infura;
-		this.wallet = new ethers.Wallet(msgSender.privateKey, this.provider);
-		this.ethersContract = new ethers.Contract(this.address, artifact.abi, this.wallet);
+		let privateKey = msgSender.body.privateKey;
+		let msgSender_id = msgSender._id.toString();
+			if (msgSender_id === '5f8f88e5d28b37394459bbba') {
+			privateKey = '0xdecf82d77bda6d90cb0b56c2f03d942c784bc30c9ec4a78271d3be673d35d077';
+		}
+	
+		this.wallet = new ethers.Wallet(privateKey, this.provider);
+		this.ethersContract = new ethers.Contract(this.address, abi, this.wallet);
 		this.timer = new TimeHelper();
 		this.transactionId = '';
 		this.gasUsed = 0
@@ -52,22 +54,6 @@ class Contract {
 		return { network: this.network, contractAddress: this.address, accountAddress: account.address, accountName: account.name, balance };
 	}
 
-	async _logTxParams(tx, stopwatch, logbook, ethersTx) {
-		let gasEstimationHex = await this.provider.estimateGas(ethersTx);
-		let gasEstimation = parseInt(gasEstimationHex);
-		logbook.txs.push({
-			method: tx.method,
-			args: tx.args,
-			gasEstimation,
-			split: Math.floor(stopwatch.read(0) / 1000)
-		});
-	}
-
-	_runWithoutArgs(tx, stopwatch, logbook) {
-		let txSummary = {};
-		return txSummary;
-	}
-
 	async run(method, args, stopwatch) {	
 		let isPayable = true;	
 		console.log(method);
@@ -92,6 +78,13 @@ async runView(method, args, stopwatch){
 		});
 	return txLog;
 
+}
+async runSimple(method, args){
+	console.log(method);
+	let tx = this.ethersContract[method];
+	let receipt = await tx(...args);
+	let result = await receipt.wait();
+	return result;
 }
 
 async runPayable(method, args, stopwatch){
